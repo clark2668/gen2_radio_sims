@@ -18,8 +18,8 @@ part=${10}
 
 # the string holding the flavor, energy, and cos(zenith) bin information
 meta_info=${flavor}_${energy}eV_${czmin}_${czmax}
-inputfile=${meta_info}.part${part}.hdf5
-outputfile=out_${meta_info}.part${part}.hdf5
+inputfile=in_${meta_info}.part${part}.hdf5
+outputfile=${meta_info}.part${part}.hdf5
 
 # just so we can have access to gridftp
 eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh`
@@ -40,6 +40,9 @@ source /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/setup.sh
 # run the python script
 python ${sim_file}.py ${inputfile} ${det_file}.json ${config_file}.yaml ${outputfile}
 
+# cleanup the input hdf5 file
+rm in_*.hdf5
+
 # bring the results back to the data-warehouse
 outdir=${step2dir}/${det_file}/${config_file}/${sim_file}/${flavor}/${meta_info}
-globus-url-copy ./out_*hdf5 gsiftp://gridftp.icecube.wisc.edu/${outdir}/
+globus-url-copy ./*hdf5 gsiftp://gridftp.icecube.wisc.edu/${outdir}/

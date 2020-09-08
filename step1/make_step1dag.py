@@ -16,11 +16,13 @@ flavors = ["e", "mu", "tau"]
 step0dir = "/data/user/brianclark/Gen2/simulation_input/secondaries_500km2/step0/"
 step1dir = "/data/user/brianclark/Gen2/simulation_input/secondaries_500km2/step1/"
 
+dag_file_name='dagman_step1.dag'
+
 # write the master variables
 instructions = ""
 instructions += 'CONFIG dagman.config\n'
 instructions += f'VAR ALL_NODES step0dir="{step0dir}" step1dir="{step1dir}"\n\n'
-with open('step1_dagman.dag', 'w') as f:
+with open(dag_file_name, 'w') as f:
 	f.write(instructions)
 
 master_index=0
@@ -42,7 +44,7 @@ for flavor in flavors:
 					instructions += f'JOB job_{master_index} step1_job.sub \n'
 					instructions += f'VARS job_{master_index} flavor="{flavor}" energy="{logEs[iE]:.2f}" czmin="{czen1:.1f}" czmax="{czen2:.1f}" part="{ipart:06}"\n\n'
 
-					with open('step1_dagman.dag', 'a') as f:
+					with open(dag_file_name, 'a') as f:
 						f.write(instructions)
 
 					master_index+=1

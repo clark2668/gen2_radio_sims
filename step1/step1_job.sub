@@ -13,5 +13,6 @@ use_x509userproxy = true
 Requirements = HAS_CVMFS_icecube_opensciencegrid_org && (OpSysMajorVer =?= 7)
 
 executable = step1_script.sh
+arguments = $(step0dir) $(step1dir) $(flavor) $(energy) $(czmin) $(czmax) $(part)
 
 queue

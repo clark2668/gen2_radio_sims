@@ -85,7 +85,7 @@ for flavor in flavors:
 				instruction += 'from NuRadioMC.EvtGen.generator import generate_eventlist_cylinder\n'
 				instruction += 'from NuRadioReco.utilities import units\n\n'
 				for ipart in range(ijob * n_parts_per_file[iC], (ijob + 1) * n_parts_per_file[iC]):
-					out_filename = f"{pattern}" + f".part{ipart:06}" + ".hdf5"
+					out_filename = "in_" + f"{pattern}" + f".part{ipart:06}" + ".hdf5"
 					start_event_id = int(ipart * nevt) + 1
 					instruction += f"generate_eventlist_cylinder('{out_filename}', {nevt}, {E}, {E}, {volume},\n"
 					instruction += f"thetamin={thetamin}, thetamax={thetamax}, phimin={phimin},\n"

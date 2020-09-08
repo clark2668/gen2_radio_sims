@@ -28,8 +28,8 @@ with open(dag_file_name, 'w') as f:
 master_index=0
 for flavor in flavors:
 	for iE in range(len(logEs)):
-		if(logEs[iE]<20.0):
-			continue
+		#if(logEs[iE]<20.0):
+		#	continue
 
 		for iC in range(len(coszenbins)-1):
 			czen1 = coszenbins[iC]

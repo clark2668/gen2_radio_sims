@@ -13,7 +13,7 @@ getenv = true
 use_x509userproxy = true
 Requirements = HAS_CVMFS_icecube_opensciencegrid_org && (OpSysMajorVer =?= 7)
 
-executable = step1_script.sh
+executable = step2_script.sh
 arguments = $(step1dir) $(step2dir) $(detfile) $(configfile) $(simfile) $(flavor) $(energy) $(czmin) $(czmax) $(part)
 
 queue

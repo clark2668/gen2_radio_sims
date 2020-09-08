@@ -15,7 +15,7 @@ part=$7
 
 # the string holding the flavor, energy, and cos(zenith) bin information
 meta_info=${flavor}_${energy}eV_${czmin}_${czmax}
-pyscript=${dir}_${part}.py
+pyscript=${meta_info}_${part}.py
 
 # just so we can have access to gridftp
 eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh`

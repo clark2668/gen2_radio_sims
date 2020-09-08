@@ -1,0 +1,17 @@
+log    = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step1.$(energy).$(Process).log
+output = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step1.$(energy).$(Process).out
+error  = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step1.$(energy).$(Process).err
+
+request_cpus = 1
+request_memory = 4GB
+request_disk = 5GB
++OriginalTime = 3600
+Universe = vanilla
+getenv = true
+
+use_x509userproxy = true
+Requirements = HAS_CVMFS_icecube_opensciencegrid_org && (OpSysMajorVer =?= 7)
+
+executable = step1_script.sh
+
+queue

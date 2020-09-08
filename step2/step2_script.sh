@@ -42,4 +42,4 @@ python ${sim_file}.py ${inputfile} ${det_file}.json ${config_file}.yaml ${output
 
 # bring the results back to the data-warehouse
 outdir=${step2dir}/${det_file}/${config_file}/${sim_file}/${flavor}/${meta_info}
-globus-url-copy ./out_*hdf5 gsiftp://gridftp.icecube.wisc.edu/${step2dir}/${outdir}/
+globus-url-copy ./out_*hdf5 gsiftp://gridftp.icecube.wisc.edu/${outdir}/

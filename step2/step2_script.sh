@@ -18,8 +18,8 @@ part=${10}
 
 # the string holding the flavor, energy, and cos(zenith) bin information
 meta_info=${flavor}_${energy}eV_${czmin}_${czmax}
-inputfile=${meta_info}.${part}.hdf5
-outputfile=out_${meta_info}.${part}.hdf5
+inputfile=${meta_info}.part${part}.hdf5
+outputfile=out_${meta_info}.part${part}.hdf5
 base_support_dir=/data/user/brianclark/Gen2/simulation_input/support_files
 
 # just so we can have access to gridftp

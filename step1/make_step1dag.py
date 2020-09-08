@@ -21,7 +21,7 @@ dag_file_name='dagman_step1.dag'
 # write the master variables
 instructions = ""
 instructions += 'CONFIG config.dagman\n'
-instructions += f'VAR ALL_NODES step0dir="{step0dir}" step1dir="{step1dir}"\n\n'
+instructions += f'VARS ALL_NODES step0dir="{step0dir}" step1dir="{step1dir}"\n\n'
 with open(dag_file_name, 'w') as f:
 	f.write(instructions)
 

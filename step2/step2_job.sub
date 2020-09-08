@@ -1,0 +1,19 @@
+log    = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step2.$(flavor).$(energy).$(czmin).$(czmax).$(part).$(Process).log
+output = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step2.$(flavor).$(energy).$(czmin).$(czmax).$(part).$(Process).out
+error  = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step2.$(flavor).$(energy).$(czmin).$(czmax).$(part).$(Process).err
+
+request_cpus = 1
+request_memory = 4GB
+request_disk = 5GB
++OriginalTime = 3600
+Universe = vanilla
+getenv = true
++TransferOutput = ""
+
+use_x509userproxy = true
+Requirements = HAS_CVMFS_icecube_opensciencegrid_org && (OpSysMajorVer =?= 7)
+
+executable = step1_script.sh
+arguments = $(step1dir) $(step2dir) $(detfile) $(configfile) $(simfile) $(flavor) $(energy) $(czmin) $(czmax) $(part)
+
+queue

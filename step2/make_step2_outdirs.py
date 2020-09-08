@@ -5,11 +5,11 @@ from NuRadioReco.utilities import units
 
 base_dir = "/data/user/brianclark/Gen2/simulation_output/"
 
-det_file = dipoles_100m
-config_file = config_Alv2009_nonoise_100ns
-sim_file = D02single_dipole
+det_file = "dipoles_100m"
+config_file = "config_Alv2009_nonoise_100ns"
+sim_file = "D02single_dipole"
 
-step2dir = os.path.join(base_dir, f"secondaries_500km2", f"{detector_file}", f"{configuration_file}", f"{sim_file}")
+step2dir = os.path.join(base_dir, f"secondaries_500km2", f"{det_file}", f"{config_file}", f"{sim_file}")
 if(not os.path.exists(step2dir)):
 	os.makedirs(step2dir)
 

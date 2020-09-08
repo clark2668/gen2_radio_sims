@@ -80,12 +80,18 @@ for flavor in flavors:
 					out_filename = f"{pattern}" + f".part{ipart:06}" + ".hdf5"
 					start_event_id = int(ipart * nevt) + 1
 					instruction += f"generate_eventlist_cylinder('{out_filename}', {nevt}, {E}, {E}, {volume},\n"
+					instruction += f"thetamin={thetamin}, thetamax={thetamax}, phimin={phimin},\n"
+					instruction += f"phimax={phimax}, \n"
+					instruction += f"start_event_id={start_event_id},\n"
+					instruction += f"proposal=True, proposal_config='SouthPole', n_events_per_file=None,\n"
+					instruction += f"flavor={flavor_ids[flavor]},\n"
+					instruction += f"proposal_kwargs={{'low_nu': 1 * units.PeV, 'min_energy_loss_nu': 1 * units.PeV}})\n"
 					instruction += "\n"
+				
 				python_filename = f'{pattern}_{ijob:06d}.py'
+				
 				if(not os.path.exists(os.path.join(working_dir, flavor, pattern))):
 					os.makedirs(os.path.join(working_dir, flavor, pattern))
+				
 				with open(os.path.join(working_dir, flavor, pattern, python_filename), 'w') as f:
 					f.write(instruction)
-
-
-# first, we need to make all the sub-directories

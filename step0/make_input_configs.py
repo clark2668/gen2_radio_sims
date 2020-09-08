@@ -32,7 +32,7 @@ volume = {'fiducial_xmin': -10 * units.km - dX,
 		}
 
 def get_number_of_events(logE):
-	return 1e3
+	return 1e1
 
 distance_cut_polynomial = np.polynomial.polynomial.Polynomial([-1.56610502e+02, 2.54131322e+01, -1.34932379e+00, 2.39984185e-02])
 
@@ -91,7 +91,7 @@ for flavor in flavors:
 					instruction += f"thetamin={thetamin}, thetamax={thetamax}, phimin={phimin},\n"
 					instruction += f"phimax={phimax}, \n"
 					instruction += f"start_event_id={start_event_id},\n"
-					instruction += f"proposal=True, proposal_config='SouthPole', n_events_per_file=None,\n"
+					instruction += f"proposal=True, proposal_config='config_PROPOSAL.json', n_events_per_file=None,\n"
 					instruction += f"flavor={flavor_ids[flavor]},\n"
 					instruction += f"proposal_kwargs={{'low_nu': 1 * units.PeV, 'min_energy_loss_nu': 1 * units.PeV}})\n"
 					instruction += "\n"

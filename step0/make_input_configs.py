@@ -4,7 +4,7 @@ import os
 from NuRadioReco.utilities import units
 
 base_dir = "/data/user/brianclark/Gen2/simulation_input/"
-working_dir = os.path.join(base_dir, f"input_secondaries_500km2", "input")
+working_dir = os.path.join(base_dir, f"secondaries_500km2", "step0")
 
 if(not os.path.exists(working_dir)):
 	os.makedirs(working_dir)

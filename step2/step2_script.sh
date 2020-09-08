@@ -20,7 +20,6 @@ part=${10}
 meta_info=${flavor}_${energy}eV_${czmin}_${czmax}
 inputfile=${meta_info}.part${part}.hdf5
 outputfile=out_${meta_info}.part${part}.hdf5
-base_support_dir=/data/user/brianclark/Gen2/simulation_input/support_files
 
 # just so we can have access to gridftp
 eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh`
@@ -29,6 +28,7 @@ eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh`
 globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${step1dir}/${flavor}/${meta_info}/${inputfile} ./
 
 # copy in the relevant detector, config, and simulation files
+base_support_dir=/data/user/brianclark/Gen2/simulation_input/support_files
 globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/${det_file}.json ./
 globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/${config_file}.yaml ./
 globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/${sim_file}.py ./
@@ -41,4 +41,5 @@ source /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/setup.sh
 python ${sim_file}.py ${inputfile} ${det_file}.json ${config_file}.yaml ${outputfile}
 
 # bring the results back to the data-warehouse
-globus-url-copy ./out_*hdf5 gsiftp://gridftp.icecube.wisc.edu/${step2dir}/${flavor}/${meta_info}/
+outdir=${step2dir}/${det_file}/${config_file}/${sim_file}/${flavor}/${meta_info}
+globus-url-copy ./out_*hdf5 gsiftp://gridftp.icecube.wisc.edu/${step2dir}/${outdir}/

@@ -4,10 +4,14 @@ import os
 from NuRadioReco.utilities import units
 
 base_dir = "/data/user/brianclark/Gen2/simulation_input/"
-working_dir = os.path.join(base_dir, f"secondaries_500km2", "step0")
 
-if(not os.path.exists(working_dir)):
-	os.makedirs(working_dir)
+step0dir = os.path.join(base_dir, f"secondaries_500km2", "step0")
+if(not os.path.exists(step0dir)):
+	os.makedirs(step0dir)
+
+step1dir = os.path.join(base_dir, f"secondaries_500km2", "step1")
+if(not os.path.exists(step1dir)):
+	os.makedirs(step1dir)
 
 coszenbins = np.linspace(-1, 1, 21)
 logEs = np.arange(15., 20.1, 0.5)
@@ -67,9 +71,13 @@ for flavor in flavors:
 			thetamin = np.arccos(czen2)
 			pattern = f"{flavor}_{logEs[iE]:.2f}eV_{czen1:.1f}_{czen2:.1f}"
 			print(pattern)
-			folder = os.path.join(working_dir, flavor, f"{pattern}")
+			folder = os.path.join(step0dir, flavor, f"{pattern}")
 			if(not os.path.exists(folder)):
 				os.makedirs(folder)
+
+			folder1 = os.path.join(step1dir, flavor, f"{pattern}")
+			if(not os.path.exists(folder1)):
+				os.makedirs(folder1)
 
 			for ijob in range(n_parts//n_parts_per_file[iC]):
 				
@@ -90,8 +98,11 @@ for flavor in flavors:
 				
 				python_filename = f'{pattern}_{ijob:06d}.py'
 				
-				if(not os.path.exists(os.path.join(working_dir, flavor, pattern))):
-					os.makedirs(os.path.join(working_dir, flavor, pattern))
+				if(not os.path.exists(os.path.join(step0dir, flavor, pattern))):
+					os.makedirs(os.path.join(step0dir, flavor, pattern))
+
+				if(not os.path.exists(os.path.join(step1dir, flavor, pattern))):
+					os.makedirs(os.path.join(step1dir, flavor, pattern))
 				
-				with open(os.path.join(working_dir, flavor, pattern, python_filename), 'w') as f:
+				with open(os.path.join(step0dir, flavor, pattern, python_filename), 'w') as f:
 					f.write(instruction)

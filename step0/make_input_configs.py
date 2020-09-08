@@ -51,8 +51,8 @@ flavor_ids = {'e': [12,-12],
 
 for flavor in flavors:
 	for iE in range(len(logEs)):
-		if(logEs[iE]<20.0):
-			continue
+		#if(logEs[iE]<20.0):
+		#	continue
 		# print (logEs[iE])
 		nevt = get_number_of_events(logEs[iE])
 		max_dist = get_distance_cut(10 ** logEs[iE])

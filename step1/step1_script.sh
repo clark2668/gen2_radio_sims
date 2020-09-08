@@ -12,7 +12,6 @@ part=$7
 # step0dir is where the step0 files ("how to generate the inputs") will go
 # step1dir is where the step1 files ("the input files themselves") will go
 
-
 # the string holding the flavor, energy, and cos(zenith) bin information
 meta_info=${flavor}_${energy}eV_${czmin}_${czmax}
 pyscript=${meta_info}_${part}.py
@@ -27,6 +26,10 @@ globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${step0dir}/${flavor}/${meta_i
 # and source the setup file for gen2 radio simulations
 unset PYTHONPATH
 source /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/setup.sh
+
+# move the PROPOSAL config file, and make a "tables" directory locally for PROPOSAL to write intermediate files to
+cp /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/simulation/support_files/config_PROPOSAL.json .
+mkdir tables
 
 # run the python script
 python $pyscript

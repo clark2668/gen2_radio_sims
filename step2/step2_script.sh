@@ -22,6 +22,7 @@ inputfile=in_${meta_info}.part${part}.hdf5
 outputfile=${meta_info}.part${part}.hdf5
 
 # just so we can have access to gridftp
+ls /cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh
 eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh`
 
 # get the input file
@@ -35,6 +36,7 @@ globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/${sim_file
 
 # clear out the python path and source the setup file for gen2 radio simulations
 unset PYTHONPATH
+ls /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/setup.sh
 source /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/setup.sh
 
 # run the python script

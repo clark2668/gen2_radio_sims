@@ -8,10 +8,10 @@ repository for gen2 radio sims stuff
  * [step 1](#step-1)
  * [step 2](#step-2)
  * [step3](#step3)
-* [Logistical Details](#logistical-details)
-  + [Setting up the software](#setting-up-the-software)
-  + [Submitting jobs](#submitting-jobs)
-  + [git maintenance](#git-maintenance)
+- [Logistical Details](#logistical-details)
+ * [Setting up the software](#setting-up-the-software)
+ * [Submitting jobs](#submitting-jobs)
+ * [git maintenance](#git-maintenance)
 
 ## Overview
 

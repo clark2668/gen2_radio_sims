@@ -1,6 +1,18 @@
 # Gen2 Radio Simulations
 repository for gen2 radio sims stuff
 
+- [Overview](#overview)
+- [Simulation Tools and Steps](#simulation-tools-and-steps)
+ * [pytools](#pytools)
+ * [step 0](#step-0)
+ * [step 1](#step-1)
+ * [step 2](#step-2)
+ * [step3](#step3)
+* [Logistical Details](#logistical-details)
+  + [Setting up the software](#setting-up-the-software)
+  + [Submitting jobs](#submitting-jobs)
+  + [git maintenance](#git-maintenance)
+
 ## Overview
 
 The strategy for the simulation requires a few stages:

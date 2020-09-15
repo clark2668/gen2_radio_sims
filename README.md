@@ -3,15 +3,15 @@ repository for gen2 radio sims stuff
 
 - [Overview](#overview)
 - [Simulation Tools and Steps](#simulation-tools-and-steps)
- * [pytools](#pytools)
- * [step 0](#step-0)
- * [step 1](#step-1)
- * [step 2](#step-2)
- * [step3](#step3)
+  * [pytools](#pytools)
+  * [step 0](#step-0)
+  * [step 1](#step-1)
+  * [step 2](#step-2)
+  * [step3](#step3)
 - [Logistical Details](#logistical-details)
- * [Setting up the software](#setting-up-the-software)
- * [Submitting jobs](#submitting-jobs)
- * [git maintenance](#git-maintenance)
+  * [Setting up the software](#setting-up-the-software)
+  * [Submitting jobs](#submitting-jobs)
+  * [git maintenance](#git-maintenance)
 
 ## Overview
 

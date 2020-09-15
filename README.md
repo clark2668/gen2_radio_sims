@@ -74,9 +74,15 @@ To make the dagman files, do `python make_step2_dag.py`. The major variables to 
 Then you can submit the per flavor simulations by doing `condor_submit_dag dagman_step2_e.dag`.
 
 ### step3
+After all of step 2 is complete, there is a final step which will merge all of the step 2 files in a single zenith bin into a "total" file. The naming convention is `filename.hdf5.partXXXXXX`. If you save them as `filename.partXXXXXX.hdf5`, then `rename.sh` is provided to change the order of the final two parts if you save them differently which was done early during production.
+
+Do `python make_step3_dag.py` to make dag file which can then be submitted by `condor_submit_dag dagman_step3.py`. Note that this step (and this step only!) is designed to be run on the **submit** machine, not **sub-1** at WIPAC. That is, you want to do this with access to the local filesystem, not on the grid.
 
 ## Logistical Details
-These jobs are designed to run on "the grid." They therefore need software that is installed in cvmfs.
+### Setting up the software
+These jobs are designed to run on "the grid." They therefore need software that is installed in cvmfs. This is currently being handled by code distributed in [user cvmfs for IceCube](https://wiki.icecube.wisc.edu/index.php/User_CVMFS).
+
+Brian is using a conda environment to handle python and proposal. GSL, NuRadioMC, NuRadioReco, and radiotools are installed in cvmfs itself.
 
 ### Submitting jobs
 Before submitting jobs, it is important to make sure your grid proxy certificates are good

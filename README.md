@@ -41,6 +41,10 @@ simulation_output
                          tau
 ```
 
+We are also running the simulation in specific zenith bands, and so for each `e`, `mu`, and `tau` folder, there is a zenith band folder, e.g.: `e_18.50eV_-0.2_0.1` for electron neutrinos, of primary energy 18.50eV, and zeniths drawn from the range -0.2 to -0.1.
+
+Simulations are generated in "parts"--that is, for a given flavor, energy bin, and zenith bin, there might be 10 "parts" which must be run in parallel, and then merged in step 3.
+
 ## Simulation Tools and Steps
 
 ### pytools
@@ -49,15 +53,25 @@ There is a small "helper" class in the `pytools` directory. This standardizes th
 `export PYTHONPATH=/path/to/pytools:$PYTHONPATH`
 
 ### step 0
-Step 0 is where we output the "control" files for NuRadioMC that tell NuRadioMC how to distribute the neutrinos that will become the step 1 files. This includes the neutrino energy, zeniths, vertex volume, etc. Run this by doing:
+Step 0 is where we output the "control" `.py` files for NuRadioMC that tell NuRadioMC how to distribute the neutrinos that will become the step 1 files. This includes the neutrino energy, zeniths, vertex volume, etc. Run this by doing:
 
 `python make_step0_files.py`
 
 The main parameter, which sits near the top of the file, is the `base_dir`, which is where you ant the step 0 and step 1 files to be placed.
 
 ### step 1
+Step 1 is the process where we actually run the `.py` control files created in step 0 to generate the list of energy depositions. Running `python make_step1_dag.py` will generate the three dagman files (one for each flavor), which can then be submitted by doing `condor_submit_dag dagman_step1_e.dag`.
+
+The main parameters, which sit near the top of the dag maker, is `step0dir` and `step1dir`.
 
 ### step 2
+Step 2 is the process where we run NuRadioMC on the list of energy depositions created in step 1.
+
+To make the output directory structure for a corresponding geometry, configuration, and simulation specification, run `python make_step2_outdirs.py`
+
+To make the dagman files, do `python make_step2_dag.py`. The major variables to be changed here (as well as in the output directory maker above) is `step1dir`, `step2dir`, `det_file` (the detector json file), `config_file` (the config yaml file), and the `sim_file` (the simulation .py file).
+
+Then you can submit the per flavor simulations by doing `condor_submit_dag dagman_step2_e.dag`.
 
 ### step3
 

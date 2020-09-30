@@ -77,7 +77,7 @@ for flavor in flavors:
 				instruction += 'from NuRadioMC.EvtGen.generator import generate_eventlist_cylinder\n'
 				instruction += 'from NuRadioReco.utilities import units\n\n'
 				out_filename = "in_" + f"{pattern}" + f".part{ijob:06}" + ".hdf5"
-				start_event_id = int(ijob * num_events) + 1
+				start_event_id = int(ijob * (num_events*3)) + 1
 				instruction += f"generate_eventlist_cylinder('{out_filename}', {num_events}, {E}, {E}, {volume},\n"
 				instruction += f"thetamin={thetamin}, thetamax={thetamax}, phimin={phimin},\n"
 				instruction += f"phimax={phimax}, \n"

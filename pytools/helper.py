@@ -5,12 +5,12 @@ def get_coszenbins():
 	return np.linspace(-1,1,21)
 
 def get_logEs():
-	return np.arange(15., 20.1, 0.5)
+	return np.arange(19., 20.1, 0.5)
 
 def get_number_of_parts_and_events(flavor, logE):
 	num_parts=1
 	num_events=1
-	splitter=4
+	splitter=1
 
 	
 	if flavor=='e':

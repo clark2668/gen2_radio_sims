@@ -2,3 +2,4 @@
 *~
 *.dag*
 __pycache__
+*DS_Store*

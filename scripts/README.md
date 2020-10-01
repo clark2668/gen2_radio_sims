@@ -96,6 +96,10 @@ These jobs are designed to run on "the grid." They therefore need software that 
 
 Brian is using a conda environment to handle python and proposal. GSL, NuRadioMC, NuRadioReco, and radiotools are installed in cvmfs itself.
 
+To install the software on cvmfs, you will first need to get into a singularity container, which you can do with the following command (or equivalent):
+`singularity exec -B /tmp:/tmp -B /cvmfs:/cvmfs -B /net/cvmfs_users/brianclark:/cvmfs/icecube.opensciencegrid.org/users/brianclark /cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el7:latest bash`
+
+
 ### Submitting jobs
 Before submitting jobs, it is important to make sure your grid proxy certificates are good
 

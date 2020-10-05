@@ -21,10 +21,10 @@ def get_number_of_parts_and_events(flavor, logE):
 		# otherwise, we need to be clever about energy bins
 		if logE<18:
 			num_parts=int(100/splitter)
-			num_events=1000
+			num_events=500
 		elif logE>=18 and logE<19:
-			num_parts=int(400/splitter)
-			num_events=250
+			num_parts=int(200/splitter)
+			num_events=25
 		elif logE>=19:
 			num_parts=int(200/splitter)
 			num_events=15

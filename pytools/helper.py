@@ -1,4 +1,6 @@
 import numpy as np
+import h5py
+from six import iteritems
 
 def read_input_hdf5_file(filename):
 	fin = h5py.File(filename, 'r')

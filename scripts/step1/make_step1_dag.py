@@ -26,12 +26,12 @@ for flavor in flavors:
 
 	for iE in range(len(logEs)):
 
-		num_parts, num_events = hp.get_number_of_parts_and_events(flavor, logEs[iE])
-		
 		for iC in range(len(coszenbins)-1):
 			czen1 = coszenbins[iC]
 			czen2 = coszenbins[iC + 1]
 			E = energies[iE]
+
+			num_parts, num_events = hp.get_number_of_parts_and_events(flavor, logEs[iE], czen1)
 			
 			for ijob in range(num_parts):
 				instructions = ""

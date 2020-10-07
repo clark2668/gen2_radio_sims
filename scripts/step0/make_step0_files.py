@@ -46,7 +46,6 @@ flavor_ids = {'e': [12,-12],
 for flavor in flavors:
 	for iE in range(len(logEs)):
 
-		num_parts, num_events = hp.get_number_of_parts_and_events(flavor, logEs[iE])
 
 		max_dist = get_distance_cut(10 ** logEs[iE])
 		print(f"maximum radius for E = {10**logEs[iE]:.2g} is {max_dist/units.m:.0f}m")
@@ -61,6 +60,7 @@ for flavor in flavors:
 			thetamax = np.arccos(czen1)
 			thetamin = np.arccos(czen2)
 			pattern = f"{flavor}_{logEs[iE]:.2f}eV_{czen1:.1f}_{czen2:.1f}"
+			num_parts, num_events = hp.get_number_of_parts_and_events(flavor, logEs[iE], czen1)
 			print(pattern)
 			
 			folder = os.path.join(step0dir, flavor, f"{pattern}")

@@ -1,5 +1,20 @@
 import numpy as np
 
+def read_input_hdf5_file(filename):
+	fin = h5py.File(filename, 'r')
+	_fin = {}
+	_fin_stations = {}
+	_fin_attrs = {}
+	for key, value in iteritems(fin):
+		if isinstance(value, h5py._hl.group.Group):
+			_fin_stations[key] = {}
+			for key2, value2 in iteritems(value):
+				_fin_stations[key][key2] = np.array(value2)
+		_fin[key] = np.array(value)
+	for key, value in iteritems(fin.attrs):
+		_fin_attrs[key] = value
+	fin.close()
+	return _fin, _fin_stations, _fin_attrs
 
 def get_coszenbins():
 	return np.linspace(-1,1,21)

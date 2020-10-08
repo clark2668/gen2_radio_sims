@@ -2,24 +2,29 @@
 
 # declare -a flavors=("e" "mu" "tau")
 declare -a flavors=("e")
+declare -a detectors=("dipoles_RNOG_200m_2.00km" "dipoles_RNOG_20m_1.00km")
 
-top_dir=/data/user/brianclark/Gen2/simulation_output/secondaries_500km2/dipoles_100m/config_Alv2009_nonoise_100ns/D02single_dipole
+#top_dir=/data/user/brianclark/Gen2/simulation_output/secondaries_500km2/dipoles_100m/config_Alv2009_nonoise_100ns/D02single_dipole
 
-for flavor in "${flavors[@]}"
+for det in "${detectors[@]}"
 do
-	for dir in $top_dir/$flavor/*
+	top_dir=/data/user/brianclark/Gen2/simulation_output/secondaries_500km2/${det}/config_Alv2009_nonoise_100ns/D02single_dipole_250MHz
+	for flavor in "${flavors[@]}"
 	do
-		echo $dir
-		cd $dir
-		for f in *.hdf5
+		for dir in $top_dir/$flavor/*
 		do
-			echo "on f "$f
-			filename="${f%.*}"
-			part="${filename##*.}"
-			before_part="${filename%.*}"
-			mv $f $before_part.hdf5.$part
+			echo $dir
+			cd $dir
+			for f in *.hdf5
+			do
+				echo "on f "$f
+				filename="${f%.*}"
+				part="${filename##*.}"
+				before_part="${filename%.*}"
+				#mv $f $before_part.hdf5.$part
+			done
+			cd ..
 		done
-		cd ..
 	done
 done
 

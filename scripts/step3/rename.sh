@@ -21,7 +21,7 @@ do
 				filename="${f%.*}"
 				part="${filename##*.}"
 				before_part="${filename%.*}"
-				#mv $f $before_part.hdf5.$part
+				mv $f $before_part.hdf5.$part
 			done
 			cd ..
 		done

@@ -9,6 +9,7 @@ logEs = hp.get_logEs()
 energies = 10 ** logEs * units.eV
 
 flavors = ["e", "mu", "tau"]
+flavors = ["e"]
 
 step1dir = "/data/user/brianclark/Gen2/simulation_input/secondaries_500km2/step1/"
 step2dir = "/data/user/brianclark/Gen2/simulation_output/secondaries_500km2"
@@ -38,12 +39,12 @@ for det_file_label in det_files_labels:
 
 		for iE in range(len(logEs)):
 
-			num_parts, num_events = hp.get_number_of_parts_and_events(flavor, logEs[iE])
-
 			for iC in range(len(coszenbins)-1):
 				czen1 = coszenbins[iC]
 				czen2 = coszenbins[iC + 1]
 				E = energies[iE]
+
+				num_parts, num_events = hp.get_number_of_parts_and_events(flavor, logEs[iE], czen1)
 				
 				for ijob in range(num_parts):
 					instructions = ""

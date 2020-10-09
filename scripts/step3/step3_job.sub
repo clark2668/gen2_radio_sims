@@ -1,6 +1,6 @@
-log    = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step3.$(flavor).$(Process).log
-output = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step3.$(flavor).$(Process).out
-error  = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step3.$(flavor).$(Process).err
+log    = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step3.$(flavor).$(energy).$(czmin).$(czmax).$(Process).log
+output = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step3.$(flavor).$(energy).$(czmin).$(czmax).$(Process).out
+error  = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step3.$(flavor).$(energy).$(czmin).$(czmax).$(Process).err
 
 request_cpus = 1
 request_memory = 3GB
@@ -11,6 +11,6 @@ should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
 
 executable = step3_script.sh
-arguments = $(step2dir) $(flavor)
+arguments = $(step2dir) $(flavor) $(energy) $(czmin) $(czmax)
 
 queue

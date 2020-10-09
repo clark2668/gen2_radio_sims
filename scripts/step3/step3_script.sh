@@ -3,9 +3,11 @@
 # first, load variables
 topdir=$1
 flavor=$2
+energy=$3
+czmin=$4
+czmax=$5
 
 # step2dir is where the step2 files ("actual simulation output") will go
-# flavor is the flavor 
 
 # clear out the python path and source the setup file for gen2 radio simulations
 unset PYTHONPATH
@@ -18,4 +20,4 @@ export HDF5_USE_FILE_LOCKING='FALSE'
 
 # run the python script
 pyscript=/cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/simulation/NuRadioMC/NuRadioMC/utilities/merge_hdf5.py
-python $pyscript $topdir/$flavor
+python $pyscript ${topdir}/${flavor}/${flavor}_${energy}eV_${czmin}_${czmax}.hdf5 ${topdir}/${flavor}/${flavor}_${energy}eV_${czmin}_${czmax}/*.hdf5*

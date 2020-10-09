@@ -10,6 +10,7 @@ energies = 10 ** logEs * units.eV
 
 flavors = ["e", "mu", "tau"]
 flavors = ["e"]
+flavors = ["mu", "tau"]
 
 step1dir = "/data/user/brianclark/Gen2/simulation_input/secondaries_500km2/step1/"
 step2dir = "/data/user/brianclark/Gen2/simulation_output/secondaries_500km2"

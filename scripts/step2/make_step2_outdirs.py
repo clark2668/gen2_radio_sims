@@ -6,7 +6,7 @@ import helper as hp
 
 base_dir = "/data/user/brianclark/Gen2/simulation_output/"
 
-det_files = ["dipoles_RNOG_200m_2.00km", "dipoles_RNOG_20m_1.00km"]
+det_files = ["dipoles_RNOG_200m_2.00km", "dipoles_RNOG_100m_2.00km", "dipoles_RNOG_20m_1.00km"]
 config_file = "config_Alv2009_nonoise_100ns"
 sim_file = "D02single_dipole_250MHz"
 

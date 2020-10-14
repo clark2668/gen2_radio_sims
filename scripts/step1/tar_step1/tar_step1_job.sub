@@ -1,0 +1,16 @@
+log    = /scratch/brianclark/gen2radiosims/trash/$(flavor)/tar_step1.$(flavor).$(energy).$(czmin).$(czmax).$(Process).log
+output = /scratch/brianclark/gen2radiosims/trash/$(flavor)/tar_step1.$(flavor).$(energy).$(czmin).$(czmax).$(Process).out
+error  = /scratch/brianclark/gen2radiosims/trash/$(flavor)/tar_step1.$(flavor).$(energy).$(czmin).$(czmax).$(Process).err
+
+request_cpus = 1
+request_memory = 1GB
+request_disk = 1GB
+Universe = vanilla
+getenv = true
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+executable = tar_step1_script.sh
+arguments = $(step1dir) $(flavor) $(energy) $(czmin) $(czmax)
+
+queue

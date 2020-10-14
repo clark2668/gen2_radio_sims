@@ -19,6 +19,7 @@ part=${10}
 # the string holding the flavor, energy, and cos(zenith) bin information
 meta_info=${flavor}_${energy}eV_${czmin}_${czmax}
 inputfile=in_${meta_info}.part${part}.hdf5
+inputtarfile=${inputfile}.tar.gz
 outputfile=${meta_info}.part${part}.hdf5
 
 # just so we can have access to gridftp
@@ -26,7 +27,8 @@ ls /cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh
 eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh`
 
 # get the input file
-globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${step1dir}/${flavor}/${meta_info}/${inputfile} ./
+globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${step1dir}/${flavor}/${meta_info}/${inputtarfile} ./
+tar -xvzf ${inputtarfile}
 
 # copy in the relevant detector, config, and simulation files
 base_support_dir=/data/user/brianclark/Gen2/simulation_input/support_files

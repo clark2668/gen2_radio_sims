@@ -3,15 +3,14 @@ from NuRadioReco.utilities import units
 import helper as hp
 
 flavors = ["e", "mu", "tau"]
-flavors = ["e"]
 
 coszenbins = hp.get_coszenbins()
 logEs = hp.get_logEs()
 energies = 10 ** logEs * units.eV
 
-step2dir = "/data/user/brianclark/Gen2/simulation_output/secondaries_500km2"
+step2dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2"
 
-det_files = ["dipoles_RNOG_200m_2.00km", "dipoles_RNOG_20m_1.00km"]
+det_files = ["dipoles_RNOG_200m_2.00km", "dipoles_RNOG_100m_2.00km", "dipoles_RNOG_20m_1.00km"]
 config_file = "config_Alv2009_nonoise_100ns"
 sim_file = "D02single_dipole_250MHz"
 

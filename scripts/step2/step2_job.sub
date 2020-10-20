@@ -3,7 +3,7 @@ output = /scratch/brianclark/gen2radiosims/trash/$(flavor)/out/step2.$(flavor).$
 error  = /scratch/brianclark/gen2radiosims/trash/$(flavor)/err/step2.$(flavor).$(energy).$(detfile).$(czmin).$(czmax).$(part).$(Process).err
 
 request_cpus = 1
-request_memory = 3.75GB
+request_memory = 8GB
 request_disk = 5GB
 +OriginalTime = 12600
 Universe = vanilla

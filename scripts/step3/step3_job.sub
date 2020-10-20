@@ -3,7 +3,7 @@ output = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step3.$(flavor).$(ene
 error  = /scratch/brianclark/gen2radiosims/trash/$(flavor)/step3.$(flavor).$(energy).$(czmin).$(czmax).$(Process).err
 
 request_cpus = 1
-request_memory = 8GB
+request_memory = 30GB
 request_disk = 5GB
 Universe = vanilla
 getenv = true

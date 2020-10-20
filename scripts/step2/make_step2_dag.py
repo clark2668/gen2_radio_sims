@@ -9,11 +9,9 @@ logEs = hp.get_logEs()
 energies = 10 ** logEs * units.eV
 
 flavors = ["e", "mu", "tau"]
-flavors = ["e"]
-flavors = ["mu", "tau"]
 
-step1dir = "/data/user/brianclark/Gen2/simulation_input/secondaries_500km2/step1/"
-step2dir = "/data/user/brianclark/Gen2/simulation_output/secondaries_500km2"
+step1dir = "/data/sim/Gen2/radio/2020/simulation_input/secondaries_500km2/step1/"
+step2dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2"
 
 det_files_dict = {
 	"gen2r_200m_2km" : "dipoles_RNOG_200m_2.00km",
@@ -21,8 +19,7 @@ det_files_dict = {
 	"gen2r_20m_1km" : "dipoles_RNOG_20m_1.00km"
 }
 
-#det_files_labels = ["gen2r_200m_2km", "gen2r_100m_2km" , "gen2r_20m_1km"]
-det_files_labels = ["gen2r_100m_2km"]
+det_files_labels = ["gen2r_200m_2km", "gen2r_100m_2km" , "gen2r_20m_1km"]
 config_file = "config_Alv2009_nonoise_100ns"
 sim_file = "D02single_dipole_250MHz"
 

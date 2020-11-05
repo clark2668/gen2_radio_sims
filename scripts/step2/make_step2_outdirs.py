@@ -4,9 +4,10 @@ import os
 from NuRadioReco.utilities import units
 import helper as hp
 
-base_dir = "/data/user/brianclark/Gen2/simulation_output/"
+base_dir = "/data/sim/Gen2/radio/2020/simulation_output"
 
-det_files = ["dipoles_RNOG_200m_2.00km", "dipoles_RNOG_100m_2.00km", "dipoles_RNOG_20m_1.00km"]
+# det_files = ["dipoles_RNOG_200m_2.00km", "dipoles_RNOG_100m_2.00km", "dipoles_RNOG_20m_1.00km"]
+det_files = ["dipoles_RNOG_100m_3.00km.json", "dipoles_RNOG_200m_3.00km.json", "surface_4LPDA_1dipole_RNOG_1.00km.json", "surface_4LPDA_1dipole_RNOG_1.50km.json"]
 config_file = "config_Alv2009_nonoise_100ns"
 sim_file = "D02single_dipole_250MHz"
 

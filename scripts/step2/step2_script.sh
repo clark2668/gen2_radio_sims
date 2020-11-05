@@ -31,10 +31,10 @@ globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${step1dir}/${flavor}/${meta_i
 tar -xvzf ${inputtarfile}
 
 # copy in the relevant detector, config, and simulation files
-base_support_dir=/data/user/brianclark/Gen2/simulation_input/support_files
-globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/${det_file}.json ./
-globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/${config_file}.yaml ./
-globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/${sim_file}.py ./
+base_support_dir=/data/sim/Gen2/radio/2020/simulation_input/support_files/analysis-scripts/gen2-design-2020
+globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/detector/${det_file}.json ./
+globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/config/${config_file}.yaml ./
+globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/detsim/${sim_file}.py ./
 
 # clear out the python path and source the setup file for gen2 radio simulations
 unset PYTHONPATH

@@ -9,14 +9,20 @@ energies = 10 ** logEs
 
 flavors = ["mu", "tau"]
 
-step2dir = "/data/user/brianclark/Gen2/simulation_output/secondaries_500km2/"
+step2dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2"
 
 det_files_dict = {
 	"gen2r_200m_2km" : "dipoles_RNOG_200m_2.00km",
+	"gen2r_200m_3km" : "dipoles_RNOG_200m_3.00km",
+	"gen2r_100m_2km" : "dipoles_RNOG_100m_2.00km",
+	"gen2r_100m_3km" : "dipoles_RNOG_100m_3.00km",
+	"gen2r_surf_1km" : "surface_4LPDA_1dipole_RNOG_1.00km",
+	"gen2r_surf_15km" : "surface_4LPDA_1dipole_RNOG_1.50km",
 	"gen2r_20m_1km" : "dipoles_RNOG_20m_1.00km"
 }
 
-det_files_labels = ["gen2r_200m_2km", "gen2r_20m_1km"]
+
+det_files_labels = ["gen2r_100m_3km", "gen2r_200m_3km"]
 config_file = "config_Alv2009_nonoise_100ns"
 sim_file = "D02single_dipole_250MHz"
 

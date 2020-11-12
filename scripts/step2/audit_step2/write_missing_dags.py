@@ -1,7 +1,7 @@
 import numpy as np
 import os
 
-flavors = ["mu", "tau"]
+flavors = ["e", "mu", "tau"]
 
 step1dir = "/data/sim/Gen2/radio/2020/simulation_input/secondaries_500km2/step1/"
 step2dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2"
@@ -16,7 +16,7 @@ det_files_dict = {
 	"gen2r_20m_1km" : "dipoles_RNOG_20m_1.00km"
 }
 
-det_files_labels = ["gen2r_100m_3km", "gen2r_200m_3km"]
+det_files_labels = ["gen2r_100m_3km", "gen2r_200m_3km", "gen2r_surf_15km"]
 config_file = "config_Alv2009_nonoise_100ns"
 sim_file = "D02single_dipole_250MHz"
 

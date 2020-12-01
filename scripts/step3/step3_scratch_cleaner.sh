@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -a dets=("dipoles_RNOG_100m_2.00km" "dipoles_RNOG_100m_3.00km" "dipoles_RNOG_200m_2.00km" "dipoles_RNOG_200m_3.00km" "surface_4LPDA_1dipole_RNOG_1.00km" "surface_4LPDA_1dipole_RNOG_1.50km")
+declare -a dets=('pa_100m_2.00km' 'pa_100m_3.00km' 'pa_200m_2.00km' 'pa_200m_3.00km'  'surface_4LPDA_PA_15m_RNOG_1.00km' 'surface_4LPDA_PA_15m_RNOG_1.50km')
 
 declare -a flavs=("e" "mu" "tau")
 

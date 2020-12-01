@@ -3,14 +3,15 @@
 # first, load variables
 step2dir=$1
 step3dir=$2
-det_file=$3
-config_file=$4
-sim_file=$5
-flavor=$6
-energy=$7
-czmin=$8
-czmax=$9
-part=${10}
+step2detfile=$3
+det_file=$4
+config_file=$5
+sim_file=$6
+flavor=$7
+energy=$8
+czmin=$9
+czmax=${10}
+part=${11}
 
 
 # step2dir is where the step2 input files are (the "pass1" files)
@@ -19,14 +20,14 @@ part=${10}
 # the string holding the flavor, energy, and cos(zenith) bin information
 meta_info=${flavor}_${energy}eV_${czmin}_${czmax}
 inputfile=${meta_info}.part${part}.hdf5
-outputfile=${meta_info}.part${part}.hdf5
+outputfile=pass2_${meta_info}.part${part}.hdf5
 
 # just so we can have access to gridftp
 ls /cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh
 eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh`
 
-# get the input file
-globus-url-copy gsiftp:/gridftp.icecube.wisc.edu/${step2dir}/${det_file}/${config_file}/${D02single_dipole_250MHz}/${flavor}/${meta_info}/${inputfile} ./
+# get the input file (bit naughty to hard code the step 2 config and detsim file, but oh well...)
+globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${step2dir}/${step2detfile}/config_Alv2009_nonoise_100ns/D02single_dipole_250MHz/${flavor}/${meta_info}/${inputfile} ./
 
 # copy in the relevant detector, config, and simulation files
 base_support_dir=/data/sim/Gen2/radio/2020/simulation_input/support_files/analysis-scripts/gen2-design-2020

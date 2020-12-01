@@ -7,15 +7,15 @@ import helper as hp
 base_dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2/step3/"
 
 detsim_files_dict = {
-	"dipoles_RNOG_200m_2.00km" : "D05phased_array_deep",
-	"dipoles_RNOG_200m_3.00km" : "D05phased_array_deep",
-	"dipoles_RNOG_100m_2.00km" : "D05phased_array_deep",
-	"dipoles_RNOG_100m_3.00km" : "D05phased_array_deep",
-	"surface_4LPDA_1dipole_RNOG_1.00km" : "D07surface_4LPDA_pa_15m_250MHz.py",
-	"surface_4LPDA_1dipole_RNOG_1.50km" : "D07surface_4LPDA_pa_15m_250MHz.py"
+	"pa_100m_2.00km" : "D05phased_array_deep",
+	"pa_100m_3.00km" : "D05phased_array_deep",
+	"pa_200m_2.00km" : "D05phased_array_deep",
+	"pa_200m_3.00km" : "D05phased_array_deep",
+	"surface_4LPDA_PA_15m_RNOG_1.00km" : "D07surface_4LPDA_pa_15m_250MHz.py",
+	"surface_4LPDA_PA_15m_RNOG_1.50km" : "D07surface_4LPDA_pa_15m_250MHz.py"
 }
 
-det_files = ['dipoles_RNOG_200m_2.00km', 'dipoles_RNOG_200m_3.00km', 'dipoles_RNOG_100m_2.00km', 'dipoles_RNOG_100m_3.00km', 'surface_4LPDA_1dipole_RNOG_1.00km', 'surface_4LPDA_1dipole_RNOG_1.50km']
+det_files = ['pa_100m_2.00km', 'pa_100m_3.00km', 'pa_200m_2.00km', 'pa_200m_3.00km', 'surface_4LPDA_PA_15m_RNOG_1.00km', 'surface_4LPDA_PA_15m_RNOG_1.50km']
 config_file = "config_Alv2009_noise_100ns"
 
 for det_file in det_files:

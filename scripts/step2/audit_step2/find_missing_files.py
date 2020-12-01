@@ -23,6 +23,7 @@ det_files_dict = {
 
 
 det_files_labels = ["gen2r_100m_3km", "gen2r_200m_3km", "gen2r_surf_15km"]
+det_files_labels = ["gen2r_surf_15km", "gen2r_surf_1km"]
 config_file = "config_Alv2009_nonoise_100ns"
 sim_file = "D02single_dipole_250MHz"
 

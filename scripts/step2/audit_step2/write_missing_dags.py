@@ -16,7 +16,8 @@ det_files_dict = {
 	"gen2r_20m_1km" : "dipoles_RNOG_20m_1.00km"
 }
 
-det_files_labels = ["gen2r_100m_3km", "gen2r_200m_3km", "gen2r_surf_15km"]
+#det_files_labels = ["gen2r_100m_3km", "gen2r_200m_3km", "gen2r_surf_15km"]
+det_files_labels = ["gen2r_surf_1km", "gen2r_surf_15km"]
 config_file = "config_Alv2009_nonoise_100ns"
 sim_file = "D02single_dipole_250MHz"
 

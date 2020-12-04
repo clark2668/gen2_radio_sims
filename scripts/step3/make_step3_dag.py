@@ -11,7 +11,6 @@ energies = 10 ** logEs * units.eV
 flavors = ["e", "mu", "tau"]
 flavors = ["e"]
 
-
 step2dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2/step2"
 step3dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2/step3"
 
@@ -29,8 +28,8 @@ detsim_files_dict = {
 	"pa_100m_3.00km" : "D05phased_array_deep",
 	"pa_200m_2.00km" : "D05phased_array_deep",
 	"pa_200m_3.00km" : "D05phased_array_deep",
-	"surface_4LPDA_PA_15m_RNOG_1.00km" : "D07surface_4LPDA_pa_15m_250MHz.py",
-	"surface_4LPDA_PA_15m_RNOG_1.50km" : "D07surface_4LPDA_pa_15m_250MHz.py"
+	"surface_4LPDA_PA_15m_RNOG_1.00km" : "D07surface_4LPDA_pa_15m_250MHz",
+	"surface_4LPDA_PA_15m_RNOG_1.50km" : "D07surface_4LPDA_pa_15m_250MHz"
 }
 
 det_files_dict = {
@@ -43,7 +42,7 @@ det_files_dict = {
 }
 
 
-det_files_labels = ["gen2r_200m_3km"]
+det_files_labels = ["gen2r_100m_2km", "gen2r_100m_3km", "gen2r_200m_2km", "gen2r_200m_3km", "gen2r_surf_1km", "gen2r_surf_15km"]
 config_file = "config_Alv2009_noise_100ns"
 
 for det_file_label in det_files_labels:

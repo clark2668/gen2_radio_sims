@@ -19,8 +19,8 @@ step2_step3_dict = {
 	"pa_100m_3.00km" : "dipoles_RNOG_100m_3.00km",
 	"pa_200m_2.00km" : "dipoles_RNOG_200m_2.00km",
 	"pa_200m_3.00km" : "dipoles_RNOG_200m_3.00km",
-	"surface_4LPDA_PA_15m_RNOG_1.00km" : "surface_4LPDA_1dipole_RNOG_1.00km",
-	"surface_4LPDA_PA_15m_RNOG_1.50km" : "surface_4LPDA_1dipole_RNOG_1.50km"
+	"surface_4LPDA_PA_15m_RNOG_300K_1.00km" : "surface_4LPDA_1dipole_RNOG_1.00km",
+	"surface_4LPDA_PA_15m_RNOG_300K_1.50km" : "surface_4LPDA_1dipole_RNOG_1.50km"
 }
 
 detsim_files_dict = {
@@ -28,8 +28,8 @@ detsim_files_dict = {
 	"pa_100m_3.00km" : "D05phased_array_deep",
 	"pa_200m_2.00km" : "D05phased_array_deep",
 	"pa_200m_3.00km" : "D05phased_array_deep",
-	"surface_4LPDA_PA_15m_RNOG_1.00km" : "D07surface_4LPDA_pa_15m_250MHz",
-	"surface_4LPDA_PA_15m_RNOG_1.50km" : "D07surface_4LPDA_pa_15m_250MHz"
+	"surface_4LPDA_PA_15m_RNOG_300K_1.00km" : "D09surface_4LPDA_pa_15m_250MHz",
+	"surface_4LPDA_PA_15m_RNOG_300K_1.50km" : "D09surface_4LPDA_pa_15m_250MHz"
 }
 
 det_files_dict = {
@@ -37,8 +37,8 @@ det_files_dict = {
 	"gen2r_100m_3km" : "pa_100m_3.00km",
 	"gen2r_200m_2km" : "pa_200m_2.00km",
 	"gen2r_200m_3km" : "pa_200m_3.00km",
-	"gen2r_surf_1km" : "surface_4LPDA_PA_15m_RNOG_1.00km",
-	"gen2r_surf_15km" : "surface_4LPDA_PA_15m_RNOG_1.50km",
+	"gen2r_surf_1km" : "surface_4LPDA_PA_15m_RNOG_300K_1.00km",
+	"gen2r_surf_15km" : "surface_4LPDA_PA_15m_RNOG_300K_1.50km",
 }
 
 

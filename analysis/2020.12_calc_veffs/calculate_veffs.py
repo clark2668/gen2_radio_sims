@@ -12,7 +12,7 @@ if __name__ == "__main__":
 	# else:
 	# 	depth = sys.argv[1]
 
-	top_dir='/data/user/brianclark/Gen2/test_out/noise'
+	top_dir='/data/user/brianclark/Gen2/test_out/nonoise'
 	data = get_Veff_Aeff(top_dir, n_cores=1)
 	Veffs, energies, energies_low, energies_up, zenith_bins, utrigger_names = get_Veff_Aeff_array(data)
-	np.savez('veffs_noise.npz',Veffs=Veffs, energies=energies, energies_low=energies_low, energies_up=energies_up, zenith_bins=zenith_bins, utrigger_names=utrigger_names)
+	np.savez('veffs_nonoise.npz',Veffs=Veffs, energies=energies, energies_low=energies_low, energies_up=energies_up, zenith_bins=zenith_bins, utrigger_names=utrigger_names)

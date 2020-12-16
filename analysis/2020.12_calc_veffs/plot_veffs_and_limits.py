@@ -32,7 +32,6 @@ def load_veff_info(noise_mode):
 if __name__ == "__main__":
 
 	noises=['nonoise', 'noise']
-	noises=['noise']
 	data_holders = {}
 	for i, noise in enumerate(noises):
 		data_holders[noise] = load_veff_info(noise)
@@ -42,7 +41,9 @@ if __name__ == "__main__":
 			Veff = data_holders[noise].Veffs[0, 0, get_index(trigger, data_holders[noise].utrigger_names), 0]
 			Veff = get_Veff_water_equivalent(Veff) * 4 * np.pi
 			Veff_err = Veff / np.sum(data_holders[noise].Veffs[0,0, get_index(trigger, data_holders[noise].utrigger_names), 2])**0.5
-			print("Mode {}, Trigger {}, Veff {:.2e}, Veff err {:.2e}".format(noise, trigger, Veff, Veff_err))
+			# print("Mode {}, Trigger {}, Veff {:.2e}, Veff err {:.2e}".format(noise, trigger, Veff, Veff_err))
+			print("{}, {}, {:.4e}, {:.4e}".format(noise, trigger, Veff, Veff_err))
+		print("-----")
 
 	# # plot for veff
 	# fig_veff = plt.figure(figsize=(11,8))

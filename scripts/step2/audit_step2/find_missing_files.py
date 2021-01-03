@@ -9,7 +9,7 @@ energies = 10 ** logEs
 
 flavors = ["e", "mu", "tau"]
 
-step2dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2"
+step2dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2/step2"
 
 det_files_dict = {
 	"gen2r_200m_2km" : "dipoles_RNOG_200m_2.00km",

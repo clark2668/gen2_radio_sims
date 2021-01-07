@@ -1,0 +1,16 @@
+log    = /scratch/brianclark/gen2radiosims/trash/step5/step5.$(flavor).$(detfile).$(configfile).$(simfile).log
+output = /scratch/brianclark/gen2radiosims/trash/step5/step5.$(flavor).$(detfile).$(configfile).$(simfile).out
+error  = /scratch/brianclark/gen2radiosims/trash/step5/step5.$(flavor).$(detfile).$(configfile).$(simfile).err
+
+request_cpus = 4
+request_memory = 4GB
+request_disk = 20GB
+Universe = vanilla
+getenv = true
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+executable = step5_script.sh
+arguments = $(step4dir) $(step5dir) $(detfile) $(configfile) $(simfile) $(flavor)
+
+queue

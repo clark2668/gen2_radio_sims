@@ -3,14 +3,15 @@ from NuRadioReco.utilities import units
 import helper as hp
 
 flavors = ["e", "mu", "tau"]
-flavors = ["e"] ## REMOVE
+# flavors = ["mu", "tau"] ## REMOVE
+flavors = ["mu"]
 
 coszenbins = hp.get_coszenbins()
 logEs = hp.get_logEs()
 energies = 10 ** logEs * units.eV
 
-step4dir = "/data/user/brianclark/Gen2/simulation_output/secondaries_500km2/step4"
-step5dir = "/data/user/brianclark/Gen2/simulation_output/secondaries_500km2/step5"
+step4dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2/step4"
+step5dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2/step5"
 
 detsim_files_dict = {
 	"pa_100m_2.00km" : "D05phased_array_deep",
@@ -32,10 +33,12 @@ det_files_dict = {
 
 
 det_files_labels = ["gen2r_100m_2km", "gen2r_100m_3km", "gen2r_200m_2km", "gen2r_200m_3km", "gen2r_surf_1km", "gen2r_surf_15km"]
-# det_files_labels = ["gen2r_100m_3km"] ## REMOVE
+#det_files_labels = ["gen2r_100m_2km", "gen2r_100m_3km", "gen2r_200m_2km", "gen2r_200m_3km", "gen2r_surf_15km"]
+#det_files_labels = ["gen2r_100m_2km", "gen2r_100m_3km", "gen2r_200m_2km", "gen2r_200m_3km"]
+#det_files_labels = ["gen2r_surf_1km"] ## REMOVE
 config_file = "config_Alv2009_noise_100ns"
 
-dag_file_name='dagman_step5.dag'
+dag_file_name='dagman_step5_mu.dag'
 instructions = ""
 instructions += 'CONFIG config.dagman\n\n'
 with open(dag_file_name, 'w') as f:

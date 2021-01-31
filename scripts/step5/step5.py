@@ -2,7 +2,8 @@ import numpy as np
 import sys
 import pickle as pickle
 
-from NuRadioMC.utilities.Veff import get_Veff_Aeff, get_Veff_Aeff_array
+#from NuRadioMC.utilities.Veff import get_Veff_Aeff, get_Veff_Aeff_array
+from Veff import get_Veff_Aeff
 
 if __name__ == "__main__":
 

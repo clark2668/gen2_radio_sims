@@ -6,7 +6,7 @@ from NuRadioMC.utilities.Veff import get_Veff_Aeff, get_Veff_Aeff_array
 if __name__ == "__main__":
 
 	depth = ''
-	if(len(sys.argv) == 1):
+	if(len(sys.argv) == 4):
 		print("no depth specified!")
 		sys.exit()
 	else:

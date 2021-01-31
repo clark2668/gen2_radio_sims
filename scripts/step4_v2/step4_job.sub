@@ -1,10 +1,10 @@
-log    = /scratch/brianclark/gen2radiosims/trash/step4/step4.$(flavor).$(energy).$(czmin).$(czmax).$(Process).log
-output = /scratch/brianclark/gen2radiosims/trash/step4/step4.$(flavor).$(energy).$(czmin).$(czmax).$(Process).out
-error  = /scratch/brianclark/gen2radiosims/trash/step4/step4.$(flavor).$(energy).$(czmin).$(czmax).$(Process).err
+log    = /scratch/brianclark/gen2radiosims/trash/step4/step4.$(flavor).$(detlabel).$(energy).$(czmin).$(czmax).$(Process).log
+output = /scratch/brianclark/gen2radiosims/trash/step4/step4.$(flavor).$(detlabel).$(energy).$(czmin).$(czmax).$(Process).out
+error  = /scratch/brianclark/gen2radiosims/trash/step4/step4.$(flavor).$(detlabel).$(energy).$(czmin).$(czmax).$(Process).err
 
 request_cpus = 1
 request_memory = 30GB
-request_disk = 5GB
+request_disk = 70GB
 Universe = vanilla
 getenv = true
 should_transfer_files = YES

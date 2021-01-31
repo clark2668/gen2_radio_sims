@@ -3,12 +3,14 @@ from NuRadioReco.utilities import units
 import helper as hp
 
 flavors = ["e", "mu", "tau"]
+# flavors = ["mu", "tau"]
+flavors = ["mu"]
 
 coszenbins = hp.get_coszenbins()
 logEs = hp.get_logEs()
 energies = 10 ** logEs * units.eV
 
-step3dir = "/data/user/brianclark/Gen2/simulation_output/secondaries_500km2/step3/"
+step3dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2/step3"
 
 detsim_files_dict = {
 	"pa_100m_2.00km" : "D05phased_array_deep",
@@ -30,13 +32,13 @@ det_files_dict = {
 
 
 det_files_labels = ["gen2r_100m_2km", "gen2r_100m_3km", "gen2r_200m_2km", "gen2r_200m_3km", "gen2r_surf_1km", "gen2r_surf_15km"]
-det_files_labels = ["gen2r_surf_15km"] ## REMOVE
+#det_files_labels = ["gen2r_surf_1km", "gen2r_surf_15km"]
 config_file = "config_Alv2009_noise_100ns"
-# config_file = "config_Alv2009_nonoise_100ns" ## REMOVE
 
-dag_file_name='dagman_step4.dag'
+
+dag_file_name='dagman_step4_fix_0.1.dag'
 instructions = ""
-instructions += 'CONFIG config.dagman\n'
+instructions += 'CONFIG config.dagman\n\n\n'
 with open(dag_file_name, 'w') as f:
 	f.write(instructions)
 
@@ -53,16 +55,21 @@ for det_file_label in det_files_labels:
 				czen1 = coszenbins[iC]
 				czen2 = coszenbins[iC+1]
 
-				if logEs[iE]>18.5: #REMOVE
-					continue #REMOVE
-				if czen1 < 0.0:
+				round_czen1 = round(czen1, 1)
+
+				# to start, do the "easy" small ones in the upgoing region
+				# if round_czen1 not in [round(-0.2, 1), round(0.3, 1), round(0.4, 1), round(0.5, 1)]:
+				# if round_czen1 not in [round(-0.1, 1), round(0.0, 1), round(0.1, 1), round(0.2, 1)]:
+				if round_czen1 not in [round(0.1, 1)]:					
 					continue
-				if czen1 > 0.1:
+
+				round_logE = round(logEs[iE], 1)
+				if round_logE not in [round(19.5, 1)]:
 					continue
 
 				instructions = ""
 				instructions += f'JOB job_{master_index} step4_job.sub \n'
-				instructions += f'VARS job_{master_index} step3dir="{step3dir}/{det_file}/{config_file}/{sim_file}/" flavor="{flavor}" energy="{logEs[iE]:.2f}" czmin="{czen1:.1f}" czmax="{czen2:.1f}" \n\n'
+				instructions += f'VARS job_{master_index} step3dir="{step3dir}/{det_file}/{config_file}/{sim_file}/" detlabel="{det_file_label}" flavor="{flavor}" energy="{logEs[iE]:.2f}" czmin="{czen1:.1f}" czmax="{czen2:.1f}" \n\n'
 
 				with open(dag_file_name, 'a') as f:
 					f.write(instructions)

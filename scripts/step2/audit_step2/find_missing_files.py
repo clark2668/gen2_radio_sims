@@ -8,6 +8,7 @@ logEs = hp.get_logEs()
 energies = 10 ** logEs
 
 flavors = ["e", "mu", "tau"]
+flavors = ["mu"]
 
 step2dir = "/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2/step2"
 
@@ -22,8 +23,7 @@ det_files_dict = {
 }
 
 
-det_files_labels = ["gen2r_100m_3km", "gen2r_200m_3km", "gen2r_surf_15km"]
-det_files_labels = ["gen2r_surf_15km", "gen2r_surf_1km"]
+det_files_labels = ["gen2r_100m_3km", "gen2r_100m_2km", "gen2r_200m_2km", "gen2r_200m_3km", "gen2r_surf_1km", "gen2r_surf_15km"]
 config_file = "config_Alv2009_nonoise_100ns"
 sim_file = "D02single_dipole_250MHz"
 
@@ -51,6 +51,14 @@ for det_file_label in det_files_labels:
 						the_czmins.append(czen1)
 						the_czmaxs.append(czen2)
 						the_jobs.append(ijob)
+					if exists:
+						size = os.path.getsize(the_name)
+						if size<3500:
+							print("File {} is too small (size {})".format(the_name, size))
+							the_logEs.append(logEs[iE])
+							the_czmins.append(czen1)
+							the_czmaxs.append(czen2)
+							the_jobs.append(ijob)							
 						# instructions = ""
 						# instructions += the_name
 						# with open(redo_file, 'a') as f:

@@ -16,8 +16,11 @@ import pickle
 import copy
 
 deep_det = 'pa_200m_2.00km'
-shallow_det = 'surface_1.50km'
+shallow_det = 'surface_1.00km'
 flavors = ['e', 'mu', 'tau']
+
+if shallow_det=='surface_1.50km':
+	print("WARNING! Something is known to be funky with the 1.50km files... Advise avoiding for now....")
 
 def get_flavor_zenith_averages(det, det_dict): # det ('deep') and the associated dictionary
 	
@@ -38,6 +41,7 @@ def get_flavor_zenith_averages(det, det_dict): # det ('deep') and the associated
 		if trigger not in trigger_names:
 			print("The requested trigger is not available. Options are {}".format(trigger_names))
 		tmp['E'] = energies
+		tmp['zen_bins']=zenith_bins
 		tmp[trigger][flavor] = {}
 		tmp[trigger][flavor]['Veff_zen'] = output[:, :, get_index(trigger, trigger_names), 0]
 		tmp[trigger][flavor]['Veff'] = np.average(output[:, :, get_index(trigger, trigger_names), 0], axis=1)
@@ -47,6 +51,7 @@ def get_flavor_zenith_averages(det, det_dict): # det ('deep') and the associated
 
 		# print("low energy energies {}".format(energies))
 		# print("low energy veffs {}".format(np.average(output[:, :, get_index(trigger, trigger_names), 0], axis=1)))
+		# print("low energy veffs vs zen {}".format(output[:, :, get_index(trigger, trigger_names), 0]))
 
 		# now, the high energies
 		filename = f'data__{deep_det}__{shallow_det}/{det}_{flavor}_hi.pkl'
@@ -71,7 +76,7 @@ def get_flavor_zenith_averages(det, det_dict): # det ('deep') and the associated
 
 		# print("high energy energies {}".format(energies[start_splice_index:]))
 		# print("high energy veffs {}".format(np.average(output[:, :, get_index(trigger, trigger_names), 0], axis=1)[start_splice_index:]))
-		# print("\n\n\n")
+		# print("\n")
 
 	# do the flavor average
 	tmp[trigger]['Veff'] = 0
@@ -107,10 +112,17 @@ if __name__ == "__main__":
 		r[d]['Veff'] = get_flavor_zenith_averages(d, r[d]) # get the veff
 
 	energies = r['shallow']['Veff']['E']
+	zen_bins = r['shallow']['Veff']['zen_bins']
 	deep_veff = []
 	deep_aeff = []
 	shallow_veff = []
 	shallow_aeff = []
+
+	if len(energies)!=11:
+		print("I expected 11 energy bins...You may not get the zenith bins you expected...")
+	which_e_bin = 6 # should be 1 EeV, counting from 0 = 1E15
+	start_bin = which_e_bin*20
+	stop_bin = start_bin+20
 
 	# first the deep station
 	det = 'deep'
@@ -120,6 +132,11 @@ if __name__ == "__main__":
 		this_aeff = this_veff / cross_sections.get_interaction_length(energy)
 		deep_veff.append(this_veff/units.km**3)
 		deep_aeff.append(this_aeff/units.km**2)
+	
+	# and now for aeff for a selection of the zenith bins
+	deep_veff_vs_zen = get_Veff_water_equivalent(r[det]['Veff'][trigger]['Veff_zen'][start_bin:stop_bin]/r[det]['n_stations'])
+	deep_aeff_vs_zen = deep_veff_vs_zen / cross_sections.get_interaction_length(energies[which_e_bin])/ units.km**2
+	# print("deep veff vs zen {}".format(deep_veff_vs_zen))
 
 	det = 'shallow'
 	trigger = r[det]['trigger']
@@ -129,6 +146,10 @@ if __name__ == "__main__":
 		shallow_veff.append(this_veff/units.km**3)
 		shallow_aeff.append(this_aeff/units.km**2)
 
+	# and now for aeff for a selection of the zenith bins
+	shallow_veff_vs_zen = get_Veff_water_equivalent(r[det]['Veff'][trigger]['Veff_zen'][start_bin:stop_bin]/r[det]['n_stations'])
+	shallow_aeff_vs_zen = shallow_veff_vs_zen / cross_sections.get_interaction_length(energies[which_e_bin]) / units.km**2
+	# print("shallow veff vs zen {}".format(shallow_veff_vs_zen))
 
 	output_csv = 'log10(energy) [eV], deep veff*sr [km^3sr], deep aeff*sr [km^2sr], shallow veff*sr [km^3sr], shallow aeff*str [km^2sr]'
 	output_csv += "\n"
@@ -137,6 +158,14 @@ if __name__ == "__main__":
 		output_csv += '{:.1f}, {:e}, {:e}, {:e}, {:e} \n'.format(np.log10(energy), deep_veff[iE], deep_aeff[iE], shallow_veff[iE], shallow_aeff[iE])
 
 	with open(f'tabulated_veff_aeff_{deep_det}_{shallow_det}.csv', 'w') as fout:
+		fout.write(output_csv)
+
+	output_csv = 'czmin, deep aeff [km^2], shallow aeff [km^2]'
+	output_csv += "\n"
+	for iZ, _ in enumerate(deep_aeff_vs_zen):
+		output_csv += '{:1f}, {:e}, {:e} \n'.format(np.cos(zen_bins[iZ][0]), deep_aeff_vs_zen[iZ], shallow_aeff_vs_zen[iZ])
+
+	with open(f'tabulated_aeff_vs_zen_{deep_det}_{shallow_det}_Ebin_{which_e_bin}.csv', 'w') as fout:
 		fout.write(output_csv)
 
 

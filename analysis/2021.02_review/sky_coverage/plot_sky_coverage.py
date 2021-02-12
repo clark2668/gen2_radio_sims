@@ -32,17 +32,22 @@ plt.tight_layout()
 fig.savefig('aeff_vs_coszen.png')
 
 
-zen_for_interp = np.append(data['czmin'], -1)
-daeff_for_interp = np.append(data['daeff'], data['daeff'][-1])
-saeff_for_interp = np.append(data['saeff'], data['saeff'][-1])
+# zen_for_interp = np.append(data['czmin'], -1)
+# daeff_for_interp = np.append(data['daeff'], data['daeff'][-1])
+# saeff_for_interp = np.append(data['saeff'], data['saeff'][-1])
+
+zen_for_interp = data['czmin']
+zen_for_interp-=0.05
+daeff_for_interp = data['daeff']
+saeff_for_interp = data['saeff']
 
 zen_for_interp = np.flip(zen_for_interp)
 daeff_for_interp = np.flip(daeff_for_interp)
 saeff_for_interp = np.flip(saeff_for_interp)
 
 # tck = interpolate.splrep(zen_for_interp, daeff_for_interp, k=2)
-interpolator_deep = scipy.interpolate.interp1d(zen_for_interp,daeff_for_interp)
-interpolator_shallow = scipy.interpolate.interp1d(zen_for_interp,daeff_for_interp)
+interpolator_deep = scipy.interpolate.interp1d(zen_for_interp,daeff_for_interp,fill_value='extrapolate')
+interpolator_shallow = scipy.interpolate.interp1d(zen_for_interp,daeff_for_interp,fill_value='extrapolate')
 
 zen_bins_for_digi = data['czmin']
 zen_bins_for_digi = np.append(zen_bins_for_digi,-1.)
@@ -70,8 +75,13 @@ if doHealpyPlot:
 				# aeff_this=hlpy.pixelfunc.UNSEEN
 			scan[ipix] = (aeff_this)
 
-	mask = scan < np.max(scan)*0.01
-	scan[mask] = hlpy.pixelfunc.UNSEEN
+	# mask = scan < np.max(scan)*0.01
+	# scan[mask] = hlpy.pixelfunc.UNSEEN
+	maxval = np.max(scan)
+	scan/=maxval
+	mask = scan < 0
+	scan[mask]=0
+
 
 	fig = plt.figure(figsize=(8,5))
 	ax  = fig.add_subplot(111)
@@ -80,10 +90,11 @@ if doHealpyPlot:
 							title='1 EeV',
 							hold=True,
 							# unit='\n'+r'$log_{10}(A_{eff}) [km^2]$',
-							unit='\n'+r'$A_{eff} \,\,[km^2]$',
+							# unit='\n'+r'$A_{eff} \,\,[km^2]$',
+							unit='\n'+r'Relative Effective Area',
 							cmap='Reds')
 	hlpy.graticule()
-	fig.savefig('test_map.png')
+	fig.savefig('sky_coverage.png')
 
 
 

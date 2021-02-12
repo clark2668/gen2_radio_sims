@@ -11,15 +11,20 @@ from NuRadioReco.utilities import units
 
 # a version of the coincidence finding code that tries to sync up which stations are on top of which
 
-n_cores = 10
+n_cores = 4
 
 top="/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2/step4/"
 
 path = top+"/pa_200m_2.00km/config_Alv2009_noise_100ns/D05phased_array_deep/"
+# path = top+"/surface_4LPDA_PA_15m_RNOG_300K_1.00km/config_Alv2009_noise_100ns/D09surface_4LPDA_pa_15m_250MHz/" ## TEST--delete me!
+
 path2 = top+"/surface_4LPDA_PA_15m_RNOG_300K_1.00km/config_Alv2009_noise_100ns/D09surface_4LPDA_pa_15m_250MHz/"
+# path2 = top+"/pa_200m_2.00km/config_Alv2009_noise_100ns/D05phased_array_deep/" ## TEST -- delete me
 
 trigger_names = ['PA_4channel_100Hz']
-trigger_names2 = ['LPDA_2of4_100Hz']
+# trigger_names = ['LPDA_2of4_100Hz'] ## TEST--delete me!
+trigger_names2 = ['LPDA_2of4_100Hz'] 
+# trigger_names2 = ['PA_4channel_100Hz'] ## TEST--delete me!
 
 # get the deep/surface mapping, as a dict to make loop easier
 matching_data = np.genfromtxt('deep_shallow_match.csv', delimiter=',', skip_header=0, names=['deepID', 'shallowID'])
@@ -91,6 +96,7 @@ def tmp(filename):
 				# figure out the deep/shallow pairing (based on deep station)
 				deep_id = int(key.split("_")[1])
 				shallow_id = d_s_match[deep_id]
+				# shallow_id = deep_id ## TEST -- delete me!
 
 				# get the information for both stations
 				s_deep = fin[f'station_{deep_id}']
@@ -125,6 +131,7 @@ flavors = ['tau']
 for flavor in flavors:
 	coincidences = {}
 	for lgE in np.arange(16.0, 20.1, 0.5):
+	# for lgE in np.arange(18.0, 18.4, 0.5):
 		coincidences[f"{lgE:.1f}"] = {}
 
 		# local_path = os.path.join(path, f"{flavor}/{flavor}_{lgE:.2f}*_0.*_*.hdf5")
@@ -149,6 +156,8 @@ for flavor in flavors:
 		coincidences[f"{lgE:.1f}"]['overlap_weight'] = combined_overlap_weight
 		coincidences[f"{lgE:.1f}"]['deep_weight'] = combined_tot_weight_deep
 		coincidences[f"{lgE:.1f}"]['shallow_weight'] = combined_tot_weight_shallow
+
+	print("Overlap {}, Deep {}, Shallow {}, Deep Overlap {}".format(combined_overlap_weight, combined_tot_weight_deep, combined_tot_weight_shallow, combined_overlap_weight/combined_tot_weight_deep))
 
 	# dump this to hdf5 file
 	pkl_file_name = os.path.join('coinc_' + path.split("/")[-4] + "_" + trigger_names[0] + "_" + path2.split("/")[-4] + "_" + trigger_names2[0] + "_" + flavor + ".pkl")

@@ -5,15 +5,17 @@ import pickle
 
 
 n_deep = 143
-n_shallow = (273)
+n_shallow_infill = 130
+n_shallow_coinc = 143
+n_shallow = n_shallow_infill + n_shallow_coinc
 deep_det = 'pa_200m_2.00km'
 deep_trigger = 'PA_4channel_100Hz'
 shallow_det = 'surface_4LPDA_PA_15m_RNOG_300K_1.00km'
 shallow_trigger = 'LPDA_2of4_100Hz'
 flavors = ['e', 'mu', 'tau']
 
-data_independent = np.genfromtxt(f'tabulated_veff_aeff_pa_200m_2.00km_surface_1.00km.csv', delimiter=',', skip_header=1, names=['logE', 'dveff', 'daff', 'sveff', 'saeff'])
-energies = np.power(10.,data_independent['logE'])
+data_i = np.genfromtxt(f'tabulated_veff_aeff_pa_200m_2.00km_surface_1.00km.csv', delimiter=',', skip_header=1, names=['logE', 'dveff', 'daff', 'sveff', 'saeff'])
+energies = np.power(10.,data_i['logE'])
 real_total = np.zeros(len(energies))
 real_deep_only = np.zeros(len(energies))
 real_shallow_only = np.zeros(len(energies))
@@ -28,32 +30,86 @@ for iF, flavor in enumerate(flavors):
 		real_shallow_only[i] += data[key]['shallow_only_veff']
 		real_dual[i] += data[key]['dual_veff']
 
-real_total/=3
-real_deep_only/=3
-real_shallow_only/=3
-real_dual/=3
+real_total/=(3*units.km**3)
+real_deep_only/=(3*units.km**3)
+real_shallow_only/=(3*units.km**3)
+real_dual/=(3*units.km**3)
 
-markers=['C0o-', 'C1^-', 'C2D-', 'C3s-']
+# and needs a 4pi (dumb)
+real_total*=4*np.pi
+real_deep_only*=4*np.pi
+real_shallow_only*=4*np.pi
+real_dual*=4*np.pi
 
-fig = plt.figure(figsize=(10,5))
-ax1 = fig.add_subplot(1,2,1)
-ax1.plot(energies, real_total, markers[0], label='array')
-ax1.plot(energies, real_deep_only, markers[1], label='deep only')
-ax1.plot(energies, real_shallow_only, markers[2], label='shallow only')
-ax1.plot(energies, real_dual, markers[3], label='deep+shallow')
-ax1.set_xscale('log')
-ax1.set_yscale('log')
-ax1.set_xlabel('Energy [eV]')
-ax1.set_ylabel(r'Veff [km$^3$ sr]')
-ax1.legend()
-ax1.set_title('trigger level')
+markers=['ko-','C0o-', 'C1^-', 'C2D-', 'C3s-']
 
-ax2 = fig.add_subplot(1,2,2)
-ax2.plot(energies, real_total, markers[0], label='array')
-# ax2.plot(energies, (data_independent['dveff']*n_deep)+(data_independent['sveff']*n_shallow))
+plot_fractions=True
+if plot_fractions:
 
-plt.tight_layout()
-fig.savefig('veff.png', dpi=300)
+	fig = plt.figure(figsize=(10,5))
+	ax1 = fig.add_subplot(1,2,1)
+	ax1.plot(energies, real_total, markers[0], label='array')
+	ax1.plot(energies, real_deep_only, markers[1], label='deep only')
+	ax1.plot(energies, real_shallow_only, markers[2], label='shallow only')
+	ax1.plot(energies, real_dual, markers[3], label='deep+shallow')
+	ax1.set_xscale('log')
+	ax1.set_yscale('log')
+	ax1.set_xlabel('Energy [eV]')
+	ax1.set_ylabel(r'Veff [km$^3$ sr]')
+	ax1.legend()
+	ax1.set_title('effective volume')
+
+	ax2 = fig.add_subplot(1,2,2)
+	ax2.plot(energies, real_deep_only/real_total, markers[1], label='deep only')
+	ax2.plot(energies, real_shallow_only/real_total, markers[2], label='shallow only')
+	ax2.plot(energies, real_dual/real_total, markers[3], label='deep+shallow')
+	ax2.set_xscale('log')
+	ax2.set_xlabel('Energy [eV]')
+	ax2.set_ylabel('fraction')
+	ax2.legend()
+	ax2.set_ylim([0,1])
+	ax2.set_title('fraction of triggers')
+	# ax2.plot(energies, (data_independent['dveff']*n_deep)+(data_independent['sveff']*n_shallow))
+
+	plt.tight_layout()
+	fig.savefig('veff_and_fractions.png', dpi=300)
+
+plot_comparison = True
+if plot_comparison:
+
+	fig = plt.figure(figsize=(10,5))
+	ax1 = fig.add_subplot(1,2,1)
+	ax1.plot(energies, real_total, markers[1], label='real array')
+	ax1.plot(energies, data_i['dveff']*n_deep + data_i['sveff']*n_shallow, markers[2]+'-', label='array estimate')
+	
+	# ax1.plot(energies, real_deep_only, markers[1], label='deep array')
+	# ax1.plot(energies, data_i['dveff']*n_deep, markers[1]+'-', label='deep estimate')
+
+	# ax1.plot(energies, real_deep_only, markers[1], label='deep only')
+	# ax1.plot(energies, real_shallow_only, markers[2], label='shallow only')
+	# ax1.plot(energies, real_dual, markers[3], label='deep+shallow')
+	ax1.set_xscale('log')
+	ax1.set_yscale('log')
+	ax1.set_xlabel('Energy [eV]')
+	ax1.set_ylabel(r'Veff [km$^3$ sr]')
+	ax1.legend()
+	ax1.set_title('effective volume')
+
+	# ax2 = fig.add_subplot(1,2,2)
+	# ax2.plot(energies, real_deep_only/real_total, markers[1], label='deep only')
+	# ax2.plot(energies, real_shallow_only/real_total, markers[2], label='shallow only')
+	# ax2.plot(energies, real_dual/real_total, markers[3], label='deep+shallow')
+	# ax2.set_xscale('log')
+	# ax2.set_xlabel('Energy [eV]')
+	# ax2.set_ylabel('fraction')
+	# ax2.legend()
+	# ax2.set_ylim([0,1])
+	# ax2.set_title('fraction of triggers')
+	# # ax2.plot(energies, (data_independent['dveff']*n_deep)+(data_independent['sveff']*n_shallow))
+
+	plt.tight_layout()
+	fig.savefig('comparison.png', dpi=300)
+
 
 
 

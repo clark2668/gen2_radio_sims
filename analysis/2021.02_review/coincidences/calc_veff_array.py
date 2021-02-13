@@ -38,8 +38,10 @@ for i in range(len(matching_data)):
 
 good_deep = np.genfromtxt('good_deep.csv', delimiter=',', skip_header=0, names=['ID'])
 good_deep = good_deep['ID']
+good_deep = []
 good_shallow = np.genfromtxt('good_shallow.csv', delimiter=',', skip_header=0, names=['ID'])
 good_shallow = good_shallow['ID']
+# good_shallow = []
 
 # print('num deep {}'.format(len(good_deep)))
 # print('num shallow {}'.format(len(good_shallow)))
@@ -209,7 +211,12 @@ for flavor in flavors:
 
 		print("dual veff at 1 EeV for {} is {}".format(total_veff[f"{lgE:.1f}"]['total_veff']/units.km**3 * 4 * np.pi, flavor))
 
+	# # dump this to hdf5 file
+	# pkl_file_name = os.path.join('overlap_' + path.split("/")[-4] + "_" + trigger_names[0] + "_" + path2.split("/")[-4] + "_" + trigger_names2[0] + "_" + flavor + ".pkl")
+	# with open(pkl_file_name, "wb") as fout:
+	# 	pickle.dump(total_veff, fout, protocol=4)
+	
 	# dump this to hdf5 file
-	pkl_file_name = os.path.join('overlap_' + path.split("/")[-4] + "_" + trigger_names[0] + "_" + path2.split("/")[-4] + "_" + trigger_names2[0] + "_" + flavor + ".pkl")
+	pkl_file_name = os.path.join('shallow_only_' + flavor + ".pkl")
 	with open(pkl_file_name, "wb") as fout:
 		pickle.dump(total_veff, fout, protocol=4)

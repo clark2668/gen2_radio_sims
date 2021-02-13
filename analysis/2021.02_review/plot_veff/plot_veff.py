@@ -23,7 +23,7 @@ real_shallow_only = np.zeros(len(energies))
 real_dual = np.zeros(len(energies))
 
 for iF, flavor in enumerate(flavors):
-	filename = f'overlap_{deep_det}_{deep_trigger}_{shallow_det}_{shallow_trigger}_{flavor}.pkl'
+	filename = f'data/overlap_{deep_det}_{deep_trigger}_{shallow_det}_{shallow_trigger}_{flavor}.pkl'
 	data = pickle.load(open(filename, 'br'))
 	for i, key in enumerate(data.keys()): # assume all have the same number of energies
 		real_total[i] += data[key]['total_veff']

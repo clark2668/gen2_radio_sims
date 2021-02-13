@@ -44,7 +44,7 @@ real_dual*=4*np.pi
 
 markers=['ko-','C0o-', 'C1^-', 'C2D-', 'C3s-']
 
-plot_fractions=False
+plot_fractions=True
 if plot_fractions:
 
 	fig = plt.figure(figsize=(10,5))
@@ -76,7 +76,7 @@ if plot_fractions:
 	plt.tight_layout()
 	fig.savefig('veff_and_fractions.png', dpi=300)
 
-plot_comparison = False
+plot_comparison = True
 if plot_comparison:
 
 	fig = plt.figure(figsize=(10,5))
@@ -109,7 +109,7 @@ if plot_comparison:
 	plt.tight_layout()
 	fig.savefig('comparison.png', dpi=300)
 
-plot_independent_volume = True
+plot_independent_volume = False
 if plot_independent_volume:
 
 	fig = plt.figure(figsize=(5,5))
@@ -125,7 +125,8 @@ if plot_independent_volume:
 	ax1.legend()
 
 	plt.tight_layout()
-	fig.savefig('single_station_veffs.png', dpi=300)
+	# fig.savefig('single_station_veffs_hybrid.png', dpi=300)
+	fig.savefig('single_station_veffs_array.png', dpi=300)
 
 
 

@@ -29,6 +29,25 @@ for flavor in flavors:
 			result[flavor]['c_deep'].append(value['overlap_weight']/value['deep_weight'])
 			result[flavor]['c_shallow'].append(value['overlap_weight']/value['shallow_weight'])
 
+energies = result['e']['E']
+average_deep = np.zeros(9)
+average_shallow = np.zeros(9)
+for iflavor, flavor in enumerate(flavors):
+	for iE, energy in enumerate(energies):
+		average_deep[iE]+=result[flavor]['c_deep'][iE]
+		average_shallow[iE]+=result[flavor]['c_shallow'][iE]
+
+output_csv = 'log10(energy) [eV], frac_deep_seen_in_shallow, frac_shallow_seen_in_deep'
+output_csv += "\n"
+
+for iE, energy in enumerate(energies):
+	output_csv += '{:.1f}, {:.2f}, {:.2f} \n'.format(float(energy), average_deep[iE]/3, average_shallow[iE]/3)
+
+with open(f'coinc_{station1}_{station2}.csv', 'w') as fout:
+	fout.write(output_csv)
+
+
+
 colors = ['C0', 'C1', 'C2']
 
 fig, ax = plt.subplots(1, 1)

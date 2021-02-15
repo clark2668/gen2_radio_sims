@@ -263,7 +263,7 @@ for flavor in flavors:
 		total_veff[f"{lgE:.1f}"]['total_veff_zen_bins'] = gwe(combined_total_veff_bins)
 		total_veff[f"{lgE:.1f}"]['deep_only_veff_zen_bins'] = gwe(combined_deep_only_veff_bins)
 		total_veff[f"{lgE:.1f}"]['shallow_only_veff_zen_bins'] = gwe(combined_shallow_only_veff_bins)
-		total_veff[f"{lgE:.1f}"]['dual_veff'] = gwe(combined_dual_veff_bins)
+		total_veff[f"{lgE:.1f}"]['dual_veff_zen_bins'] = gwe(combined_dual_veff_bins)
 
 		print("total veff at 1 EeV for {} is {}".format(total_veff[f"{lgE:.1f}"]['total_veff']/units.km**3 * 4 * np.pi, flavor))
 

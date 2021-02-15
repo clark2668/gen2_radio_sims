@@ -68,7 +68,7 @@ r = 90
 x = np.array([-np.pi,np.pi,np.pi,-np.pi,-np.pi])
 y2 = np.array([0.05,0.05,-0.82,-0.82,0.05])
 
-plt.fill(x,y2,label='Gen2-Radio FOV', facecolor='green',alpha=0.2)
+plt.fill(x,y2,label='200m deep station FOV', facecolor='green',alpha=0.2)
 # plt.plot(ra_rad, dec_rad, '*',color='gold',markersize=20,mec='firebrick',label='Galactic Center')
 plt.plot(ra_rad, dec_rad, '*',color='firebrick',markersize=15,mec='firebrick')
 # ax.plot(cena_ra, cena_dec,'^',markersize=12,color='m',label='Centaurus A')
@@ -93,7 +93,7 @@ plt.legend(ncol=1,loc=(0.51,0.65), fontsize=15, framealpha=1)
 ax.set_ylabel('Declination (deg)', fontsize=15) #give it a title
 ax.set_xlabel('Right Ascension (deg)',labelpad=20, fontsize=15) #give it a title
 ax.tick_params(direction='out', length=8, width=4, colors='k',
-               grid_color='k', grid_alpha=0.5, labelsize=13, grid_linewidth=1)
+               grid_color='k', grid_alpha=0.2, labelsize=13, grid_linewidth=1)
 ax.axes.get_xaxis().set_ticks([-np.pi/3, -2*np.pi/3, -np.pi,0,np.pi/3, 2*np.pi/3, np.pi])
 # plt.gca().set_aspect('0.9', adjustable='box')
 # plt.suptitle("Radio galaxies as UHECR sources \n Rachen & Eichmann",fontsize=20)

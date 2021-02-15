@@ -36,12 +36,21 @@ s_d_match = {}
 for i in range(len(matching_data)):
 	s_d_match[int(matching_data['shallowID'][i])] = int(matching_data['deepID'][i])
 
+deep_only = False
+shallow_only = True
+
+if deep_only and shallow_only:
+	print("You have asked for an incompatible combination of settings! Abort!")
+	exit(1)
+
 good_deep = np.genfromtxt('good_deep.csv', delimiter=',', skip_header=0, names=['ID'])
 good_deep = good_deep['ID']
-# good_deep = []
+if shallow_only:
+	good_deep = []
 good_shallow = np.genfromtxt('good_shallow.csv', delimiter=',', skip_header=0, names=['ID'])
 good_shallow = good_shallow['ID']
-good_shallow = []
+if deep_only:
+	good_shallow = []
 
 # print('num deep {}'.format(len(good_deep)))
 # print('num shallow {}'.format(len(good_shallow)))
@@ -267,12 +276,13 @@ for flavor in flavors:
 
 		print("total veff at 1 EeV for {} is {}".format(total_veff[f"{lgE:.1f}"]['total_veff']/units.km**3 * 4 * np.pi, flavor))
 
-	# # dump this to hdf5 file
-	# pkl_file_name = os.path.join('results/overlap_' + path.split("/")[-4] + "_" + trigger_names[0] + "_" + path2.split("/")[-4] + "_" + trigger_names2[0] + "_" + flavor + ".pkl")
-	# with open(pkl_file_name, "wb") as fout:
-	# 	pickle.dump(total_veff, fout, protocol=4)
-	
-	# dump this to hdf5 file
-	pkl_file_name = os.path.join('results/deep_only_' + flavor + ".pkl")
+	pkl_file_name = os.path.join('results/overlap_' + path.split("/")[-4] + "_" + trigger_names[0] + "_" + path2.split("/")[-4] + "_" + trigger_names2[0] + "_" + flavor + ".pkl")
+
+	if deep_only:
+		pkl_file_name = os.path.join('results/deep_only_' + flavor + ".pkl")
+	elif shallow_only:
+		pkl_file_name = os.path.join('results/shallow_only_' + flavor + ".pkl")
+
+	# dump to pkl file
 	with open(pkl_file_name, "wb") as fout:
 		pickle.dump(total_veff, fout, protocol=4)

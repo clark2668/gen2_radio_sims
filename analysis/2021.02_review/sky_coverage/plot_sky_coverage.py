@@ -1,13 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from NuRadioReco.utilities import units
 import scipy as scipy
 from scipy import interpolate
 
 
 n_deep = 144
 n_shallow = (169+144)
-livetime = 10 * units.year
 uptime = 1.
 which_e_bin = 6
 
@@ -47,7 +45,7 @@ saeff_for_interp = np.flip(saeff_for_interp)
 
 # tck = interpolate.splrep(zen_for_interp, daeff_for_interp, k=2)
 interpolator_deep = scipy.interpolate.interp1d(zen_for_interp,daeff_for_interp,fill_value='extrapolate')
-interpolator_shallow = scipy.interpolate.interp1d(zen_for_interp,daeff_for_interp,fill_value='extrapolate')
+interpolator_shallow = scipy.interpolate.interp1d(zen_for_interp,saeff_for_interp,fill_value='extrapolate')
 
 zen_bins_for_digi = data['czmin']
 zen_bins_for_digi = np.append(zen_bins_for_digi,-1.)
@@ -77,10 +75,10 @@ if doHealpyPlot:
 
 	# mask = scan < np.max(scan)*0.01
 	# scan[mask] = hlpy.pixelfunc.UNSEEN
-	maxval = np.max(scan)
-	scan/=maxval
-	mask = scan < 0
-	scan[mask]=0
+	# maxval = np.max(scan)
+	# scan/=maxval
+	# mask = scan < 0
+	# scan[mask]=0
 
 
 	fig = plt.figure(figsize=(8,5))
@@ -90,8 +88,8 @@ if doHealpyPlot:
 							title='1 EeV',
 							hold=True,
 							# unit='\n'+r'$log_{10}(A_{eff}) [km^2]$',
-							# unit='\n'+r'$A_{eff} \,\,[km^2]$',
-							unit='\n'+r'Relative Effective Area',
+							unit='\n'+r'$A_{eff} \,\,[km^2]$',
+							# unit='\n'+r'Relative Effective Area',)
 							cmap='Reds')
 	hlpy.graticule()
 	fig.savefig('sky_coverage.png')

@@ -4,7 +4,7 @@ import scipy as scipy
 from scipy import interpolate
 
 
-n_deep = 144
+n_deep = 0 #144
 n_shallow = (169+144)
 uptime = 1.
 which_e_bin = 6
@@ -73,26 +73,29 @@ if doHealpyPlot:
 				# aeff_this=hlpy.pixelfunc.UNSEEN
 			scan[ipix] = (aeff_this)
 
-	# mask = scan < np.max(scan)*0.01
-	# scan[mask] = hlpy.pixelfunc.UNSEEN
+	# make the interpolator behave
+	mask = scan < 0
+	scan[mask]=0
+
+	mask = scan < np.max(scan)*0.5
+	scan[mask] = hlpy.pixelfunc.UNSEEN
 	# maxval = np.max(scan)
 	# scan/=maxval
-	# mask = scan < 0
-	# scan[mask]=0
+
 
 
 	fig = plt.figure(figsize=(8,5))
 	ax  = fig.add_subplot(111)
 	plt.sca(ax)
 	themap = hlpy.mollview(scan,
-							title='1 EeV',
+							title='1 EeV, {} deep, {} shallow',
 							hold=True,
 							# unit='\n'+r'$log_{10}(A_{eff}) [km^2]$',
 							unit='\n'+r'$A_{eff} \,\,[km^2]$',
 							# unit='\n'+r'Relative Effective Area',)
 							cmap='Reds')
 	hlpy.graticule()
-	fig.savefig('sky_coverage.png')
+	fig.savefig('sky_coverage_{}deep_{}shallow.png'.format(n_deep, n_shallow))
 
 
 

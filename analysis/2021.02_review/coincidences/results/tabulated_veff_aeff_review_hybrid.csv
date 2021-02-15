@@ -1,10 +1,15 @@
-log10(energy) [eV], deep veff*sr [km^3sr], deep aeff*sr [km^2sr], shallow veff*sr [km^3sr], shallow aeff*str [km^2sr]
-16.0, 5.162349e-03, 7.860558e-07, 5.071344e-03, 7.721987e-07 
-16.5, 8.974606e-02, 2.162488e-05, 5.548789e-02, 1.337016e-05 
-17.0, 7.046026e-01, 2.616383e-04, 3.236336e-01, 1.201741e-04 
-17.5, 3.240527e+00, 1.813119e-03, 1.062711e+00, 5.946014e-04 
-18.0, 9.073894e+00, 7.503631e-03, 2.579317e+00, 2.132959e-03 
-18.5, 1.794062e+01, 2.156251e-02, 4.992270e+00, 6.000118e-03 
-19.0, 2.786132e+01, 4.795764e-02, 7.848965e+00, 1.351041e-02 
-19.5, 3.692925e+01, 8.985953e-02, 1.038144e+01, 2.526104e-02 
-20.0, 4.513341e+01, 1.534546e-01, 1.244703e+01, 4.232017e-02 
+NB (!!): The overlap fraction is the fraction of events which overlap between the shallow and deep detectors when they are deployed at a ratio of 1:1.9
+This is reasonably close to the 1:1.17 ratio in the review array, but is not exact.
+So, to get the total array effective volume, you should do ((n_deep * deep_veff) + (n_shallow * shallow_veff))*(1-overlap_fraction)
+But you should not trust that formula for n_deep == n_shallow, because that is NOT what was simulated. It needs to be ~1:1.1
+------
+log10(energy) [eV], deep veff*sr [km^3sr], deep aeff*sr [km^2sr], shallow veff*sr [km^3sr], shallow aeff*str [km^2sr], overlap fraction
+16.0, 5.162349e-03, 7.860558e-07, 5.071344e-03, 7.721987e-07, 0.000 
+16.5, 8.974606e-02, 2.162488e-05, 5.548789e-02, 1.337016e-05, 0.004 
+17.0, 7.046026e-01, 2.616383e-04, 3.236336e-01, 1.201741e-04, 0.013 
+17.5, 3.240527e+00, 1.813119e-03, 1.062711e+00, 5.946014e-04, 0.085 
+18.0, 9.073894e+00, 7.503631e-03, 2.579317e+00, 2.132959e-03, 0.192 
+18.5, 1.794062e+01, 2.156251e-02, 4.992270e+00, 6.000118e-03, 0.307 
+19.0, 2.786132e+01, 4.795764e-02, 7.848965e+00, 1.351041e-02, 0.399 
+19.5, 3.692925e+01, 8.985953e-02, 1.038144e+01, 2.526104e-02, 0.445 
+20.0, 4.513341e+01, 1.534546e-01, 1.244703e+01, 4.232017e-02, 0.468 

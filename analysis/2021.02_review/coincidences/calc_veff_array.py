@@ -41,7 +41,7 @@ good_deep = good_deep['ID']
 # good_deep = []
 good_shallow = np.genfromtxt('good_shallow.csv', delimiter=',', skip_header=0, names=['ID'])
 good_shallow = good_shallow['ID']
-# good_shallow = []
+good_shallow = []
 
 # print('num deep {}'.format(len(good_deep)))
 # print('num shallow {}'.format(len(good_shallow)))
@@ -64,8 +64,8 @@ def tmp(filename):
 	summary = {}
 	summary['n_events'] = fin.attrs['n_events']
 	summary['volume'] = fin.attrs['volume']
-	summary['czmin'] = np.cos(fin.attrs['thetamin'])
-	summary['czmax'] = np.cos(fin.attrs['thetamax'])
+	summary['czmin'] = np.cos(fin.attrs['thetamax']) #yes, this is backwards, live with it...
+	summary['czmax'] = np.cos(fin.attrs['thetamin'])
 	summary['tot_weight'] = 0 # intialize these to zero
 	summary['deep_only_weight'] = 0 # initialize these to zero
 	summary['shallow_only_weight'] = 0 # initialize these to zero
@@ -193,10 +193,7 @@ def tmp(filename):
 	# print("Dual weight {}".format(dual_weight))
 	# print("Sum: {}".format(deep_only_weight + shallow_only_weight + dual_weight))
 
-	summary['n_events'] = fin.attrs['n_events']
-	summary['volume'] = fin.attrs['volume']
-	summary['czmin'] = np.cos(fin.attrs['thetamin'])
-	summary['czmax'] = np.cos(fin.attrs['thetamax'])
+	# update these parameters
 	summary['tot_weight'] = tot_weight
 	summary['deep_only_weight'] = deep_only_weight
 	summary['shallow_only_weight'] = shallow_only_weight
@@ -205,17 +202,28 @@ def tmp(filename):
 	return summary
 
 flavors = ['e', 'mu', 'tau']
+zen_bins = np.linspace(-1,1,21)
+coszen_to_bin = {}
+for iZ, czen1 in enumerate(zen_bins[:-1]):
+	coszen_to_bin[f"{czen1:.1f}"] = iZ
+
+
 for flavor in flavors:
 	total_veff = {}
 	for lgE in np.arange(16.0, 20.1, 0.5):
 	# for lgE in np.arange(18.0, 18.4, 0.5):
 		total_veff[f"{lgE:.1f}"] = {}
-		
+
 		combined_total_veff = 0
 		combined_deep_only_veff = 0
 		combined_shallow_only_veff = 0
 		combined_dual_veff = 0
 		num_zen_bins = 0
+		combined_total_veff_bins = np.zeros(20)
+		combined_deep_only_veff_bins = np.zeros(20)
+		combined_shallow_only_veff_bins = np.zeros(20)
+		combined_dual_veff_bins = np.zeros(20)
+
 
 		# local_path = os.path.join(path, f"{flavor}/{flavor}_{lgE:.2f}*_0.3_*.hdf5")
 		local_path = os.path.join(path, f"{flavor}/{flavor}_{lgE:.2f}*.hdf5")
@@ -228,6 +236,13 @@ for flavor in flavors:
 			if(result is None):
 				continue
 
+			czmin = str('{:.1f}'.format(result['czmin']))
+			zen_bin = coszen_to_bin[czmin]
+			combined_total_veff_bins[zen_bin] += result['tot_weight']/result['n_events'] * result['volume']
+			combined_deep_only_veff_bins[zen_bin] += result['deep_only_weight']/result['n_events'] * result['volume']
+			combined_shallow_only_veff_bins[zen_bin] += result['shallow_only_weight']/result['n_events'] * result['volume']
+			combined_dual_veff_bins[zen_bin] += result['dual_weight']/result['n_events'] * result['volume']
+
 			combined_total_veff += result['tot_weight']/result['n_events'] * result['volume']
 			combined_deep_only_veff += result['deep_only_weight']/result['n_events'] * result['volume']
 			combined_shallow_only_veff += result['shallow_only_weight']/result['n_events'] * result['volume']
@@ -237,19 +252,27 @@ for flavor in flavors:
 		num_zen_bins=20 # override
 
 		print("num zen bins {}".format(num_zen_bins))
+		# all sky
 		total_veff[f"{lgE:.1f}"]['total_veff'] = gwe(combined_total_veff/num_zen_bins)
 		total_veff[f"{lgE:.1f}"]['deep_only_veff'] = gwe(combined_deep_only_veff/num_zen_bins)
 		total_veff[f"{lgE:.1f}"]['shallow_only_veff'] = gwe(combined_shallow_only_veff/num_zen_bins)
 		total_veff[f"{lgE:.1f}"]['dual_veff'] = gwe(combined_dual_veff/num_zen_bins)
+		
+		# binned by veff
+		total_veff[f"{lgE:.1f}"]['czmins'] = zen_bins[:-1]	
+		total_veff[f"{lgE:.1f}"]['total_veff_zen_bins'] = gwe(combined_total_veff_bins)
+		total_veff[f"{lgE:.1f}"]['deep_only_veff_zen_bins'] = gwe(combined_deep_only_veff_bins)
+		total_veff[f"{lgE:.1f}"]['shallow_only_veff_zen_bins'] = gwe(combined_shallow_only_veff_bins)
+		total_veff[f"{lgE:.1f}"]['dual_veff'] = gwe(combined_dual_veff_bins)
 
 		print("total veff at 1 EeV for {} is {}".format(total_veff[f"{lgE:.1f}"]['total_veff']/units.km**3 * 4 * np.pi, flavor))
 
-	# dump this to hdf5 file
-	pkl_file_name = os.path.join('overlap_' + path.split("/")[-4] + "_" + trigger_names[0] + "_" + path2.split("/")[-4] + "_" + trigger_names2[0] + "_" + flavor + ".pkl")
-	with open(pkl_file_name, "wb") as fout:
-		pickle.dump(total_veff, fout, protocol=4)
-	
 	# # dump this to hdf5 file
-	# pkl_file_name = os.path.join('shallow_only_' + flavor + ".pkl")
+	# pkl_file_name = os.path.join('results/overlap_' + path.split("/")[-4] + "_" + trigger_names[0] + "_" + path2.split("/")[-4] + "_" + trigger_names2[0] + "_" + flavor + ".pkl")
 	# with open(pkl_file_name, "wb") as fout:
 	# 	pickle.dump(total_veff, fout, protocol=4)
+	
+	# dump this to hdf5 file
+	pkl_file_name = os.path.join('results/deep_only_' + flavor + ".pkl")
+	with open(pkl_file_name, "wb") as fout:
+		pickle.dump(total_veff, fout, protocol=4)

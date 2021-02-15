@@ -77,8 +77,8 @@ if doHealpyPlot:
 	mask = scan < 0
 	scan[mask]=0
 
-	mask = scan < np.max(scan)*0.5
-	scan[mask] = hlpy.pixelfunc.UNSEEN
+	# mask = scan < np.max(scan)*0.5
+	# scan[mask] = hlpy.pixelfunc.UNSEEN
 	# maxval = np.max(scan)
 	# scan/=maxval
 
@@ -88,14 +88,16 @@ if doHealpyPlot:
 	ax  = fig.add_subplot(111)
 	plt.sca(ax)
 	themap = hlpy.mollview(scan,
-							title='1 EeV, {} deep, {} shallow',
+							title='1 EeV, {} deep, {} shallow'.format(n_deep,n_shallow),
 							hold=True,
 							# unit='\n'+r'$log_{10}(A_{eff}) [km^2]$',
 							unit='\n'+r'$A_{eff} \,\,[km^2]$',
 							# unit='\n'+r'Relative Effective Area',)
+							min=0,
+							max=0.4,
 							cmap='Reds')
 	hlpy.graticule()
-	fig.savefig('sky_coverage_{}deep_{}shallow.png'.format(n_deep, n_shallow))
+	fig.savefig('sky_coverage_{}deep_{}shallow.png'.format(n_deep, n_shallow), dpi=300)
 
 
 

@@ -8,16 +8,15 @@ spacing = 2.0  # in km
 xx = []
 yy = []
 station_id = 0
-xx = np.arange(-10, 10.1, spacing) * units.km
-yy = np.arange(-12.5, 12.51, spacing) * units.km
+xx = np.arange(-11, 11.1, spacing) * units.km
+yy = np.arange(-11, 11.1, spacing) * units.km
 
 spacing_s = 2
-xx_s = np.arange(-10 - 0.5 * spacing_s, 10.1 + 0.5 * spacing_s, spacing_s) * units.km
-yy_s = np.arange(-12.5 - 0.5 * spacing_s, 12.51 + 0.5 * spacing_s, spacing_s) * units.km
+xx_s = np.arange(-11 - 0.5 * spacing_s, 11.1 + 0.5 * spacing_s, spacing_s) * units.km
+yy_s = np.arange(-11 - 0.5 * spacing_s, 11.1 + 0.5 * spacing_s, spacing_s) * units.km
 
-print(f"generates {station_id} stations with a spacing of {spacing}km")
-print(f"deep + shallow: {len(xx)} x {len(yy)} = {len(xx) * len(yy)} stations with {spacing} spacing")
-print(f"shallow only: {len(xx_s)} x {len(yy_s)} = {len(xx_s) * len(yy_s)} stations with {spacing_s} spacing -> effective shallow spacing {2**0.5 * 0.5 * spacing:.2f}")
+print('Num deep stations {}'.format(len(xx)*len(yy)))
+print("Num independent shallow stations {}".format(len(xx_s)*len(yy_s)))
 
 d = np.meshgrid(xx, yy)
 xxx = d[0].flatten()

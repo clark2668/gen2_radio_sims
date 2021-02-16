@@ -75,6 +75,8 @@ def tmp(filename):
 	summary['volume'] = fin.attrs['volume']
 	summary['czmin'] = np.cos(fin.attrs['thetamax']) #yes, this is backwards, live with it...
 	summary['czmax'] = np.cos(fin.attrs['thetamin'])
+	summary['thetamin'] = fin.attrs['thetamin'] # store these, cuz we'll need them later for re-pkling
+	summary['thetamax'] = fin.attrs['thetamax']
 	summary['tot_weight'] = 0 # intialize these to zero
 	summary['deep_only_weight'] = 0 # initialize these to zero
 	summary['shallow_only_weight'] = 0 # initialize these to zero
@@ -268,7 +270,7 @@ for flavor in flavors:
 		total_veff[f"{lgE:.1f}"]['dual_veff'] = gwe(combined_dual_veff/num_zen_bins)
 		
 		# binned by veff
-		total_veff[f"{lgE:.1f}"]['czmins'] = zen_bins[:-1]	
+		total_veff[f"{lgE:.1f}"]['czmins'] = zen_bins[:-1]
 		total_veff[f"{lgE:.1f}"]['total_veff_zen_bins'] = gwe(combined_total_veff_bins)
 		total_veff[f"{lgE:.1f}"]['deep_only_veff_zen_bins'] = gwe(combined_deep_only_veff_bins)
 		total_veff[f"{lgE:.1f}"]['shallow_only_veff_zen_bins'] = gwe(combined_shallow_only_veff_bins)

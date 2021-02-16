@@ -87,7 +87,7 @@ for flavor in flavors:
 				overlap_fraction = the_veff_dual_zbin/the_veff_zbin
 			else:
 				overlap_fraction = 0
-			the_review_array_veff = ((the_veff_deep*n_deep_review) + (the_veff_shallow*n_shallow_review))*(1-overlap_fraction)
+			the_review_array_veff = ((the_veff_deep*n_deep_review) + (the_veff_shallow*n_shallow_review))*(1/(1+overlap_fraction))
 			veff['combined_array'] = [the_review_array_veff, 0, 0, 0, 0]
 			out['veff'] = veff
 			out['n_triggered_weighted'] = {}

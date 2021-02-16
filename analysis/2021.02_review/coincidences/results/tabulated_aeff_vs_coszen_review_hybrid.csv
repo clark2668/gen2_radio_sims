@@ -1,0 +1,26 @@
+NB (!!): The overlap fraction is the fraction of events which overlap between the shallow and deep detectors when they are deployed at a ratio of 1:1.9
+This is reasonably close to the 1:2.17 ratio in the review array, but is not exact.
+So, to get the total array effective volume, you should do ((n_deep * deep_veff) + (n_shallow * shallow_veff))*(1-overlap_fraction)
+But you should not trust that formula for n_deep == n_shallow, because that is NOT what was simulated. It needs to be ~1:2
+------
+cos(zen) min, deep aeff at 1 EeV [km^2], shallow aeff at 1 EeV [km^2sr], overlap fraction
+0.9, 2.469490e-05, 0.000000e+00, 0.000 
+0.8, 9.328650e-05, 8.879913e-08, 0.000 
+0.7, 5.280459e-04, 2.960027e-07, 0.000 
+0.6, 1.359044e-03, 2.130287e-06, 0.001 
+0.5, 1.668023e-03, 1.785271e-05, 0.015 
+0.4, 1.760061e-03, 9.299018e-05, 0.076 
+0.3, 1.743983e-03, 3.923918e-04, 0.197 
+0.2, 1.663652e-03, 8.059147e-04, 0.263 
+0.1, 1.536361e-03, 9.360100e-04, 0.320 
+0.0, 1.269638e-03, 9.041476e-04, 0.321 
+-0.1, 2.895105e-04, 2.367541e-04, 0.295 
+-0.2, 6.034893e-06, 6.064723e-06, 0.265 
+-0.3, 6.386588e-08, 6.873390e-08, 0.239 
+-0.4, 3.838255e-10, 2.810450e-10, 0.199 
+-0.5, 0.000000e+00, 0.000000e+00, 0.000 
+-0.6, 0.000000e+00, 0.000000e+00, 0.000 
+-0.7, 0.000000e+00, 0.000000e+00, 0.000 
+-0.8, 0.000000e+00, 0.000000e+00, 0.000 
+-0.9, 0.000000e+00, 0.000000e+00, 0.000 
+-1.0, 0.000000e+00, 0.000000e+00, 0.000 

@@ -106,7 +106,7 @@ overlap_fraction_vs_zen/=3
 
 output_csv = 'NB (!!): The overlap fraction is the fraction of events which overlap between the shallow and deep detectors when they are deployed at a ratio of 1:1.9\n'
 output_csv += 'This is reasonably close to the 1:2.17 ratio in the review array, but is not exact.\n'
-output_csv += 'So, to get the total array effective volume, you should do ((n_deep * deep_veff) + (n_shallow * shallow_veff))*(1-overlap_fraction)\n'
+output_csv += 'So, to get the total array effective volume, you should do ((n_deep * deep_veff) + (n_shallow * shallow_veff))*(1/(1+overlap_fraction))\n'
 output_csv += 'But you should not trust that formula for n_deep == n_shallow, because that is NOT what was simulated. It needs to be ~1:2\n'
 output_csv += "------\n"
 output_csv += 'log10(energy) [eV], deep veff*sr [km^3sr], deep aeff*sr [km^2sr], shallow veff*sr [km^3sr], shallow aeff*str [km^2sr], overlap fraction, deep only fraction, shallow only fraction\n'
@@ -126,7 +126,7 @@ shallow_aeff_vs_zen = np.flip(shallow_aeff_vs_zen)
 overlap_fraction_vs_zen = np.flip(overlap_fraction_vs_zen)
 output_csv = 'NB (!!): The overlap fraction is the fraction of events which overlap between the shallow and deep detectors when they are deployed at a ratio of 1:1.9\n'
 output_csv += 'This is reasonably close to the 1:2.17 ratio in the review array, but is not exact.\n'
-output_csv += 'So, to get the total array effective volume, you should do ((n_deep * deep_veff) + (n_shallow * shallow_veff))*(1-overlap_fraction)\n'
+output_csv += 'So, to get the total array effective volume, you should do ((n_deep * deep_veff) + (n_shallow * shallow_veff))*(1/(1+overlap_fraction))\n'
 output_csv += 'But you should not trust that formula for n_deep == n_shallow, because that is NOT what was simulated. It needs to be ~1:2\n'
 output_csv += "------\n"
 output_csv += 'cos(zen) min, deep aeff at 1 EeV [km^2], shallow aeff at 1 EeV [km^2sr], overlap fraction\n'

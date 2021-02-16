@@ -4,8 +4,8 @@ import scipy as scipy
 from scipy import interpolate
 
 
-n_deep = 144
-n_shallow = 0#(169+144)
+n_deep = 144*1
+n_shallow = (169+144)*1
 
 deep_det = 'pa_200m_2.00km'
 shallow_det = 'surface_1.00km'
@@ -72,7 +72,7 @@ if doHealpyPlot:
 		# thebin = np.digitize(cos_theta, zen_bins_for_digi)
 		# aeff_this  = data['daeff'][thebin-1]*n_deep + data['saeff'][thebin-1]*n_shallow
 		# aeff_this = interpolate.splev(cos_theta, tck)
-		aeff_this = (interpolator_deep(cos_theta)*n_deep + interpolator_shallow(cos_theta)*n_shallow)*(1-interpolator_fraction(cos_theta))
+		aeff_this = (interpolator_deep(cos_theta)*n_deep + interpolator_shallow(cos_theta)*n_shallow)*(1/(1+interpolator_fraction(cos_theta)))
 		# aeff_this = interpolator_fraction(cos_theta)
 		if cos_theta > -2:
 			# scan[ipix] = np.log10(aeff_this)
@@ -101,7 +101,7 @@ if doHealpyPlot:
 							unit='\n'+r'$A_{eff} \,\,[km^2]$',
 							# unit='\n'+r'Relative Effective Area',)
 							min=0,
-							max=0.36,
+							max=0.40,
 							cmap='Reds')
 	hlpy.graticule()
 	fig.savefig('sky_coverage_{}deep_{}shallow.png'.format(n_deep, n_shallow), dpi=300)

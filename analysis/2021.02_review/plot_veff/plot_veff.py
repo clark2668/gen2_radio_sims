@@ -14,8 +14,8 @@ shallow_det = 'surface_4LPDA_PA_15m_RNOG_300K_1.00km'
 shallow_trigger = 'LPDA_2of4_100Hz'
 flavors = ['e', 'mu', 'tau']
 
-data_i = np.genfromtxt(f'tabulated_veff_aeff_review_hybrid.csv', delimiter=',', skip_header=1, names=['logE', 'dveff', 'daff', 'sveff', 'saeff'])
-# data_i = np.genfromtxt(f'tabulated_veff_aeff_pa_200m_2.00km_surface_1.00km.csv', delimiter=',', skip_header=1, names=['logE', 'dveff', 'daff', 'sveff', 'saeff'])
+data_i = np.genfromtxt(f'tabulated_veff_aeff_review_hybrid.csv', delimiter=',', skip_header=6, names=['logE', 'dveff', 'daff', 'sveff', 'saeff', 'overlap_frac', 'deep_only', 'shallow_only'])
+# data_i = np.genfromtxt(f'tabulated_veff_aeff_review_hybrid.csv', delimiter=',', skip_header=1, names=['logE', 'dveff', 'daff', 'sveff', 'saeff'])
 energies = np.power(10.,data_i['logE'])
 real_total = np.zeros(len(energies))
 real_deep_only = np.zeros(len(energies))
@@ -44,7 +44,7 @@ real_dual*=4*np.pi
 
 markers=['ko-','C0o-', 'C1^-', 'C2D-', 'C3s-']
 
-plot_fractions=True
+plot_fractions=False
 if plot_fractions:
 
 	fig = plt.figure(figsize=(10,5))
@@ -82,7 +82,12 @@ if plot_comparison:
 	fig = plt.figure(figsize=(10,5))
 	ax1 = fig.add_subplot(1,2,1)
 	ax1.plot(energies, real_total, markers[0], label='array "real"')
-	ax1.plot(energies, data_i['dveff']*n_deep + data_i['sveff']*n_shallow, markers[4]+'-', label='array estimate')
+	# sum_to_plot = ((data_i['dveff']*n_deep + data_i['sveff']*n_shallow))
+	sum_to_plot = ((data_i['dveff']*n_deep + data_i['sveff']*n_shallow)) * (1/(1+data_i['overlap_frac']))
+	# sum_to_plot = (data_i['dveff']*n_deep*(data_i['overlap_frac']+data_i['deep_only'])) + (data_i['sveff']*n_shallow*(data_i['overlap_frac']+data_i['shallow_only']))
+	# sum_to_plot = (data_i['dveff']*n_deep*data_i['deep_only']) + (data_i['sveff']*n_shallow*data_i['shallow_only']) + (data_i['dveff']*n_deep*(1-data_i['overlap_frac']))
+	# sum_to_plot = ((data_i['dveff']*n_deep + data_i['sveff']*n_shallow)*(data_i['overlap_frac'])) + (data_i['dveff']*n_deep*data_i['deep_only']) + (data_i['sveff']*n_shallow*data_i['shallow_only'])
+	ax1.plot(energies, sum_to_plot, markers[4]+'-', label='array estimate')
 	
 	# ax1.plot(energies, real_deep_only, markers[1], label='deep array')
 	# ax1.plot(energies, data_i['dveff']*n_deep, markers[1]+'-', label='deep estimate')
@@ -98,8 +103,12 @@ if plot_comparison:
 	ax1.legend()
 	ax1.set_title('effective volume')
 
+	for thing in sum_to_plot/real_total-1.0:
+		print('Thing {}'.format(thing))
+	print(data_i['overlap_frac'])
+
 	ax2 = fig.add_subplot(1,2,2)
-	ax2.plot(energies, (data_i['dveff']*n_deep + data_i['sveff']*n_shallow) / real_total, markers[4], label='estimate/real')
+	ax2.plot(energies, sum_to_plot / real_total, markers[4], label='estimate/real')
 	ax2.set_xscale('log')
 	ax2.set_xlabel('Energy [eV]')
 	ax2.set_ylabel('unitless')

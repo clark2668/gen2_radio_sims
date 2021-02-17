@@ -14,12 +14,15 @@ from NuRadioMC.utilities.Veff import get_Veff_water_equivalent as gwe
 
 n_cores = 10
 
+deep_det = 'pa_200m_2.00km'
+shallow_det = 'surface_4LPDA_PA_15m_RNOG_300K_1.00km'
+
 top="/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2/step4/"
 
-path = top+"/pa_200m_2.00km/config_Alv2009_noise_100ns/D05phased_array_deep/"
+path = top+"/"+"deep_det"+"/config_Alv2009_noise_100ns/D05phased_array_deep/"
 # path = top+"/surface_4LPDA_PA_15m_RNOG_300K_1.00km/config_Alv2009_noise_100ns/D09surface_4LPDA_pa_15m_250MHz/" ## TEST--delete me!
 
-path2 = top+"/surface_4LPDA_PA_15m_RNOG_300K_1.00km/config_Alv2009_noise_100ns/D09surface_4LPDA_pa_15m_250MHz/"
+path2 = top+"/"+shallow_det+"/config_Alv2009_noise_100ns/D09surface_4LPDA_pa_15m_250MHz/"
 # path2 = top+"/pa_200m_2.00km/config_Alv2009_noise_100ns/D05phased_array_deep/" ## TEST -- delete me
 
 trigger_names = ['PA_4channel_100Hz']
@@ -37,7 +40,7 @@ for i in range(len(matching_data)):
 	s_d_match[int(matching_data['shallowID'][i])] = int(matching_data['deepID'][i])
 
 deep_only = False
-shallow_only = True
+shallow_only = False
 
 if deep_only and shallow_only:
 	print("You have asked for an incompatible combination of settings! Abort!")

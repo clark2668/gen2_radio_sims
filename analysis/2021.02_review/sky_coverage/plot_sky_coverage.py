@@ -4,7 +4,7 @@ import scipy as scipy
 from scipy import interpolate
 
 
-n_deep = 144*1
+n_deep = 144*0
 n_shallow = (169+144)*1
 
 deep_det = 'pa_200m_2.00km'
@@ -13,7 +13,7 @@ filename=f'tabulated_aeff_vs_coszen_review_hybrid.csv'
 
 data = np.genfromtxt(filename, delimiter=',', skip_header=6, names=['czmin', 'daeff', 'saeff', 'frac'])
 
-plot_aeff_vs_zen = True
+plot_aeff_vs_zen = False
 if plot_aeff_vs_zen:
 
 	zen_for_interp = data['czmin']
@@ -44,16 +44,15 @@ if plot_aeff_vs_zen:
 	# ax.plot(data['czmin'], data['saeff']*n_shallow, label='shallow')
 	# ax.plot(-(data['czmin']+0.05), to_plot)
 	ax.plot(-to_plot_x, to_plot_y)
-
 	# 3dB point
-	ax.plot([-1,1],[0.2,0.2], 'C7--')
+	ax.plot([-1,1],[0.17,0.17], 'C7--')
 	ax.annotate(r'"3dB Point"', xy=(-.95,0.22), xycoords='data', rotation=0, color='C7')
 
-	ax.plot([-0.65,-0.65],[1e-7,1], 'C7--')
-	ax.annotate(r'$\delta=-40^{\circ}$', xy=(-0.70,1e-2), xycoords='data', rotation=90, color='C7', size=12)
+	ax.plot([-0.67,-0.67],[1e-7,1], 'C7--')
+	ax.annotate(r'$\delta=-42^{\circ}$', xy=(-0.72,1e-2), xycoords='data', rotation=90, color='C7', size=12)
 
-	ax.plot([0.005,0.005],[1e-7,1], 'C7--')
-	ax.annotate(r'Horizon', xy=(-0.05,1e-2), xycoords='data', rotation=90, color='C7', size=12)
+	ax.plot([0.025,0.025],[1e-7,1], 'C7--')
+	ax.annotate(r'$\delta=2^{\circ}$', xy=(-0.03,1e-2), xycoords='data', rotation=90, color='C7', size=12)
 	
 	# ax.set_xlabel(r'cos($\theta$)')
 	ax.set_xlabel(r'sin($\delta$)',size=15)
@@ -67,7 +66,7 @@ if plot_aeff_vs_zen:
 	plt.tight_layout()
 	fig.savefig('aeff_vs_coszen.png',dpi=300)
 
-doHealpyPlot = False
+doHealpyPlot = True
 if doHealpyPlot:
 
 	# pad a bit to get digitization to work right
@@ -139,7 +138,7 @@ if doHealpyPlot:
 							unit='\n'+r'$A_{eff} \,\,[km^2]$',
 							# unit='\n'+r'Relative Effective Area',)
 							min=0,
-							max=0.40,
+							max=0.35,
 							cmap='Reds')
 	hlpy.graticule()
 	fig.savefig('sky_coverage_{}deep_{}shallow.png'.format(n_deep, n_shallow), dpi=300)

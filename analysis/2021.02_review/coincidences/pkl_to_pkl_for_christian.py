@@ -87,15 +87,17 @@ for flavor in flavors:
 				overlap_fraction = the_veff_dual_zbin/the_veff_zbin
 			else:
 				overlap_fraction = 0
-			the_review_array_veff = ((the_veff_deep*n_deep_review) + (the_veff_shallow*n_shallow_review))*(1/(1+overlap_fraction))
-			veff['combined_array'] = [the_review_array_veff, 0, 0, 0, 0]
+			# the_review_array_veff = ((the_veff_deep*n_deep_review) + (the_veff_shallow*n_shallow_review))*(1/(1+overlap_fraction))
+			the_review_array_veff = (the_veff_shallow*n_shallow_review)
+			# veff['combined_array'] = [the_review_array_veff, 0, 0, 0, 0]
+			veff['LPDA_2of4_100Hz'] = [the_review_array_veff, 0, 0, 0, 0]
 			out['veff'] = veff
 			out['n_triggered_weighted'] = {}
 			out['SNRs'] = {}
 
 			output.append(out)
 
-	pkl_file_name = os.path.join('results/review_array_dict_' + flavor + ".pkl")
+	pkl_file_name = os.path.join('results/review_array_shallow_only_dict_' + flavor + ".pkl")
 	with open(pkl_file_name, "wb") as fout:
 		pickle.dump(output, fout, protocol=4)
 

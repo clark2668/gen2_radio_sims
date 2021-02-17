@@ -6,7 +6,7 @@ import pickle
 
 n_deep = 143
 n_shallow_infill = 130
-n_shallow_coinc = 143
+n_shallow_coinc = 143 
 n_shallow = n_shallow_infill + n_shallow_coinc
 deep_det = 'pa_200m_2.00km'
 deep_trigger = 'PA_4channel_100Hz'

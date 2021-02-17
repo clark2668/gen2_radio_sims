@@ -19,10 +19,12 @@ shallow_det = 'surface_4LPDA_PA_15m_RNOG_300K_1.00km'
 
 top="/data/sim/Gen2/radio/2020/simulation_output/secondaries_500km2/step4/"
 
-path = top+"/"+"deep_det"+"/config_Alv2009_noise_100ns/D05phased_array_deep/"
+path = top+"/pa_200m_2.00km/config_Alv2009_noise_100ns/D05phased_array_deep/"
+# path = top+"/"+"deep_det"+"/config_Alv2009_noise_100ns/D05phased_array_deep/"
 # path = top+"/surface_4LPDA_PA_15m_RNOG_300K_1.00km/config_Alv2009_noise_100ns/D09surface_4LPDA_pa_15m_250MHz/" ## TEST--delete me!
 
-path2 = top+"/"+shallow_det+"/config_Alv2009_noise_100ns/D09surface_4LPDA_pa_15m_250MHz/"
+path2 = top+"/surface_4LPDA_PA_15m_RNOG_300K_1.00km/config_Alv2009_noise_100ns/D09surface_4LPDA_pa_15m_250MHz/"
+# path2 = top+"/"+shallow_det+"/config_Alv2009_noise_100ns/D09surface_4LPDA_pa_15m_250MHz/"
 # path2 = top+"/pa_200m_2.00km/config_Alv2009_noise_100ns/D05phased_array_deep/" ## TEST -- delete me
 
 trigger_names = ['PA_4channel_100Hz']
@@ -40,7 +42,7 @@ for i in range(len(matching_data)):
 	s_d_match[int(matching_data['shallowID'][i])] = int(matching_data['deepID'][i])
 
 deep_only = False
-shallow_only = False
+shallow_only = True
 
 if deep_only and shallow_only:
 	print("You have asked for an incompatible combination of settings! Abort!")
@@ -170,7 +172,7 @@ def tmp(filename):
 					continue
 				s_shallow = fin2[f'station_{shallow_id}']
 				if 'multiple_triggers_per_event' in s_shallow:
-					triggers_shallow = s_shallow['multiple_triggers_per_event'][:, tname_to_index2[trigger_names[0]]]
+					triggers_shallow = s_shallow['multiple_triggers_per_event'][:, tname_to_index2[trigger_names2[0]]]
 					evs_triggers_shallow = np.unique(np.array(s_shallow['event_group_ids'])[triggers_shallow])
 
 					for ev in evs_triggers_shallow:

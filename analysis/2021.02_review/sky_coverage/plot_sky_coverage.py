@@ -63,6 +63,7 @@ if plot_aeff_vs_zen:
 	ax.set_ylim([5e-3,0.5])
 	ax.set_xlim([-1,0.25])
 	ax.tick_params(labelsize=12)
+	ax.set_title('1 EeV',fontsize=15)
 	plt.tight_layout()
 	fig.savefig('aeff_vs_coszen.png',dpi=300)
 

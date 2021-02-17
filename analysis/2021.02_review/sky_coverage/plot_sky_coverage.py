@@ -13,23 +13,60 @@ filename=f'tabulated_aeff_vs_coszen_review_hybrid.csv'
 
 data = np.genfromtxt(filename, delimiter=',', skip_header=6, names=['czmin', 'daeff', 'saeff', 'frac'])
 
-plot_aeff_vs_zen = False
+plot_aeff_vs_zen = True
 if plot_aeff_vs_zen:
-	# plot of coverage vs zenith
-	fig = plt.figure(figsize=(5,5))
-	ax = fig.add_subplot(111)
-	ax.plot(data['czmin'], data['daeff']*n_deep, label='deep')
-	ax.plot(data['czmin'], data['saeff']*n_shallow, label='shallow')
-	ax.set_xlabel('coz(zen)')
-	ax.set_ylabel(r'Aeff [$km^2$]')
-	ax.set_yscale('log')
-	ax.set_ylim([1e-3,10])
-	ax.legend()
-	ax.set_title('Trigger Level')
-	plt.tight_layout()
-	fig.savefig('aeff_vs_coszen.png')
 
-doHealpyPlot = True
+	zen_for_interp = data['czmin']
+	zen_for_interp+=0.05
+	daeff_for_interp = data['daeff']
+	saeff_for_interp = data['saeff']
+	fractions = data['frac']
+
+	zen_for_interp = np.flip(zen_for_interp)
+	daeff_for_interp = np.flip(daeff_for_interp)
+	saeff_for_interp = np.flip(saeff_for_interp)
+	fractions = np.flip(fractions)
+
+	# tck = interpolate.splrep(zen_for_interp, daeff_for_interp, k=2)
+	interpolator_deep = scipy.interpolate.interp1d(zen_for_interp,daeff_for_interp,fill_value='extrapolate')
+	interpolator_shallow = scipy.interpolate.interp1d(zen_for_interp,saeff_for_interp,fill_value='extrapolate')
+	interpolator_fraction = scipy.interpolate.interp1d(zen_for_interp, fractions,fill_value='extrapolate')
+
+	to_plot_x = np.linspace(-1,1,50)
+	to_plot_y = (interpolator_deep(to_plot_x)*n_deep + interpolator_shallow(to_plot_x)*n_shallow)*(1/(1+interpolator_fraction(to_plot_x)))
+
+
+	# plot of coverage vs zenith
+	fig = plt.figure(figsize=(6,5))
+	ax = fig.add_subplot(111)
+	to_plot = (data['daeff']*n_deep + data['saeff']*n_shallow)*(1/(1+data['frac']))
+	# ax.plot(data['czmin'], data['daeff']*n_deep, label='deep')
+	# ax.plot(data['czmin'], data['saeff']*n_shallow, label='shallow')
+	# ax.plot(-(data['czmin']+0.05), to_plot)
+	ax.plot(-to_plot_x, to_plot_y)
+
+	# 3dB point
+	ax.plot([-1,1],[0.2,0.2], 'C7--')
+	ax.annotate(r'"3dB Point"', xy=(-.95,0.22), xycoords='data', rotation=0, color='C7')
+
+	ax.plot([-0.65,-0.65],[1e-7,1], 'C7--')
+	ax.annotate(r'$\delta=-40^{\circ}$', xy=(-0.70,1e-2), xycoords='data', rotation=90, color='C7', size=12)
+
+	ax.plot([0.005,0.005],[1e-7,1], 'C7--')
+	ax.annotate(r'Horizon', xy=(-0.05,1e-2), xycoords='data', rotation=90, color='C7', size=12)
+	
+	# ax.set_xlabel(r'cos($\theta$)')
+	ax.set_xlabel(r'sin($\delta$)',size=15)
+	ax.set_ylabel(r'Aeff [$km^2$]',size=15)
+	ax.set_yscale('log')
+	plt.tight_layout()
+	ax.set_ylim([5e-3,0.5])
+	ax.set_xlim([-1,0.25])
+	ax.tick_params(labelsize=12)
+	plt.tight_layout()
+	fig.savefig('aeff_vs_coszen.png',dpi=300)
+
+doHealpyPlot = False
 if doHealpyPlot:
 
 	# pad a bit to get digitization to work right

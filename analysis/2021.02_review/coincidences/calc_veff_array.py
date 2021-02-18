@@ -42,7 +42,7 @@ for i in range(len(matching_data)):
 	s_d_match[int(matching_data['shallowID'][i])] = int(matching_data['deepID'][i])
 
 deep_only = False
-shallow_only = True
+shallow_only = False
 
 if deep_only and shallow_only:
 	print("You have asked for an incompatible combination of settings! Abort!")
@@ -69,7 +69,7 @@ def tmp(filename):
 								 os.path.normpath(filename).split(os.sep)[-2], 
 								 os.path.normpath(filename).split(os.sep)[-1])
 	
-	print("Working on file {}".format(filename))
+	print("File: {}".format(filename))
 
 	fin = h5py.File(filename, "r")
 	fin2 = h5py.File(filename2, "r")
@@ -86,6 +86,7 @@ def tmp(filename):
 	summary['deep_only_weight'] = 0 # initialize these to zero
 	summary['shallow_only_weight'] = 0 # initialize these to zero
 	summary['dual_weight'] = 0 # initialize these to zero
+	summary['at_least_any_two_weight'] = 0 # initialize these to zero
 
 	skip_deep = False
 	skip_shallow = False
@@ -161,7 +162,9 @@ def tmp(filename):
 						if ev not in event_information:
 							event_information[ev] = [weights_dict_deep[ev], 0, 0]
 							event_information[ev][1] = 1 # mark that it is seen in SOME deep station
-							# (0) store the weight, (1) seen in ANY deep, (2) seen in ANY shallow
+						elif ev in event_information:
+							event_information[ev][1] += 1
+							# (0) store the weight, (1) number of deep stations in which evt is seen, (2) number of shallow stations in which evt is seen
 
 	# then, the shallow
 	if not skip_shallow:
@@ -180,17 +183,23 @@ def tmp(filename):
 							event_information[ev] = [weights_dict_shallow[ev], 0, 0]
 							event_information[ev][2] = 1 # mark that it is seen in SOME shallow station
 						elif ev in event_information:
-							event_information[ev][2]=1
+							event_information[ev][2] += 1
 
 	tot_weight = 0
 	deep_only_weight = 0
 	shallow_only_weight = 0
 	dual_weight = 0
+	at_least_any_two_weight = 0
 
 	for ev in event_information:
 		weight = event_information[ev][0]
 		trig_deep = event_information[ev][1]
 		trig_shal = event_information[ev][2]
+
+		num_stations_trig_total = trig_deep + trig_shal
+		if num_stations_trig_total>1:
+			# print('Num total {} ({} shallow, {} deep)'.format(num_stations_trig_total, trig_shal, trig_deep))
+			at_least_any_two_weight+=weight
 
 		tot_weight+=weight
 		if trig_deep and trig_shal:
@@ -214,6 +223,7 @@ def tmp(filename):
 	summary['deep_only_weight'] = deep_only_weight
 	summary['shallow_only_weight'] = shallow_only_weight
 	summary['dual_weight'] = dual_weight
+	summary['at_least_any_two_weight'] = at_least_any_two_weight
 
 	return summary
 
@@ -234,11 +244,13 @@ for flavor in flavors:
 		combined_deep_only_veff = 0
 		combined_shallow_only_veff = 0
 		combined_dual_veff = 0
+		combined_at_least_any_two_veff = 0
 		num_zen_bins = 0
 		combined_total_veff_bins = np.zeros(20)
 		combined_deep_only_veff_bins = np.zeros(20)
 		combined_shallow_only_veff_bins = np.zeros(20)
 		combined_dual_veff_bins = np.zeros(20)
+		combined_at_least_any_two_veff_bins = np.zeros(20)
 
 
 		# local_path = os.path.join(path, f"{flavor}/{flavor}_{lgE:.2f}*_0.3_*.hdf5")
@@ -258,21 +270,24 @@ for flavor in flavors:
 			combined_deep_only_veff_bins[zen_bin] += result['deep_only_weight']/result['n_events'] * result['volume']
 			combined_shallow_only_veff_bins[zen_bin] += result['shallow_only_weight']/result['n_events'] * result['volume']
 			combined_dual_veff_bins[zen_bin] += result['dual_weight']/result['n_events'] * result['volume']
+			combined_at_least_any_two_veff_bins[zen_bin] += result['at_least_any_two_weight']/result['n_events'] * result['volume']
 
 			combined_total_veff += result['tot_weight']/result['n_events'] * result['volume']
 			combined_deep_only_veff += result['deep_only_weight']/result['n_events'] * result['volume']
 			combined_shallow_only_veff += result['shallow_only_weight']/result['n_events'] * result['volume']
 			combined_dual_veff += result['dual_weight']/result['n_events'] * result['volume']
+			combined_at_least_any_two_veff += result['at_least_any_two_weight']/result['n_events'] * result['volume']
 			num_zen_bins+=1
 
 		num_zen_bins=20 # override
 
-		print("num zen bins {}".format(num_zen_bins))
 		# all sky
 		total_veff[f"{lgE:.1f}"]['total_veff'] = gwe(combined_total_veff/num_zen_bins)
 		total_veff[f"{lgE:.1f}"]['deep_only_veff'] = gwe(combined_deep_only_veff/num_zen_bins)
 		total_veff[f"{lgE:.1f}"]['shallow_only_veff'] = gwe(combined_shallow_only_veff/num_zen_bins)
 		total_veff[f"{lgE:.1f}"]['dual_veff'] = gwe(combined_dual_veff/num_zen_bins)
+		total_veff[f"{lgE:.1f}"]['at_least_any_two_veff'] = gwe(combined_at_least_any_two_veff/num_zen_bins)
+
 		
 		# binned by veff
 		total_veff[f"{lgE:.1f}"]['czmins'] = zen_bins[:-1]
@@ -280,6 +295,7 @@ for flavor in flavors:
 		total_veff[f"{lgE:.1f}"]['deep_only_veff_zen_bins'] = gwe(combined_deep_only_veff_bins)
 		total_veff[f"{lgE:.1f}"]['shallow_only_veff_zen_bins'] = gwe(combined_shallow_only_veff_bins)
 		total_veff[f"{lgE:.1f}"]['dual_veff_zen_bins'] = gwe(combined_dual_veff_bins)
+		total_veff[f"{lgE:.1f}"]['at_least_any_two_veff_bins'] = gwe(combined_at_least_any_two_veff_bins)
 
 		print("total veff at 1 EeV for {} is {}".format(total_veff[f"{lgE:.1f}"]['total_veff']/units.km**3 * 4 * np.pi, flavor))
 

@@ -87,6 +87,12 @@ for flavor in flavors:
 				overlap_fraction = the_veff_dual_zbin/the_veff_zbin
 			else:
 				overlap_fraction = 0
+			
+			# at_least_any_two_fraction = 0
+			# the_veff_at_least_any_two_zbin = data_dual[key]['at_least_any_two_veff_bins'][iZ]
+			# if the_veff_at_least_any_two_zbin>0 and the_veff_zbin>0:
+			# 	at_least_any_two_fraction = the_veff_at_least_any_two_zbin/the_veff_zbin	
+
 			the_review_array_veff = ((the_veff_deep*n_deep_review) + (the_veff_shallow*n_shallow_review))*(1/(1+overlap_fraction))
 			# the_review_array_veff = (the_veff_shallow*n_shallow_review)
 			veff['combined_array'] = [the_review_array_veff, 0, 0, 0, 0]

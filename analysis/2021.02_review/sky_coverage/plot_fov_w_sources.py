@@ -55,6 +55,12 @@ c2 = SkyCoord(ra=ra_cena, dec=dec_cena, frame='icrs')
 cena_ra = c2.ra.wrap_at(180 * u.deg).radian
 cena_dec = c2.dec.radian
 
+ra_txs = 77.3582*u.degree
+dec_txs = 5.69314*u.degree
+c3 = SkyCoord(ra=ra_txs, dec=dec_txs, frame='icrs')
+txs_ra = c3.ra.wrap_at(180 * u.deg).radian
+txs_dec = c3.dec.radian
+
 
 def convertCoord(RA, Dec):
     ra = coord.Angle(RA*u.degree)
@@ -85,7 +91,6 @@ y2 = np.array([0.05,0.05,-0.82,-0.82,0.05])
 plt.fill(x,y2,label='200m deep station FOV', facecolor='grey',alpha=0.2)
 # plt.plot(ra_rad, dec_rad, '*',color='gold',markersize=20,mec='firebrick',label='Galactic Center')
 plt.plot(ra_rad, dec_rad, '*',color='black',markersize=15,mec='black')
-# ax.plot(cena_ra, cena_dec,'^',markersize=12,color='m',label='Centaurus A')
 plt.plot(gal_ra.radian[0:2970], -gal_dec.radian[0:2970],color='black',linewidth=2,label='Galactic Plane and Center',zorder=1)
 plt.plot(gal_ra.radian[2980:], -gal_dec.radian[2980:],color='black',linewidth=2,zorder=2)
 marker = itertools.cycle(('>', '+', '<', 'o', '*', 'X')) 
@@ -96,10 +101,10 @@ for index, source in UHECR.iterrows():
     ra_source, dec_source = convertCoord(source['RA'], source['DEC'])
     if(dec_source>0.05 or dec_source<-0.82): continue
     if num_points_plotted==0:
-        ax.plot(ra_source, dec_source,'x', color='C3', mew=2,markersize=10, label='Radio-loud AGN (Rachen \'19)')
+        ax.plot(ra_source, dec_source,'x', color='C0', mew=2,markersize=10, label='Radio-loud AGN (Rachen \'19)')
         num_points_plotted+=1
     else:
-        ax.plot(ra_source, dec_source,'kx',color='C3',mew=2,markersize=10)
+        ax.plot(ra_source, dec_source,'kx',color='C0',mew=2,markersize=10)
 
 lac_ra, lac_dec, source_class, flux, e_flux = get_lac()
 
@@ -126,7 +131,7 @@ for i in range(len(lac_ra)):
 				lac_plot_ra.append(this_ra)
 				lac_plot_dec.append(this_dec)
 
-ax.plot(lac_plot_ra,lac_plot_dec, 'C0+', mew=2, markersize=12, label='Bright 4LAC Blazars')
+ax.plot(lac_plot_ra,lac_plot_dec, 'C2+', mew=2, markersize=12, label='Bright 4LAC Blazars')
 
 
 legend = ax.legend()
@@ -139,6 +144,19 @@ ax.tick_params(direction='out', length=8, width=4, colors='k',
 ax.axes.get_xaxis().set_ticks([-np.pi/3, -2*np.pi/3, -np.pi,0,np.pi/3, 2*np.pi/3, np.pi])
 # plt.gca().set_aspect('0.9', adjustable='box')
 # plt.suptitle("Radio galaxies as UHECR sources \n Rachen & Eichmann",fontsize=20)
+
+# Cen A
+ax.plot(cena_ra, cena_dec,'d',markersize=10,color='C3')
+# Centaurus A∗,201.37,-43.02,300,4,FR-I
+ax.annotate(r'Cen A', xy=(cena_ra*1.135,1.28*cena_dec), xycoords='data',
+	size=15, color='C3')
+
+# TXS
+ax.plot(txs_ra, txs_dec,'d',markersize=10,color='C3')
+# Centaurus A∗,201.37,-43.02,300,4,FR-I
+ax.annotate(r'TXS 0506', xy=(txs_ra*0.87,1.60*txs_dec), xycoords='data',
+	size=15, color='C3')
+
 plt.tight_layout()
 plt.savefig("gen2_fov_w_uhecr_4lac.png", dpi=300)
 

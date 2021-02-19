@@ -4,7 +4,7 @@ import scipy as scipy
 from scipy import interpolate
 
 
-n_deep = 144*0
+n_deep = 144*1
 n_shallow = (169+144)*1
 
 deep_det = 'pa_200m_2.00km'
@@ -13,7 +13,7 @@ filename=f'tabulated_aeff_vs_coszen_review_hybrid.csv'
 
 data = np.genfromtxt(filename, delimiter=',', skip_header=6, names=['czmin', 'daeff', 'saeff', 'frac'])
 
-plot_aeff_vs_zen = False
+plot_aeff_vs_zen = True
 if plot_aeff_vs_zen:
 
 	zen_for_interp = data['czmin']
@@ -43,30 +43,33 @@ if plot_aeff_vs_zen:
 	# ax.plot(data['czmin'], data['daeff']*n_deep, label='deep')
 	# ax.plot(data['czmin'], data['saeff']*n_shallow, label='shallow')
 	# ax.plot(-(data['czmin']+0.05), to_plot)
-	ax.plot(-to_plot_x, to_plot_y)
+	ax.plot(-to_plot_x, to_plot_y, linewidth=4)
 	# 3dB point
-	ax.plot([-1,1],[0.17,0.17], 'C7--')
-	ax.annotate(r'"3dB Point"', xy=(-.95,0.22), xycoords='data', rotation=0, color='C7')
+	ax.plot([-1,1],[0.17,0.17], 'C7--', linewidth=2)
+	ax.annotate(r'"3dB Point"', xy=(-.99,0.20), xycoords='data', 
+		rotation=0, color='C7', fontsize=15)
 
-	ax.plot([-0.67,-0.67],[1e-7,1], 'C7--')
-	ax.annotate(r'$\delta=-42^{\circ}$', xy=(-0.72,1e-2), xycoords='data', rotation=90, color='C7', size=12)
+	ax.plot([-0.67,-0.67],[1e-7,1], 'C7--', linewidth=2)
+	ax.annotate(r'$\delta=-42^{\circ}$', xy=(-0.72,1e-2), xycoords='data', 
+		rotation=90, color='C7', size=15)
 
-	ax.plot([0.025,0.025],[1e-7,1], 'C7--')
-	ax.annotate(r'$\delta=2^{\circ}$', xy=(-0.03,1e-2), xycoords='data', rotation=90, color='C7', size=12)
+	ax.plot([0.025,0.025],[1e-7,1], 'C7--', linewidth=2)
+	ax.annotate(r'$\delta=2^{\circ}$', xy=(-0.03,1e-2), xycoords='data', 
+		rotation=90, color='C7', size=15)
 	
 	# ax.set_xlabel(r'cos($\theta$)')
-	ax.set_xlabel(r'sin($\delta$)',size=15)
-	ax.set_ylabel(r'Aeff [$km^2$]',size=15)
+	ax.set_xlabel(r'sin($\delta$)',size=20)
+	ax.set_ylabel(r'Aeff [$km^2$]',size=20)
 	ax.set_yscale('log')
 	plt.tight_layout()
 	ax.set_ylim([5e-3,0.5])
 	ax.set_xlim([-1,0.25])
-	ax.tick_params(labelsize=12)
-	ax.set_title('1 EeV',fontsize=15)
+	ax.tick_params(labelsize=15)
+	ax.set_title('1 EeV',fontsize=20)
 	plt.tight_layout()
 	fig.savefig('aeff_vs_coszen.png',dpi=300)
 
-doHealpyPlot = True
+doHealpyPlot = False
 if doHealpyPlot:
 
 	# pad a bit to get digitization to work right

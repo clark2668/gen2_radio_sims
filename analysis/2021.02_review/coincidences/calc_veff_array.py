@@ -41,7 +41,7 @@ s_d_match = {}
 for i in range(len(matching_data)):
 	s_d_match[int(matching_data['shallowID'][i])] = int(matching_data['deepID'][i])
 
-deep_only = False
+deep_only = True
 shallow_only = False
 
 if deep_only and shallow_only:
@@ -302,7 +302,7 @@ for flavor in flavors:
 	pkl_file_name = os.path.join('results/overlap_' + path.split("/")[-4] + "_" + trigger_names[0] + "_" + path2.split("/")[-4] + "_" + trigger_names2[0] + "_" + flavor + ".pkl")
 
 	if deep_only:
-		pkl_file_name = os.path.join('results/deep_only_' + flavor + ".pkl")
+		pkl_file_name = os.path.join('results/deep_only_200m_' + flavor + ".pkl")
 	elif shallow_only:
 		pkl_file_name = os.path.join('results/shallow_only_' + flavor + ".pkl")
 

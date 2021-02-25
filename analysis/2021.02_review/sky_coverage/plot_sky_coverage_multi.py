@@ -37,9 +37,11 @@ if plot_aeff_vs_zen:
 		'Surface':s_aeff,
 	}
 
+	cov_fraction = np.zeros((3,9))
+
 	for i, e in enumerate(energies):
-		if e!=17:
-			continue
+		# if e!=17:
+		# 	continue
 
 		interpolator_200 = scipy.interpolate.interp1d(zen_for_interp,d_200_aeff[i],fill_value='extrapolate')
 		interpolator_100 = scipy.interpolate.interp1d(zen_for_interp,d_100_aeff[i],fill_value='extrapolate')
@@ -53,7 +55,7 @@ if plot_aeff_vs_zen:
 
 		# for det in dets:
 		det = '100m'
-		for det in dets:
+		for j, det in enumerate(dets):
 		# if 1==1:
 			
 			# SUPER hacky way to find the 3dB points
@@ -62,34 +64,67 @@ if plot_aeff_vs_zen:
 			maxpoint = np.max(points)
 			points = -np.array([minpoint, maxpoint])
 
-			fig = plt.figure(figsize=(6,5))
-			ax = fig.add_subplot(111)
-			
-			to_plot = dets_dict[det][i] # pick the detector and this energy bin
-			to_plot_x = np.linspace(-1,1,50)
-			to_plot_y = interp_dict[det](to_plot_x)
-			# ax.plot(-zen_for_interp, to_plot, label=det+'raw')
-			ax.plot(-to_plot_x, to_plot_y, label=det+', log10(E)={}'.format(e))
-			start = 1e-1
-			end = 1e3
-			end = 20e4
-			end = 20
-			end = 40
-			ax.plot([points[0], points[0]],[start,end], 'C7--', linewidth=2, label=r'3dB $\delta$={:.2f}$^\circ$'.format(np.rad2deg(np.arcsin(points[0]))))
-			ax.plot([points[1], points[1]],[start,end], 'C7-.', linewidth=2, label=r'3dB $\delta$={:.2f}$^\circ$'.format(np.rad2deg(np.arcsin(points[1]))))
-
 			sky_cov_area = (180./np.pi)*(points[0]-points[1]) *360
+			sky_cov_fraction = sky_cov_area/41252.96125
 
-			ax.legend()
-			ax.set_xlabel(r'sin($\delta$)',size=20)
-			ax.set_ylabel(r'Aeff [$m^2$]',size=20)
-			ax.set_title("Sky coverage {:.2f} sq deg ({:.0f}% of whole sky) ".format(sky_cov_area, 100.*sky_cov_area/41252.96125))
-			# ax.set_ylim(0,1800)
-			# ax.set_ylim(0,40e3)
-			ax.set_ylim(0,80) #1E17
-			ax.tick_params(labelsize=15)
-			plt.tight_layout()
-			fig.savefig('aeff_vs_coszen_det_{}_e_{}.png'.format(det,e),dpi=300)
+			cov_fraction[j][i] = sky_cov_fraction
+
+
+			do_indiv_plot = False
+			if do_indiv_plot:
+				fig = plt.figure(figsize=(6,5))
+				ax = fig.add_subplot(111)
+				
+				to_plot = dets_dict[det][i] # pick the detector and this energy bin
+				to_plot_x = np.linspace(-1,1,50)
+				to_plot_y = interp_dict[det](to_plot_x)
+				# ax.plot(-zen_for_interp, to_plot, label=det+'raw')
+				ax.plot(-to_plot_x, to_plot_y, label=det+', log10(E)={}'.format(e))
+				start = 1e-1
+				end = 1e3
+				end = 20e4
+				end = 20
+				end = 40
+				ax.plot([points[0], points[0]],[start,end], 'C7--', linewidth=2, label=r'3dB $\delta$={:.2f}$^\circ$'.format(np.rad2deg(np.arcsin(points[0]))))
+				ax.plot([points[1], points[1]],[start,end], 'C7-.', linewidth=2, label=r'3dB $\delta$={:.2f}$^\circ$'.format(np.rad2deg(np.arcsin(points[1]))))
+
+				ax.legend()
+				ax.set_xlabel(r'sin($\delta$)',size=20)
+				ax.set_ylabel(r'Aeff [$m^2$]',size=20)
+				ax.set_title("Sky coverage {:.2f} sq deg ({:.0f}% of whole sky) ".format(sky_cov_area, 100.*sky_cov_area/41252.96125))
+				# ax.set_ylim(0,1800)
+				# ax.set_ylim(0,40e3)
+				ax.set_ylim(0,80) #1E17
+				ax.tick_params(labelsize=15)
+				plt.tight_layout()
+				fig.savefig('aeff_vs_coszen_det_{}_e_{}.png'.format(det,e),dpi=300)
+
+
+	plot_energies = np.power(10.,np.linspace(16,20,9))
+	fig = plt.figure(figsize=(6,5))
+	ax = fig.add_subplot(111)
+
+	markers = ['C0o-', 'C1d-', 'C2^-']
+
+	print(cov_fraction[0])
+	print(plot_energies)
+
+
+	for j, det in enumerate(dets):
+		ax.plot(plot_energies[1:], cov_fraction[j][1:], markers[j], label=det)
+
+	ax.set_xscale('log')
+	ax.legend()
+	ax.set_xlabel(r'log$_{10}(E_{\nu})$ [eV]',size=18)
+	ax.set_ylabel(r'Fraction of the Whole Sky',size=18)
+	ax.set_title("'3dB' Sky Coverage Fraction", size=20)
+	# ax.set_ylim(0,1800)
+	# ax.set_ylim(0,40e3)
+	# ax.set_ylim(0,80) #1E17
+	ax.tick_params(labelsize=15)
+	plt.tight_layout()
+	fig.savefig('cov_fraction_vs_energy.png',dpi=300)
+
 
 	# # plot of coverage vs zenith
 	# 

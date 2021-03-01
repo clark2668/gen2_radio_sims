@@ -1,0 +1,15 @@
+log    = /scratch/brianclark/for_tong/$(Process).log
+output = /scratch/brianclark/for_tong/$(Process).out
+error  = /scratch/brianclark/for_tong/$(Process).err
+
+request_cpus = 1
+request_memory = 4GB
+request_disk = 4GB
+Universe = vanilla
+getenv = true
+#+TransferOutput = ""
+ShouldTransferFiles = YES
+
+executable = job.sh
+
+queue

@@ -41,7 +41,7 @@ fig, ax = limits.get_E2_limit_figure(show_ice_cube_EHE_limit=True,
 										show_ice_cube_HESE_data=False,
 										show_ice_cube_HESE_fit=False,
 										show_ice_cube_mu=True,
-										show_anita_I_III_limit=False,
+										show_anita_I_III_limit=True,
 										show_auger_limit=False,
 										diffuse=True, show_grand_10k=False, show_grand_200k=False, show_Heinze=False, show_TA=False,
 										show_ara=False, show_arianna=False, show_IceCubeGen2=False, shower_Auger=False)

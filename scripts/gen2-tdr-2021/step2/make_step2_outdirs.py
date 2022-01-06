@@ -22,8 +22,8 @@ for det_file in det_files:
     energies = 10 ** logEs * units.eV
     flavors = [
         "e", 
-        "mu", 
-        "tau"
+        # "mu", 
+        # "tau"
         ]
 
     do_sim_output_dir = False
@@ -58,13 +58,12 @@ for det_file in det_files:
 
         print("Making scratch dirs")
 
-        scratch_basedir = "/scratch/brianclark/gen2radiosims/trash/"
+        scratch_basedir = "/scratch/brianclark/gen2radiosims/trash/step2/"
 
         for flavor in flavors:
             print("  Working on flavor {}".format(flavor))
 
             scratchdir = os.path.join(scratch_basedir, f"{det_file}", f"{flavor}", "log")
-            print("    Scratch dir will be {}".format(scratchdir))
             if(not os.path.exists(scratchdir)):
                 os.makedirs(scratchdir)
             scratchdir = os.path.join(scratch_basedir, f"{det_file}", f"{flavor}", "err")

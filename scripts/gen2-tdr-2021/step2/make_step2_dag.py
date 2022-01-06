@@ -8,7 +8,11 @@ coszenbins = hp.get_coszenbins()
 logEs = hp.get_logEs()
 energies = 10 ** logEs * units.eV
 
-flavors = ["e", "mu", "tau"]
+flavors = [
+			"e", 
+			# "mu", 
+			# "tau"
+			]
 
 step1dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_input/secondaries_1700km2/step1/"
 step2dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_output/secondaries_1700km2/"

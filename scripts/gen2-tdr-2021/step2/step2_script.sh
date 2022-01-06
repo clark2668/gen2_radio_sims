@@ -31,16 +31,29 @@ inputtarfile_totransfer=${step1dir}/${flavor}/${meta_info}/${inputtarfile}
 globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${inputtarfile_totransfer} ./
 if [ $? -ne 0 ]; then
     echo "$inputtarfile_totransfer file copy failed... abort!"
-    rm ${inputtarfile_totransfer} # remove this so that globus-rul-copy can't leave ghost files
+    rm ${inputtarfile} # remove this so that globus-rul-copy can't leave ghost files
     exit 1
 fi
 
-# if the copy was successful, untar the input file
-tar -xvzf ${inputtarfile}
+if test -f "$inputtarfile"; then
+    # if the copy was successful, untar the input file
+    tar -xvzf ${inputtarfile}
+    rm ${inputtarfile} # we can delete the tar file now, because we should be back to just inputfile
+else
+    echo "Globus URL copy was not sucessful. Get out"
+    exit 1
+fi
+
+if ! test -f "$inputfile"; then
+    echo "The untarred input file ($inputfile) is missing for some reason. Abort!"
+    exit 1
+fi
+
 
 # copy in the relevant detector, config, and simulation files
+detfile_prepend="trigger_Gen2"
 base_support_dir=/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_input/analysis-scripts/gen2-tdr-2021
-globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/detector/${det_file}.json ./
+globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/detector/${detfile_prepend}_${det_file}.json ./
 globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/config/${config_file}.yaml ./
 globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/detsim/${sim_file}.py ./
 
@@ -50,7 +63,7 @@ ls /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/setup.sh
 source /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/setup.sh
 
 # run the python script
-python ${sim_file}.py ${inputfile} trigger_Gen2_${det_file}.json ${config_file}.yaml ${outputfile}
+python ${sim_file}.py ${inputfile} ${detfile_prepend}_${det_file}.json ${config_file}.yaml ${outputfile}
 
 if test -f "$outputfile"; then
 
@@ -63,7 +76,7 @@ if test -f "$outputfile"; then
 
     # bring the results back to the data-warehouse
     outdir=${step2dir}/${det_file}/${config_file}/${sim_file}/${flavor}/${meta_info}
-    globus-url-copy ./*.tar.gz gsiftp://gridftp.icecube.wisc.edu/${outdir}/
+    globus-url-copy ./*gz gsiftp://gridftp.icecube.wisc.edu/${outdir}/
 else
     echo "$outputfile does NOT exist -- simulation failed for some reason"
     exit 1

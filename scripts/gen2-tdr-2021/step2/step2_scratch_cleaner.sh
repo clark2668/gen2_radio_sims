@@ -6,7 +6,7 @@ declare -a flavs=("e" "mu" "tau")
 
 declare -a dirs=("err" "out")
 
-head_dir="/scratch/brianclark/gen2radiosims/trash/"
+head_dir="/scratch/brianclark/gen2radiosims/trash/step2/"
 for det in "${dets[@]}"
 do
 	for flav in "${flavs[@]}"

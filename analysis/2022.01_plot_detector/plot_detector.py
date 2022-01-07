@@ -9,6 +9,102 @@ import scipy as scipy
 import logging
 logging.basicConfig(level=logging.INFO)
 
+def plot_pa_passband():
+
+    # passbands for the phasing
+    passband_low = [96 * units.MHz, 100 * units.GHz]
+    passband_high = [0 * units.MHz, 220 * units.MHz]
+    order_low = 4
+    order_high = 7
+    ripple = 0.1
+    filter_type = 'cheby1'
+
+    ff = np.fft.rfftfreq(1024, 0.5 * units.ns)
+
+    mask = ff > 0
+    b_low, a_low = scipy.signal.cheby1(order_low, ripple, passband_low, 'bandpass', analog=True)
+    w_low, h_low = scipy.signal.freqs(b_low, a_low, ff[mask])
+    b_hi, a_hi = scipy.signal.cheby1(order_high, ripple, passband_high, 'bandpass', analog=True)
+    w_hi, h_hi = scipy.signal.freqs(b_hi, a_hi, ff[mask])
+
+    filt = h_low * h_hi
+    gain = np.abs(filt)
+    phase = np.angle(filt)
+    unwrap = np.unwrap(phase)
+    dF = ff[1]-ff[0]
+    group_delay = np.diff(unwrap)/dF
+
+    fig, axs_filt = plt.subplots(1, 3, figsize=(10,5))
+    axs_filt[0].plot(ff[1:]/units.MHz, 20.*np.log10(gain), color='k')
+    axs_filt[0].set_xlabel("Frequency [MHz]")
+    axs_filt[0].set_ylabel("Gain [dB]")
+
+    axs_filt[1].plot(ff[1:]/units.MHz, unwrap, color='k')
+    axs_filt[1].set_xlabel("Frequency [MHz]")
+    axs_filt[1].set_ylabel("Unwrapped Phase")
+
+    axs_filt[2].plot(ff[2:]/units.MHz, group_delay, color='k')
+    axs_filt[2].set_xlabel("Frequency [MHz]")
+    axs_filt[2].set_ylabel("Group Delay [ns]")
+    fig.tight_layout()
+
+    fig.subplots_adjust(top=0.9)
+    axs_filt[0].set_xlim(0, 300)
+    axs_filt[0].set_ylim([-10,1])
+    axs_filt[1].set_xlim(0,300)
+    axs_filt[2].set_xlim(0,300)
+    fig.suptitle("PA Trigger Antenna Filter")
+    fig.savefig('pa_filter.png', dpi=300, edgecolor='none', bbox_inches='tight')
+
+def plot_lpda_passband():
+
+    # passbands for the phasing
+    passband_low = [1 * units.MHz, 0.15*units.GHz]
+    passband_high = [ 0.08*units.GHz, 800 * units.GHz]
+    order_low = 10
+    order_high = 5
+    ripple = 0.1
+    filter_type = 'cheby1'
+
+    ff = np.fft.rfftfreq(1024, 0.5 * units.ns)
+
+    mask = ff > 0
+    b_low, a_low = scipy.signal.butter(order_low, passband_low, 'bandpass', analog=True)
+    w_low, h_low = scipy.signal.freqs(b_low, a_low, ff[mask])
+    b_hi, a_hi = scipy.signal.butter(order_high, passband_high, 'bandpass', analog=True)
+    w_hi, h_hi = scipy.signal.freqs(b_hi, a_hi, ff[mask])
+
+    filt = h_low * h_hi
+    gain = np.abs(filt)
+    phase = np.angle(filt)
+    unwrap = np.unwrap(phase)
+    dF = ff[1]-ff[0]
+    group_delay = np.diff(unwrap)/dF
+
+    fig, axs_filt = plt.subplots(1, 3, figsize=(10,5))
+    axs_filt[0].plot(ff[1:]/units.MHz, 20.*np.log10(gain), color='k')
+    axs_filt[0].set_xlabel("Frequency [MHz]")
+    axs_filt[0].set_ylabel("Gain [dB]")
+
+    axs_filt[1].plot(ff[1:]/units.MHz, unwrap, color='k')
+    axs_filt[1].set_xlabel("Frequency [MHz]")
+    axs_filt[1].set_ylabel("Unwrapped Phase [rad]")
+
+    axs_filt[2].plot(ff[2:]/units.MHz, group_delay, color='k')
+    axs_filt[2].set_xlabel("Frequency [MHz]")
+    axs_filt[2].set_ylabel("Group Delay [ns]")
+    fig.tight_layout()
+
+    fig.subplots_adjust(top=0.9)
+    axs_filt[0].set_xlim(0, 300)
+    axs_filt[0].set_ylim([-10,1])
+    axs_filt[1].set_xlim(0,300)
+    axs_filt[2].set_xlim(0,300)
+    axs_filt[2].set_ylim(-200,10)
+    fig.suptitle("LPDA Trigger Antenna Filter")
+    fig.savefig('lpda_filter.png', dpi=300, edgecolor='none', bbox_inches='tight')
+
+
 def plot_deep_detectors():
     scale=1000
 

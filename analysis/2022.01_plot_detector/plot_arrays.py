@@ -60,5 +60,5 @@ for detfile in detectors:
     axs.legend(loc='lower right')
     axs.set_aspect('equal')
     fig.tight_layout()
-    fig.savefig('array_{}.pdf'.format(det_shortnames[detfile]), dpi=300)
+    fig.savefig('plots/array_{}.pdf'.format(det_shortnames[detfile]), dpi=300)
 

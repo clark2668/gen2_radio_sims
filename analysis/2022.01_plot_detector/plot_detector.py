@@ -99,13 +99,13 @@ def plot_deep_detectors():
     axs_deep[1].tick_params(labelsize=15)
     
     plt.tight_layout(pad=3.0)
-    fig_deep.savefig('plots/deep_detector.png')
+    fig_deep.savefig('plots/deep_detector.pdf')
 
 
 def plot_shallow_detectors():
     scale=1000
 
-    fig_shallow, axs_shallow = plt.subplots(1, 1, figsize=(10,5))
+    fig_shallow, axs_shallow = plt.subplots(1, 1, figsize=(5,5))
 
     shallow_station_id = 2001
 
@@ -153,7 +153,7 @@ def plot_shallow_detectors():
     axs_shallow.tick_params(labelsize=15)
     axs_shallow.set_aspect('equal')
     plt.tight_layout()
-    fig_shallow.savefig('plots/shallow_detector.png')
+    fig_shallow.savefig('plots/shallow_detector.pdf')
 
 
 plot_deep_detectors()

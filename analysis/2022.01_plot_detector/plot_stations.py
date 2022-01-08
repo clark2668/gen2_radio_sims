@@ -134,7 +134,9 @@ def plot_deep_detectors():
         side_x.append(0)
         side_z.append(loc[2])
     
-    axs_deep[1].plot(side_x, side_z, 'kd', label='8 ch PA', markersize=12)
+    axs_deep[1].plot(side_x, side_z, 'kd', label='8 ch PA', 
+        markerfacecolor='white',
+        markersize=10)
 
     side_x.clear()
     side_z.clear()
@@ -144,7 +146,9 @@ def plot_deep_detectors():
         side_x.append(0)
         side_z.append(loc[2])
     
-    axs_deep[1].plot(side_x, side_z, 'rx', label='4 ch PA', markersize=12)
+    axs_deep[1].plot(side_x, side_z, 'rx', label='4 ch PA', 
+        markersize=12, 
+        markeredgewidth=2)
 
 
     # top down view
@@ -175,13 +179,21 @@ def plot_deep_detectors():
         else:
             axs_deep[0].plot(x_for_plotting, y_for_plotting, 'C0', linewidth=4)
 
-    axs_deep[0].plot([0], [0], 'ro', label='PA String')
+    axs_deep[0].plot([0], [20], 'ro', label='PA String')
+    axs_deep[0].plot([-10*np.sqrt(3), 10*np.sqrt(3)], [-10, -10], 
+        'o',
+        color='red', 
+        markerfacecolor='white',
+        label='Future Reconstruction Strings')
+        
+
 
     # top down view
     axs_deep[0].set_title("Top Down View", size=15)
     axs_deep[0].set_xlabel(r'X [m]', size=15)
     axs_deep[0].set_ylabel(r'Y [m]', size=15)
-    # axs_deep[1].set_xlim([-2.5, 2.5])
+    axs_deep[0].set_xlim([-25, 25])
+    axs_deep[0].set_ylim([-25, 25])
     axs_deep[0].legend(loc='lower left')
     axs_deep[0].tick_params(labelsize=15)
     axs_deep[0].set_aspect('equal')
@@ -253,4 +265,4 @@ def plot_shallow_detectors():
 
 
 plot_deep_detectors()
-plot_shallow_detectors()
+# plot_shallow_detectors()

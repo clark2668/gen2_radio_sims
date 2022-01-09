@@ -10,8 +10,8 @@ energies = 10 ** logEs * units.eV
 
 flavors = [
 			"e", 
-			# "mu", 
-			# "tau"
+			"mu", 
+			"tau"
 			]
 
 step1dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_input/secondaries_1700km2/step1/"
@@ -26,8 +26,8 @@ det_files_dict = {
 det_files_labels = [
 	"gen2r_baseline", 
 	"gen2r_hybrid" , 
-	"gen2r_shallow", 
-	"gen2r_shallowheavy"
+	# "gen2r_shallow", 
+	# "gen2r_shallowheavy"
 	]
 config_file = "config_ARZ2020_noise"
 sim_file = "D01detector_sim"

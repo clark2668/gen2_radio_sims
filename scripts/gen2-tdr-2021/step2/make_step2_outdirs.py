@@ -22,8 +22,8 @@ for det_file in det_files:
     energies = 10 ** logEs * units.eV
     flavors = [
         "e", 
-        # "mu", 
-        # "tau"
+        "mu", 
+        "tau"
         ]
 
     do_sim_output_dir = False
@@ -47,7 +47,7 @@ for det_file in det_files:
                     if(not os.path.exists(folder)):
                         os.makedirs(folder)
     
-    do_scratch_output_dir = False
+    do_scratch_output_dir = True
     if(do_scratch_output_dir):
 
         hostname = os.uname().nodename

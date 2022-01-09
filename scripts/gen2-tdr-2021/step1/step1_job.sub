@@ -5,13 +5,13 @@ error  = /scratch/brianclark/gen2radiosims/trash/$(flavor)/err/step1.$(flavor).$
 request_cpus = 1
 request_memory = 3.5GB
 request_disk = 2GB
-+OriginalTime = 12600
++OriginalTime = 7200
 Universe = vanilla
 getenv = true
 +TransferOutput = ""
 
 use_x509userproxy = true
-Requirements = HAS_CVMFS_icecube_opensciencegrid_org && (OpSysMajorVer =?= 7) && GLIDEIN_SITE!="UMD"
+Requirements = HAS_CVMFS_icecube_opensciencegrid_org && (OpSysMajorVer =?= 7) && GLIDEIN_SITE!="UMD" && GLIDEIN_SITE!="LiDO3_Dortmund"
 
 executable = step1_script.sh
 arguments = $(step0dir) $(step1dir) $(flavor) $(energy) $(czmin) $(czmax) $(part)

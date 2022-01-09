@@ -1,4 +1,4 @@
-#!/bin/bash
+# !/bin/bash
 
 # first, load variables
 step1dir=$1
@@ -21,8 +21,10 @@ meta_info=${flavor}_${energy}eV_${czmin}_${czmax}
 inputfile=in_${meta_info}.part${part}.hdf5
 inputtarfile=${inputfile}.tar.gz
 outputfile=${meta_info}.part${part}.hdf5
+outputfile_nur=${meta_info}.part${part}.nur
 
 # just so we can have access to gridftp
+ls /cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/
 ls /cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh
 eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh`
 
@@ -58,16 +60,21 @@ globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/config/${c
 globus-url-copy gsiftp://gridftp.icecube.wisc.edu/${base_support_dir}/detsim/${sim_file}.py ./
 
 # clear out the python path and source the setup file for gen2 radio simulations
+# perform a huge amount of ls to get cvmfs to load/update stuff...
 unset PYTHONPATH
+ls /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim
 ls /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/setup.sh
 source /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/setup.sh
 
 # run the python script
-python ${sim_file}.py ${inputfile} ${detfile_prepend}_${det_file}.json ${config_file}.yaml ${outputfile}
+python ${sim_file}.py ${inputfile} ${detfile_prepend}_${det_file}.json ${config_file}.yaml ${outputfile} ${outputfile_nur}
 
+ls
+
+# move back the HDF5 file
 if test -f "$outputfile"; then
 
-    echo "$outputfile exists -- continue with tarring and transferring"
+    echo "$outputfile HDF5 exists -- continue with tarring and transferring"
 
     tar -czvf ${outputfile}.tar.gz ${outputfile}
 
@@ -76,9 +83,39 @@ if test -f "$outputfile"; then
 
     # bring the results back to the data-warehouse
     outdir=${step2dir}/${det_file}/${config_file}/${sim_file}/${flavor}/${meta_info}
-    globus-url-copy ./*gz gsiftp://gridftp.icecube.wisc.edu/${outdir}/
+    globus-url-copy ./*.gz gsiftp://gridftp.icecube.wisc.edu/${outdir}/
+    rm ${outputfile}.tar.gz # clean up
+
 else
-    echo "$outputfile does NOT exist -- simulation failed for some reason"
+    echo "$outputfile HDF5 does NOT exist -- simulation failed for some reason"
     exit 1
 fi
 
+# move back the NUR file
+if test -f "$outputfile_nur"; then
+
+    echo "$outputfile_nur NUR exists -- continue with tarring and transferring"
+
+    tar -czvf ${outputfile_nur}.tar.gz ${outputfile_nur}
+
+    # cleanup the input nur file
+    rm in_*.nur
+
+    # bring the results back to the data-warehouse
+    outdir=${step2dir}/${det_file}/${config_file}/${sim_file}/${flavor}/${meta_info}
+    globus-url-copy ./*gz gsiftp://gridftp.icecube.wisc.edu/${outdir}/
+    rm ${outputfile_nur}.tar.gz # clean up 
+else
+    echo "$outputfile_nur NUR does NOT exist -- this doesn't necessarily imply failure, but just be warned"
+fi
+
+# echo "Trying something out here...."
+# echo "This time, WITH py3-v4.1.1"
+# echo "Keeping the py3-v4.1.1 thing running normally, but unset everythinggggg"
+# # env -i `eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh``
+# eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh`
+# source /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/setup.sh
+# # echo "import toml" > testy.py
+# echo "from NuRadioMC.simulation import simulation" > testy.py
+# python testy.py
+# echo "Everything went alright!"

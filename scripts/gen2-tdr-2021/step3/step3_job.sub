@@ -3,13 +3,13 @@ output = /scratch/brianclark/gen2radiosims/trash/step3/step3.$(flavor).$(detlabe
 error  = /scratch/brianclark/gen2radiosims/trash/step3/step3.$(flavor).$(detlabel).$(energy).$(czmin).$(czmax).$(Process).err
 
 request_cpus = 1
-request_memory = 15GB
-request_disk = 30GB
+request_memory = 10GB
+request_disk = 20GB
 Universe = vanilla
 getenv = true
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
-+AccountingGroup="quicktest.$ENV(USER)"
+#+AccountingGroup="quicktest.$ENV(USER)"
 
 executable = step3_script.sh
 arguments = $(step3dir) $(step2dir) $(flavor) $(energy) $(czmin) $(czmax)

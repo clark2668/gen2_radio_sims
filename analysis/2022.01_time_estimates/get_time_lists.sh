@@ -14,5 +14,6 @@ do
     do
         echo $flav
         grep "events processed" $head_dir/$det/$flav/err/* >> times_${det}_${flav}.txt
+        grep "fraction of triggered" $head_dir/$det/$flav/err/* >> triggers_${det}_${flav}.txt
     done
 done

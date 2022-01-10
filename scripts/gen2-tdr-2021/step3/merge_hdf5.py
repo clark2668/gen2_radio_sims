@@ -38,6 +38,10 @@ def merge2(filenames, output_filename):
         else:
             fin = h5py.File(f, 'r', driver='core')
 
+        if not 'n_events' in fin.attrs:
+            fin.close()
+            continue
+
         n_events_total += fin.attrs['n_events']
         logger.debug(f"increasing total number of events by {fin.attrs['n_events']:d} to {n_events_total:d} ")
 

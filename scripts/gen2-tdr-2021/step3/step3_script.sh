@@ -33,11 +33,20 @@ ls
 pyscript=/home/brianclark/Gen2/radio/gen2_radio_sims/scripts/gen2-tdr-2021/step3/merge_hdf5.py
 
 # run directly on the .tar.gz files now
-python $pyscript ${flavor}_${energy}eV_${czmin}_${czmax}.hdf5 *.hdf5.tar.gz
+outfile=${flavor}_${energy}eV_${czmin}_${czmax}.hdf5
+python $pyscript $outfile *.hdf5.tar.gz
 
-# send the merged file back to the source location
-cp ${flavor}_${energy}eV_${czmin}_${czmax}.hdf5 ${step3dir}/${flavor}/.
+if test -f "$outfile"; then
 
+    echo "$outfile HDF5 exists -- continue with tarring and transferring"
+
+    # send the merged file back to the source location
+    cp ${outfile} ${step3dir}/${flavor}/.
+
+else
+    echo "$outfile HDF5 does NOT exist -- simulation failed for some reason"
+    exit 1
+fi
 
 cd $starting
 

@@ -34,7 +34,7 @@ To make the dagman files, do `python make_step2_dag.py`. The major variables to 
 Then you can submit the per flavor simulations by doing `condor_submit_dag dagman_step2_e.dag`.
 
 ### step3
-After all of step 2 is complete, there is a final step which will merge all of the step 2 files in a single zenith bin into a "total" file. The naming convention is `filename.hdf5.partXXXXXX`. If you save them as `filename.partXXXXXX.hdf5`, then `rename.sh` is provided to change the order of the final two parts if you save them differently which was done early during production.
+After all of step 2 is complete, there is a step which will merge all of the step 2 files in a single zenith bin into a "total" file. The naming convention is `filename.part.XXXXXX.hdf5.tar.gz`.
 
 Do `python make_step3_dag.py` to make dag file which can then be submitted by `condor_submit_dag dagman_step3.py`. Note that this step (and this step only!) is designed to be run on the **submit** machine, not **sub-1** at WIPAC. That is, you want to do this with access to the local filesystem, not on the grid.
 

@@ -35,7 +35,7 @@ for flavor in flavors:
 			czen2 = coszenbins[iC + 1]
 			E = energies[iE]
 
-			num_parts, num_events = hp.get_number_of_parts_and_events(flavor, logEs[iE], czen1)
+			num_parts, num_events = hp.get_number_of_parts_and_events_grid(flavor, logEs[iE], czen1)
 			
 			for ijob in range(num_parts):
 				instructions = ""

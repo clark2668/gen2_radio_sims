@@ -15,7 +15,7 @@ flavors = [
 			]
 
 step1dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_input/secondaries_1700km2/step1/"
-step2dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_output/secondaries_1700km2/"
+step2dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_output/secondaries_1700km2/step2/"
 
 det_files_dict = {
 	"gen2r_baseline" : "baseline_array",

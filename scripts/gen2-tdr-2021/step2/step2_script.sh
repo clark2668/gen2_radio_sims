@@ -112,10 +112,10 @@ fi
 # echo "Trying something out here...."
 # echo "This time, WITH py3-v4.1.1"
 # echo "Keeping the py3-v4.1.1 thing running normally, but unset everythinggggg"
-# # env -i `eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh``
 # eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.1.1/setup.sh`
 # source /cvmfs/icecube.opensciencegrid.org/users/brianclark/gen2radiosim/setup.sh
-# # echo "import toml" > testy.py
-# echo "from NuRadioMC.simulation import simulation" > testy.py
+# echo "from past.builtins import xrange" > testy.py
+# # for k, v in os.environ.items():
+#     # print(f'{k}={v}')
 # python testy.py
-# echo "Everything went alright!"
+# echo "all commands run"

@@ -5,13 +5,13 @@ error  = /scratch/brianclark/gen2radiosims/trash/step2/$(detfile)/$(flavor)/err/
 request_cpus = 1
 request_memory = 5.75GB
 request_disk = 5GB
-+OriginalTime = 10800
++OriginalTime = 12600
 Universe = vanilla
-getenv = true
+#getenv = true
 +TransferOutput = ""
 
 use_x509userproxy = true
-Requirements = HAS_CVMFS_icecube_opensciencegrid_org && (OpSysMajorVer =?= 7) && GLIDEIN_SITE!="UMD" && GLIDEIN_SITE!="LiDO3_Dortmund" 
+Requirements = HAS_CVMFS_icecube_opensciencegrid_org && (OpSysMajorVer =?= 7) && GLIDEIN_SITE!="UMD" && GLIDEIN_SITE!="LiDO3_Dortmund"
 
 executable = step2_script.sh
 arguments = $(step1dir) $(step2dir) $(detfile) $(configfile) $(simfile) $(flavor) $(energy) $(czmin) $(czmax) $(part)

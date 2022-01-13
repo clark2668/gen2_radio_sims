@@ -8,8 +8,8 @@ import helper as hp
 det_files = [
     "baseline_array",
     "hex_hybrid_only_array",
-    "hex_shallow_array",
-    "hex_shallowheavy_array"
+    # "hex_shallow_array",
+    # "hex_shallowheavy_array"
 ]
 
 config_file = "config_ARZ2020_noise"
@@ -21,7 +21,7 @@ for det_file in det_files:
     logEs = hp.get_logEs()
     energies = 10 ** logEs * units.eV
     flavors = [
-        "e", 
+        # "e", 
         "mu", 
         "tau"
         ]

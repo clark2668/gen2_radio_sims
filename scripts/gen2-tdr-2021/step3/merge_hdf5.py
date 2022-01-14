@@ -55,10 +55,12 @@ def merge2(filenames, output_filename):
         data[f] = {}
         groups[f] = {}
 
-        key_exclusion_list = ['time_shower_and_ray', 'max_amp_shower_and_ray', 'polarization', 
-            'ray_tracing_C0', 'ray_tracing_C1', 'receive_vectors', 'travel_distances', 
-            'travel_times', 'focusing_factor', 'launch_vectors',
-            'ray_tracing_reflection', 'ray_tracing_reflection_case', 'ray_tracing_solution_type']
+        # key_exclusion_list = ['time_shower_and_ray', 'max_amp_shower_and_ray', 'polarization', 
+        #     'ray_tracing_C0', 'ray_tracing_C1', 'receive_vectors', 'travel_distances', 
+        #     'travel_times', 'focusing_factor', 'launch_vectors',
+        #     'ray_tracing_reflection', 'ray_tracing_reflection_case', 'ray_tracing_solution_type']
+
+        key_exclusion_list = []
 
         for key in fin:
             if isinstance(fin[key], h5py._hl.group.Group):  # loop through station groups

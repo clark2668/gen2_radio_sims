@@ -5,15 +5,21 @@ from NuRadioReco.utilities import units
 import helper as hp
 
 step1dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_input/secondaries_1700km2/step1/"
-step2dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_output/secondaries_1700km2/"
+step2dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_output/secondaries_1700km2/step2"
 base_dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_output/secondaries_1700km2/step3"
 
 det_files = [
     "baseline_array",
     "hex_hybrid_only_array",
-    "hex_shallow_array",
-    "hex_shallowheavy_array"
+    # "hex_shallow_array",
+    # "hex_shallowheavy_array"
 ]
+
+flavors = [
+    "e", 
+    "mu", 
+    "tau"
+    ]
 
 config_file = "config_ARZ2020_noise"
 sim_file = "D01detector_sim"
@@ -30,8 +36,6 @@ for det_file in det_files:
         coszenbins = hp.get_coszenbins()
         logEs = hp.get_logEs()
         energies = 10 ** logEs * units.eV
-
-        flavors = ["e", "mu", "tau"]
 
         for flavor in flavors:
             folder = os.path.join(step3dir, flavor)

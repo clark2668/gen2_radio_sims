@@ -21,7 +21,7 @@ for det_file in det_files:
     logEs = hp.get_logEs()
     energies = 10 ** logEs * units.eV
     flavors = [
-        # "e", 
+        "e", 
         "mu", 
         "tau"
         ]
@@ -33,6 +33,7 @@ for det_file in det_files:
 
         step2dir = os.path.join(base_dir, f"secondaries_1700km2", f"step2", f"{det_file}", f"{config_file}", f"{sim_file}")
         if(not os.path.exists(step2dir)):
+            print("Making {}".format(step2dir))
             os.makedirs(step2dir)
 
         for flavor in flavors:
@@ -45,6 +46,7 @@ for det_file in det_files:
                     print(pattern)
                     folder = os.path.join(step2dir, flavor, f"{pattern}")
                     if(not os.path.exists(folder)):
+                        print("  Making {}".format(step2dir))
                         os.makedirs(folder)
     
     do_scratch_output_dir = False

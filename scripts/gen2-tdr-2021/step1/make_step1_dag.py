@@ -9,7 +9,7 @@ logEs = hp.get_logEs()
 energies = 10 ** logEs * units.eV
 
 flavors = [
-    # "e", 
+    "e", 
     "mu", 
     "tau"
     ]

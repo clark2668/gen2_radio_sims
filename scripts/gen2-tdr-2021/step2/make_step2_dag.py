@@ -9,7 +9,7 @@ logEs = hp.get_logEs()
 energies = 10 ** logEs * units.eV
 
 flavors = [
-            # "e", 
+            "e", 
             "mu", 
             "tau"
             ]
@@ -53,6 +53,8 @@ for det_file_label in det_files_labels:
                 E = energies[iE]
 
                 num_parts, num_events = hp.get_number_of_parts_and_events_grid(flavor, logEs[iE], czen1)
+                pattern = f"{flavor}_{logEs[iE]:.2f}eV_{czen1:.1f}_{czen2:.1f}"
+                print("{}, Parts {}, Events {}".format(pattern, num_parts, num_events))
 
                 for ijob in range(num_parts):
                     instructions = ""

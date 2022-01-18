@@ -6,9 +6,9 @@ import helper as hp
 
 
 det_files = [
-    "baseline_array",
-    "hex_hybrid_only_array",
-    # "hex_shallow_array",
+    # "baseline_array",
+    # "hex_hybrid_only_array",
+    "hex_shallow_array",
     # "hex_shallowheavy_array"
 ]
 
@@ -31,7 +31,7 @@ for det_file in det_files:
 
         base_dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_output/"
 
-        step2dir = os.path.join(base_dir, f"secondaries_1700km2", f"step2", f"{det_file}", f"{config_file}", f"{sim_file}")
+        step2dir = os.path.join(base_dir, f"secondaries_1700km2", f"step2more", f"{det_file}", f"{config_file}", f"{sim_file}")
         if(not os.path.exists(step2dir)):
             print("Making {}".format(step2dir))
             os.makedirs(step2dir)
@@ -49,7 +49,7 @@ for det_file in det_files:
                         print("  Making {}".format(step2dir))
                         os.makedirs(folder)
     
-    do_scratch_output_dir = False
+    do_scratch_output_dir = True
     if(do_scratch_output_dir):
 
         hostname = os.uname().nodename

@@ -1,6 +1,7 @@
 import numpy as np
 from NuRadioReco.utilities import units
 import helper as hp
+import numpy as np
 
 flavors = [
     "e", 
@@ -9,6 +10,8 @@ flavors = [
     ]
 coszenbins = hp.get_coszenbins()
 logEs = hp.get_logEs()
+logEs = np.arange(19.5, 20.1, 0.5)
+print("the loges {}".format(logEs))
 energies = 10 ** logEs * units.eV
 
 step2dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_output/secondaries_1700km2/step2/"

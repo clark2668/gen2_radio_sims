@@ -33,6 +33,13 @@ cp /home/brianclark/Gen2/radio/gen2_radio_sims/scripts/gen2-tdr-2021/step4/dummy
 python step4_standardize.py ${step3dir}/${detfile}/${configfile}/${simfile}/${flavor}/${merged_file} ${out_file} ${energy} ${czmin} ${czmax}
 rm dummy.json
 
-mv *.json ${step4dir}/.
+if test -f "$out_file"; then
+    echo "The output json file -- $out_file -- was made correctly. Continue with transferring"
+
+    mv *.json ${step4dir}/.
+else
+    echo "The ou tptu j son file -- $out_file -- was NOT made correctly. Report failure"
+    exit 1
+fi
 
 cd $starting

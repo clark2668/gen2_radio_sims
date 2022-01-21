@@ -22,19 +22,20 @@ def make_dummy(outfile, energy, czmin, czmax):
     the_data['energy'] = energy
     the_data['energy_max'] = energy
     the_data['energy_min'] = energy
-    
-    # wrie the result out
+        
+    # write the result out
     with open(outfile, 'w') as outfile:
-	    json.dump(the_data, outfile, sort_keys=True, indent=4)
+        json.dump([the_data], outfile, sort_keys=True, indent=4)
 
 
 if __name__ == "__main__":
 
     infile = sys.argv[1]
     outfile = sys.argv[2]
-    energy = sys.argv[3]
-    czmin = sys.argv[4]
-    czmax = sys.argv[5]
+    logenergy = float(sys.argv[3])
+    energy = 10 ** logenergy
+    czmin = float(sys.argv[4])
+    czmax = float(sys.argv[5])
 
     if not os.path.exists(infile):
         print("input file does not exist {}. Need to make a dummy file!".format(infile))

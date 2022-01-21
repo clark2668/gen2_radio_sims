@@ -10,7 +10,6 @@ flavors = [
 
 coszenbins = hp.get_coszenbins()
 logEs = hp.get_logEs()
-# logEs = np.arange(19, 19.1, 0.5)
 logEs = np.arange(16, 20.1, 0.5)
 energies = 10 ** logEs * units.eV
 
@@ -24,9 +23,9 @@ det_files_dict = {
     "gen2r_shallowheavy" : "hex_shallowheavy_array",
 }
 det_files_labels = [
-    "gen2r_baseline", 
+    # "gen2r_baseline", 
     # "gen2r_hybrid" , 
-    # "gen2r_shallow", 
+    "gen2r_shallow", 
     # "gen2r_shallowheavy"
     ]
 config_file = "config_ARZ2020_noise"

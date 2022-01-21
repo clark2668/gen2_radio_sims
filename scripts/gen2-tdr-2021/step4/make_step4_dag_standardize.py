@@ -23,7 +23,7 @@ det_files_dict = {
     "gen2r_shallowheavy" : "hex_shallowheavy_array",
 }
 det_files_labels = [
-    # "gen2r_baseline", 
+    "gen2r_baseline", 
     # "gen2r_hybrid" , 
     "gen2r_shallow", 
     # "gen2r_shallowheavy"

@@ -7,8 +7,8 @@ from helper import trigger_combinations
 from NuRadioMC.utilities import Veff
 
 def make_dummy(outfile, energy, czmin, czmax):
-    thetamin = np.arccos(float(czmin))
-    thetamax = np.arccos(float(czmax))
+    thetamin = np.arccos(float(czmax)) # !! thetamin corresponds to czmax
+    thetamax = np.arccos(float(czmin))
     energy = float(energy)
 
     # open the dummy file full of zeros

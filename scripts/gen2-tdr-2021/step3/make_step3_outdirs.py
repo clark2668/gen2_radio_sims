@@ -9,10 +9,10 @@ step2dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_output/secondarie
 base_dir = "/data/sim/Gen2/radio/2020/gen2-tdr-2021/simulation_output/secondaries_1700km2/step3"
 
 det_files = [
-    "baseline_array",
-    "hex_hybrid_only_array",
+    # "baseline_array",
+    # "hex_hybrid_only_array",
     # "hex_shallow_array",
-    # "hex_shallowheavy_array"
+    "hex_shallowheavy_array"
 ]
 
 flavors = [

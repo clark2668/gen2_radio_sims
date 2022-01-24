@@ -21,10 +21,10 @@ det_names = {
 }
 
 det_shortnames = {
-    "trigger_Gen2_baseline_array.json" : "baseline",
-    "trigger_Gen2_hex_hybrid_only_array.json" : "hybrid",
-    "trigger_Gen2_hex_shallow_array.json" : "shallow",
-    "trigger_Gen2_hex_shallowheavy_array.json" : "shallowheavy"
+    "trigger_Gen2_baseline_array.json" : "baseline_array",
+    "trigger_Gen2_hex_hybrid_only_array.json" : "hex_hybrid_only_array",
+    "trigger_Gen2_hex_shallow_array.json" : "hex_shallow_array",
+    "trigger_Gen2_hex_shallowheavy_array.json" : "hex_shallowheavy_array"
 }
 
 write_files = True

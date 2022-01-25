@@ -123,7 +123,7 @@ for iE, energy in enumerate(energies):
         average_total_veff[iE], average_deep_veff[iE], average_shallow_veff[iE], average_dual_veff[iE],
         average_total_aeff[iE], average_deep_aeff[iE], average_shallow_aeff[iE], average_dual_aeff[iE],
         fraction_deep[iE], fraction_shallow[iE], fraction_dual[iE])
-with open(f'results/coinc_{detector}_deeptrig_{deep_trigger}_shallowtrig_{shallow_trigger}.csv', 'w') as fout:
+with open(f'results/veff_{detector}_deeptrig_{deep_trigger}_shallowtrig_{shallow_trigger}.csv', 'w') as fout:
     fout.write(output_csv)
 
 fig, axs = plt.subplots(1, 2, figsize=(12,6))

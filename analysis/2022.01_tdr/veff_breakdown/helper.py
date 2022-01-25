@@ -168,10 +168,10 @@ def get_review_array():
         filename = f'results/review_array/overlap_{deep_det}_{deep_trigger}_{shallow_det}_{shallow_trigger}_{flavor}.pkl'
         data = pickle.load(open(filename, 'br'))
         for i, key in enumerate(data.keys()): # assume all have the same number of energies
-            veff_total = data[key]['total_veff']
-            veff_deep = data[key]['deep_only_veff']
-            veff_shallow = data[key]['shallow_only_veff']
-            veff_dual = data[key]['dual_veff']
+            veff_total = data[key]['total_veff'] * 0.917  # convert to water equivalent
+            veff_deep = data[key]['deep_only_veff'] * 0.917
+            veff_shallow = data[key]['shallow_only_veff'] * 0.917
+            veff_dual = data[key]['dual_veff'] * 0.917
 
             lint = cross_sections.get_interaction_length(np.power(10., float(key)))
             aeff_total = veff_total/lint

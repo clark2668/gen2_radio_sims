@@ -25,6 +25,8 @@ detsim = "D01detector_sim"
 deep_trigger = 'PA_4channel_100Hz'
 shallow_trigger = 'LPDA_2of4_100Hz'
 
+do_review = True
+
 flavors = [
     "e",
     "mu",
@@ -101,7 +103,6 @@ for iflavor, flavor in enumerate(flavors):
         average_shallow_aeff[iE]+=result[flavor]['shallow_aeff'][iE]/3
         average_dual_aeff[iE]+=result[flavor]['dual_aeff'][iE]/3
 
-do_review = False
 if do_review:
     average_total_veff, average_deep_veff, average_shallow_veff, average_dual_veff, average_total_aeff, average_deep_aeff, average_shallow_aeff, average_dual_aeff = helper.get_review_array()
     detector = 'review array'

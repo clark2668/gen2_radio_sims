@@ -142,19 +142,13 @@ def tmp(filename, hybrid_list, shallow_list, deep_trigger, shallow_trigger):
     return summary
 
 def get_review_array():
-    n_deep = 144*1
-    n_shallow = (169+144)*1
     deep_det = 'pa_200m_2.00km'
     deep_trigger = 'PA_4channel_100Hz'
     shallow_det = 'surface_4LPDA_PA_15m_RNOG_300K_1.00km'
     shallow_trigger = 'LPDA_2of4_100Hz'
 
     flavors = ['e', 'mu', 'tau']
-    energies = np.zeros(9)
-    veffs = np.zeros((3,9))
 
-    data_i = np.genfromtxt(f'results/review_array/tabulated_veff_aeff_review_hybrid.csv', delimiter=',', skip_header=6, names=['logE', 'dveff', 'daff', 'sveff', 'saeff', 'overlap_frac', 'deep_only', 'shallow_only'])
-    energies = np.power(10.,data_i['logE'])
     average_total_veff = np.zeros(9)
     average_deep_veff = np.zeros(9)
     average_shallow_veff = np.zeros(9)
@@ -164,51 +158,71 @@ def get_review_array():
     average_shallow_aeff = np.zeros(9)
     average_dual_aeff = np.zeros(9)
 
-    for iF, flavor in enumerate(flavors):
-        filename = f'results/review_array/overlap_{deep_det}_{deep_trigger}_{shallow_det}_{shallow_trigger}_{flavor}.pkl'
-        data = pickle.load(open(filename, 'br'))
-        for i, key in enumerate(data.keys()): # assume all have the same number of energies
-            veff_total = data[key]['total_veff'] * 0.917  # convert to water equivalent
-            veff_deep = data[key]['deep_only_veff'] * 0.917
-            veff_shallow = data[key]['shallow_only_veff'] * 0.917
-            veff_dual = data[key]['dual_veff'] * 0.917
+    # for iF, flavor in enumerate(flavors):
+    #     filename = f'results/review_array/overlap_{deep_det}_{deep_trigger}_{shallow_det}_{shallow_trigger}_{flavor}.pkl'
+    #     data = pickle.load(open(filename, 'br'))
+    #     for i, key in enumerate(data.keys()): # assume all have the same number of energies
+    #         veff_total = data[key]['total_veff'] * 0.917  # convert to water equivalent
+    #         veff_deep = data[key]['deep_only_veff'] * 0.917
+    #         veff_shallow = data[key]['shallow_only_veff'] * 0.917
+    #         veff_dual = data[key]['dual_veff'] * 0.917
 
-            lint = cross_sections.get_interaction_length(np.power(10., float(key)))
-            aeff_total = veff_total/lint
-            aeff_deep = veff_deep/lint
-            aeff_shallow = veff_shallow/lint
-            aeff_dual = veff_dual/lint
+    #         lint = cross_sections.get_interaction_length(np.power(10., float(key)))
+    #         aeff_total = veff_total/lint
+    #         aeff_deep = veff_deep/lint
+    #         aeff_shallow = veff_shallow/lint
+    #         aeff_dual = veff_dual/lint
 
-            # convert to the right units (I could be more compact than this, but want to be explicit)
-            veff_total = veff_total * 4 * np.pi / units.km**3
-            veff_deep = veff_deep * 4 * np.pi / units.km**3
-            veff_shallow = veff_shallow * 4 * np.pi / units.km**3
-            veff_dual = veff_dual * 4 * np.pi / units.km**3
+    #         # convert to the right units (I could be more compact than this, but want to be explicit)
+    #         veff_total = veff_total * 4 * np.pi / units.km**3
+    #         veff_deep = veff_deep * 4 * np.pi / units.km**3
+    #         veff_shallow = veff_shallow * 4 * np.pi / units.km**3
+    #         veff_dual = veff_dual * 4 * np.pi / units.km**3
 
-            aeff_total = aeff_total * 4 * np.pi / units.km**2
-            aeff_deep = aeff_deep * 4 * np.pi / units.km**2
-            aeff_shallow = aeff_shallow * 4 * np.pi / units.km**2
-            aeff_dual = aeff_dual * 4 * np.pi / units.km**2
+    #         aeff_total = aeff_total * 4 * np.pi / units.km**2
+    #         aeff_deep = aeff_deep * 4 * np.pi / units.km**2
+    #         aeff_shallow = aeff_shallow * 4 * np.pi / units.km**2
+    #         aeff_dual = aeff_dual * 4 * np.pi / units.km**2
 
-            average_total_veff[i] += veff_total
-            average_deep_veff[i] += veff_deep
-            average_shallow_veff[i] += veff_shallow
-            average_dual_veff[i] += veff_dual
+    #         average_total_veff[i] += veff_total
+    #         average_deep_veff[i] += veff_deep
+    #         average_shallow_veff[i] += veff_shallow
+    #         average_dual_veff[i] += veff_dual
 
-            average_total_aeff[i] += aeff_total
-            average_deep_aeff[i] += aeff_deep
-            average_shallow_aeff[i] += aeff_shallow
-            average_dual_aeff[i] += aeff_dual
+    #         average_total_aeff[i] += aeff_total
+    #         average_deep_aeff[i] += aeff_deep
+    #         average_shallow_aeff[i] += aeff_shallow
+    #         average_dual_aeff[i] += aeff_dual
 
-    # turn into flavor average
-    average_total_veff/=3
-    average_deep_veff/=3
-    average_shallow_veff/=3
-    average_dual_veff/=3
-    average_total_aeff/=3
-    average_deep_aeff/=3
-    average_shallow_aeff/=3
-    average_dual_aeff/=3
+    # # turn into flavor average
+    # average_total_veff/=3
+    # average_deep_veff/=3
+    # average_shallow_veff/=3
+    # average_dual_veff/=3
+    # average_total_aeff/=3
+    # average_deep_aeff/=3
+    # average_shallow_aeff/=3
+    # average_dual_aeff/=3
+
+    alternatively
+    n_deep = 144*1
+    n_shallow = (169+144)*1
+
+    data_i = np.genfromtxt(f'results/review_array/tabulated_veff_aeff_review_hybrid.csv', delimiter=',', skip_header=6, names=['logE', 'dveff', 'daeff', 'sveff', 'saeff', 'overlap_frac', 'deep_only', 'shallow_only'])
+    energies = np.power(10.,data_i['logE'])
+
+    average_total_veff = ((data_i['dveff']*n_deep + data_i['sveff']*n_shallow)) * (1/(1+data_i['overlap_frac']))
+    average_total_aeff = ((data_i['daeff']*n_deep + data_i['saeff']*n_shallow)) * (1/(1+data_i['overlap_frac']))
+
+    # result = {}
+    # for flavor in flavors:
+    #     pkl_file_name = f'results/review_array/review_array_dict_{flavor}.pkl'
+    #     with open(pkl_file_name, "rb") as fin:
+    #         data = pickle.load(fin)
+    #         for d in data:
+    #             print(d)
+    #             print('--')
+
 
     return average_total_veff, average_deep_veff, \
             average_shallow_veff, average_dual_veff, \

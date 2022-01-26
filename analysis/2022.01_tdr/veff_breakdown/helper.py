@@ -416,7 +416,7 @@ def get_review_array():
     # average_shallow_aeff/=3
     # average_dual_aeff/=3
 
-    alternatively
+    # alternatively
     n_deep = 144*1
     n_shallow = (169+144)*1
 

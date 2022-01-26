@@ -36,7 +36,7 @@ deep_trigger = 'PA_4channel_100Hz'
 shallow_trigger = 'LPDA_2of4_100Hz'
 mode = the_mode
 
-do_review = False
+do_review = True
 
 flavors = [
     "e",

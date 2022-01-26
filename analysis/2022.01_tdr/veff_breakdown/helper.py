@@ -174,6 +174,21 @@ def tmp(filename, hybrid_list, shallow_list, deep_trigger, shallow_trigger,
     return summary
 
 def tmp_advanced(filename, hybrid_list, shallow_list, deep_trigger, shallow_trigger):
+
+    """Summary or Description of the Function
+
+    Parameters:
+    filename: the name of the merged hdf5 file to be analyzed
+    hybrid_list: an array/list of all the hybrid stations in the array
+    shallow_list: an array/list of all the shallow-nly stations in the array
+    deep_trigger: the string of the deep trigger used
+    shallow_trigger: the string of the shallow trigger used
+
+    Returns:
+    dictionary: dictionary of the energy, czmin, cmax, etc, along with the weights
+
+   """
+
     print("Filename {}".format(filename))
 
     fin = h5py.File(filename, "r")
@@ -220,12 +235,12 @@ def tmp_advanced(filename, hybrid_list, shallow_list, deep_trigger, shallow_trig
         tname_to_index[key] = i
     
     if deep_trigger not in tname_to_index:
-        raise KeyError(f'Hybrid trigger ({deep_trigger}) is not in the hdf5 file list ({tnames})')
+        raise KeyError(f'Deep trigger ({deep_trigger}) is not in the hdf5 file list ({tnames})')
     if shallow_trigger not in tname_to_index:
         raise KeyError(f'Shallow trigger ({shallow_trigger}) is not in the hdf5 file list ({tnames})')
 
 
-    # first, the hybrid station part
+    # first, the hybrid-only part
     for key in fin.keys():
         if(key.startswith("station")):
             hybrid_id = int(key.split('_')[1])
@@ -282,7 +297,7 @@ def tmp_advanced(filename, hybrid_list, shallow_list, deep_trigger, shallow_trig
     hd_hs = 0 # hybrid-deep + hybrid-shallow
     hd_so = 0 # hybrid-deep + shallow-only
     hs_so = 0 # hybrid-shallow + shallow-only
-    all = 0 # hd + hs + so (all at the same time) #
+    all_evs = 0 # hd + hs + so (all at the same time) #
 
     for ev in event_information:
         weight = event_information[ev][0]
@@ -294,7 +309,6 @@ def tmp_advanced(filename, hybrid_list, shallow_list, deep_trigger, shallow_trig
         num_trig_total = trig_hd + trig_hs + trig_so
         if num_trig_total > 0:
             tot_weight+=weight
-
 
         if trig_hd and not trig_hs and not trig_so:
             # print("Condition is hd {}, hs {}, so {}".format(trig_hd, trig_hs, trig_so))
@@ -323,14 +337,19 @@ def tmp_advanced(filename, hybrid_list, shallow_list, deep_trigger, shallow_trig
 
         if trig_hd and trig_hs and trig_so:
             # all three components
-            all+=weight
-        
-    summary['tot_weight'] = tot_weight
-    # summary['deep_only_weight']  = deep_only_weight
-    # summary['shallow_only_weight'] = shallow_only_weight
-    # summary['dual_weight'] = dual_weight
+            all_evs+=weight
+
+    summary['total_weight'] = tot_weight
+    summary['hd_weight']  = hd
+    summary['hs_weight'] = hs
+    summary['so_weight'] = so
+    summary['hd_hs_weight']  = hd_hs
+    summary['hd_so_weight'] = hd_so
+    summary['hs_so_weight'] =  hs_so
+    summary['hd_hs_so_weight'] = all_evs
 
     return summary
+
 
 
 

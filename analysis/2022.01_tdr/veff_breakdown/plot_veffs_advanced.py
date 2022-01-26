@@ -42,16 +42,16 @@ flavors = [
     "tau"
 ]
 
-the_list = ['total', 'hd', 'hs', 'so', 'hd_hs', 'hd_so', 'hs_so', 'hd_hs_so']
+the_list = ['total', 'hd', 'hs', 'ss', 'hd_hs', 'hd_ss', 'hs_ss', 'hd_hs_ss']
 labels_dict = {
     'total': 'Total',
     'hd': 'HD: Hybrid-Deep',
     'hs': 'HS: Hybrid-Shallow',
-    'so': 'SO: Shallow-Only',
+    'ss': 'SS: Surface-Shallow',
     'hd_hs': 'HD-HS: Hybrid-Deep + Hybrid-Shallow',
-    'hd_so': 'HD-SO: Hybrid-Deep + Shallow-Only',
-    'hs_so': 'HS-SO: Hybrid-Shallow + Shallow-Only',
-    'hd_hs_so': 'HD-HS-SO: All Components'
+    'hd_ss': 'HD-SS: Hybrid-Deep + Surface-Shallow',
+    'hs_ss': 'HS-SS: Hybrid-Shallow + Surface-Shallow',
+    'hd_hs_ss': 'HD-HS-SS: All Components'
 }
 
 result = {}
@@ -174,4 +174,4 @@ fig.savefig(outfilename)
 # 3) the surface-only only
 # 4) all cross-terms
 
-the_list = ['total', 'hd', 'hs', 'so', 'hd_hs', 'hd_so', 'hs_so', 'hd_hs_so']
+the_list = ['total', 'hd', 'hs', 'ss', 'hd_hs', 'hd_ss', 'hs_ss', 'hd_hs_ss']

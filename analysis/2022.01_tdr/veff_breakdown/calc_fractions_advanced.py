@@ -66,7 +66,7 @@ for flavor in flavors:
         total_veff[f"{logE:.1f}"] = {}
         num_zen_bins = 20
 
-        the_list = ['total', 'hd', 'hs', 'so', 'hd_hs', 'hd_so', 'hs_so', 'hd_hs_so']
+        the_list = ['total', 'hd', 'hs', 'ss', 'hd_hs', 'hd_ss', 'hs_ss', 'hd_hs_ss']
         all_sky = {}
         binned = {}
         for l in the_list:

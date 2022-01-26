@@ -293,60 +293,60 @@ def tmp_advanced(filename, hybrid_list, shallow_list, deep_trigger, shallow_trig
     tot_weight = 0
     hd = 0 # hybrid-deep only #
     hs = 0 # hybrid-shallow only #
-    so = 0 # shallow-only #
+    ss = 0 # shallow-only #
     hd_hs = 0 # hybrid-deep + hybrid-shallow
-    hd_so = 0 # hybrid-deep + shallow-only
-    hs_so = 0 # hybrid-shallow + shallow-only
-    all_evs = 0 # hd + hs + so (all at the same time) #
+    hd_ss = 0 # hybrid-deep + shallow-only
+    hs_ss = 0 # hybrid-shallow + shallow-only
+    all_evs = 0 # hd + hs + ss (all at the same time) #
 
     for ev in event_information:
         weight = event_information[ev][0]
         trig_hd = event_information[ev][1]
         trig_hs = event_information[ev][2]
-        trig_so = event_information[ev][3]
+        trig_ss = event_information[ev][3]
 
 
-        num_trig_total = trig_hd + trig_hs + trig_so
+        num_trig_total = trig_hd + trig_hs + trig_ss
         if num_trig_total > 0:
             tot_weight+=weight
 
-        if trig_hd and not trig_hs and not trig_so:
+        if trig_hd and not trig_hs and not trig_ss:
             # print("Condition is hd {}, hs {}, so {}".format(trig_hd, trig_hs, trig_so))
             # only hybrid deep
             hd+=weight
 
-        if trig_hs and not trig_hd and not trig_so:
+        if trig_hs and not trig_hd and not trig_ss:
             # only hybrid shallow
             hs+=weight
 
-        if trig_so and not trig_hd and not trig_hs:
+        if trig_ss and not trig_hd and not trig_hs:
             # only shallow only
-            so+=weight
+            ss+=weight
         
-        if (trig_hd and trig_hs) and not trig_so:
+        if (trig_hd and trig_hs) and not trig_ss:
             # hybrid deep + hybrid shallow
             hd_hs+=weight
 
-        if (trig_hd and trig_so) and not trig_hs:
+        if (trig_hd and trig_ss) and not trig_hs:
             # hybrid deep + shallow only
-            hd_so+=weight
+            hd_ss+=weight
 
-        if (trig_hs and trig_so) and not trig_hd:
+        if (trig_hs and trig_ss) and not trig_hd:
             # hybrid shallow + shallow only
-            hs_so+=weight
+            hs_ss+=weight
 
-        if trig_hd and trig_hs and trig_so:
+        if trig_hd and trig_hs and trig_ss:
             # all three components
             all_evs+=weight
 
     summary['total_weight'] = tot_weight
     summary['hd_weight']  = hd
     summary['hs_weight'] = hs
-    summary['so_weight'] = so
+    summary['ss_weight'] = ss
     summary['hd_hs_weight']  = hd_hs
-    summary['hd_so_weight'] = hd_so
-    summary['hs_so_weight'] =  hs_so
-    summary['hd_hs_so_weight'] = all_evs
+    summary['hd_ss_weight'] = hd_ss
+    summary['hs_ss_weight'] =  hs_ss
+    summary['hd_hs_ss_weight'] = all_evs
 
     return summary
 

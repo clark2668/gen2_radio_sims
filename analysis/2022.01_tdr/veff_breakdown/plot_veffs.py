@@ -125,11 +125,11 @@ fraction_shallow = average_shallow_veff/average_total_veff
 fraction_dual = average_dual_veff/average_total_veff
 
 if mode == 'deepshallow':
-    sub1 = 'deep-only'
-    sub2 = 'shallow'
+    sub1 = 'Deep Trigger'
+    sub2 = 'Shallow Trigger'
 elif mode == 'hybridshallow':
-    sub1 = 'hybrid'
-    sub2 = 'shallow-only'
+    sub1 = 'Hybrid Station'
+    sub2 = 'Surface Stations'
 
 output_csv = f'log10(energy [eV]), veff total [km^3 sr water equiv], veff {sub1} only, veff shallow only, veff coincidence, '
 output_csv += f'aeff total [km^2 sr water equiv], aeff {sub1} only, aeff shallow only, aeff coincidence, '
@@ -154,7 +154,7 @@ fig.suptitle(f"{detector}")
 axs[0].plot(xx, average_deeporhybrid_aeff+average_shallow_aeff+average_dual_aeff, styles[3], label='Sum')
 axs[0].plot(xx, average_deeporhybrid_aeff, styles[0], label=f'{sub1} component')
 axs[0].plot(xx, average_shallow_aeff, styles[1], label=f'{sub2} component')
-axs[0].plot(xx, average_dual_aeff, styles[2], label=f'{sub1}-{sub2} coincidence')
+axs[0].plot(xx, average_dual_aeff, styles[2], label=f'{sub1} + {sub2} coincidence')
 axs[0].set_yscale('log')
 axs[0].set_xlabel("log10(energy [eV])")
 axs[0].set_ylabel(r"[km$^2$ * str]")
@@ -165,7 +165,7 @@ axs[0].legend(loc='lower right')
 
 axs[1].plot(xx, fraction_deeporhybrid, styles[0], label=f'{sub1} component')
 axs[1].plot(xx, fraction_shallow, styles[1], label=f'{sub2} component')
-axs[1].plot(xx, fraction_dual, styles[2], label=f'{sub1}-{sub2} coincidence')
+axs[1].plot(xx, fraction_dual, styles[2], label=f'{sub1} + {sub2} coincidence')
 axs[1].plot(xx, fraction_deeporhybrid+fraction_shallow+fraction_dual, styles[3], label='Sum')
 axs[1].set_ylim([0, 1.1])
 axs[1].set_xlabel("log10(energy [eV])")

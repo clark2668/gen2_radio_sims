@@ -51,7 +51,7 @@ coszen_to_bin = {}
 for iZ, czen1 in enumerate(zen_bins[:-1]):
     coszen_to_bin[f"{czen1:.1f}"] = iZ
 logEs = np.arange(16, 20.1, 0.5)
-n_cores = 15
+n_cores = 10
 
 local_func = partial(helper.tmp, 
     hybrid_list=hybrid_list, 

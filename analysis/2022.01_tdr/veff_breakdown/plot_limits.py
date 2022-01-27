@@ -9,17 +9,16 @@ livetime = 10 * units.year
 uptime = 0.9
 
 detectors = [
+    "review_array",
     "baseline_array",
     "hex_hybrid_only_array",
     "hex_shallow_array",
     "hex_shallowheavy_array",
-    "review_array"
 ]
 
 config = "config_ARZ2020_noise"
 detsim = "D01detector_sim"
-deep_trigger = 'PA_4channel_100Hz'
-shallow_trigger = 'LPDA_2of4_100Hz'
+
 
 fig, ax = limits.get_E2_limit_figure(show_ice_cube_EHE_limit=True,
 										show_ice_cube_HESE_data=False,
@@ -31,53 +30,83 @@ fig, ax = limits.get_E2_limit_figure(show_ice_cube_EHE_limit=True,
                                         show_grand_200k=False, show_Heinze=False, show_TA=False,
 										show_ara=False, show_arianna=False, shower_Auger=False)
 
-detector = detectors[0]
-data_baseline = np.genfromtxt(f'results/veff_{detector}_deeptrig_{deep_trigger}_shallowtrig_{shallow_trigger}.csv', 
-    delimiter=',', skip_header=1, 
-    names=['logE', 'veff', 'dveff', 'sveff', 'coincveff', 'aeff', 'daeff', 'saeff', 'coincaeff', 'fdeep', 'fshallow', 'fcoinc'])
-energies = np.power(10.,data_baseline['logE'])
+fig2, ax_veff = plt.subplots(1, 2, figsize=(12,6))
 
-limit_hex = fluxes.get_limit_e2_flux(energy=energies*units.eV, 
-                                        veff_sr=data_baseline['veff']*units.km**3*units.sr, 
-                                        livetime=livetime*uptime, upperLimOnEvents=1)
-l1, = ax.plot(energies/limits.plotUnitsEnergy, limit_hex/limits.plotUnitsFlux, 
-    'C2--', linewidth=3, 
-    label='{}, {} yrs, {}% uptime'.format(detector,livetime/units.year, uptime*100))
+linestyle=['dotted', 'dashed', 'dashdot', (0, (5, 10))]
 
-detector = detectors[2]
-data_hex = np.genfromtxt(f'results/veff_{detector}_deeptrig_{deep_trigger}_shallowtrig_{shallow_trigger}.csv', 
-    delimiter=',', skip_header=1, 
-    names=['logE', 'veff', 'dveff', 'sveff', 'coincveff', 'aeff', 'daeff', 'saeff', 'coincaeff', 'fdeep', 'fshallow', 'fcoinc'])
-energies = np.power(10.,data_hex['logE'])
-
-limit_hex = fluxes.get_limit_e2_flux(energy=energies*units.eV, 
-                                        veff_sr=data_hex['veff']*units.km**3*units.sr, 
-                                        livetime=livetime*uptime, upperLimOnEvents=1)
-l2, = ax.plot(energies/limits.plotUnitsEnergy, limit_hex/limits.plotUnitsFlux, 
-    'C1-.', linewidth=3,
-    label='{}, {} yrs, {}% uptime'.format(detector,livetime/units.year, uptime*100))
-
-detector = detectors[4]
+# plot the review array
+det = 'review'
 deep_trigger = 'review'
 shallow_trigger = 'review'
-data_review = np.genfromtxt(f'results/veff_{detector}_deeptrig_{deep_trigger}_shallowtrig_{shallow_trigger}.csv', 
+
+data_review = np.genfromtxt(f'results/veff_{det}_deeptrig_{deep_trigger}_shallowtrig_{shallow_trigger}_mode_hybridshallow.csv', 
     delimiter=',', skip_header=1, 
     names=['logE', 'veff', 'dveff', 'sveff', 'coincveff', 'aeff', 'daeff', 'saeff', 'coincaeff', 'fdeep', 'fshallow', 'fcoinc'])
 energies = np.power(10.,data_review['logE'])
-
 limit_review = fluxes.get_limit_e2_flux(energy=energies*units.eV, 
                                         veff_sr=data_review['veff']*units.km**3*units.sr, 
                                         livetime=livetime*uptime, upperLimOnEvents=1)
-l3, = ax.plot(energies/limits.plotUnitsEnergy, limit_review/limits.plotUnitsFlux, 
-    'C4:', linewidth=3,
-    label='{}, {} yrs, {}% uptime'.format(detector,livetime/units.year, uptime*100))
+ax.plot(energies/limits.plotUnitsEnergy, limit_review/limits.plotUnitsFlux, 
+    'C4-', linewidth=3,
+    label='{}, {} yrs, {}% uptime'.format(det,livetime/units.year, uptime*100))
+ax_veff[0].plot(energies, data_review['veff'],
+    'C4-',
+    label='{}'.format(det)
+    )
 
+# now plot everything else
+deep_trigger = 'PA_4channel_100Hz'
+shallow_trigger = 'LPDA_2of4_100Hz'
+
+for i, det in enumerate(detectors[1:]):
+    data = np.genfromtxt(f'results/veff_{det}_deeptrig_{deep_trigger}_shallowtrig_{shallow_trigger}_mode_deepshallow.csv', 
+        delimiter=',', skip_header=1, 
+        names=['logE', 'veff', 'dveff', 'sveff', 'coincveff', 'aeff', 'daeff', 'saeff', 'coincaeff', 'fdeep', 'fshallow', 'fcoinc'])
+    energies = np.power(10.,data['logE'])
+
+    limit = fluxes.get_limit_e2_flux(energy=energies*units.eV, 
+                                        veff_sr=data['veff']*units.km**3*units.sr, 
+                                        livetime=livetime*uptime, upperLimOnEvents=1)
+    l = ax.plot(energies/limits.plotUnitsEnergy, 
+        limit/limits.plotUnitsFlux, 
+        linewidth=3, 
+        linestyle=linestyle[i],
+        label='{}, {} yrs, {}% uptime'.format(det,livetime/units.year, uptime*100)
+        )
+
+    ax_veff[0].plot(energies, data['veff'],
+        linestyle=linestyle[i], linewidth=3,
+        label='{}'.format(det)
+        )
+
+    ax_veff[1].plot(energies, data['veff']/data_review['veff'],
+        linestyle=linestyle[i],linewidth=3,
+        label='{}'.format(det)
+    )
 
 ax.plot([np.power(10., 17.5), np.power(10., 19)], [3E-10, 3E-10], 'r-', linewidth=3)
 ax.plot([30E15], [1E-9], 'rx', markersize=10, markeredgewidth=3)
 
-ax.legend(handles=[l1, l2, l3], loc='upper right')
+# ax.legend(handles=[l1, l2, l3], loc='upper right')
+ax.legend(loc='upper right')
 ax.set_ylim([1E-10, 1E-8])
 ax.set_xlim([1E15, 1E21])
 ax.set_title('Trigger Level')
 fig.savefig('limit_v2.png')
+
+# ax_veff.set_xlim([1E15, 1E21])
+# ax_veff.set_ylim([1E-1, 1E4])
+ax_veff[0].set_xscale('log')
+ax_veff[0].set_yscale('log')
+ax_veff[0].set_title("Trigger Level Effective Volume")
+ax_veff[0].set_xlabel('neutrino energy eV')
+ax_veff[0].set_ylabel(r'Effective Volume [km$^3$ str w.e.]')
+
+ax_veff[1].set_xscale('log')
+ax_veff[1].set_title("New Array Veff / Feb 2021 Review Array Veff")
+ax_veff[1].set_xlabel('neutrino energy eV')
+ax_veff[1].set_ylabel(r'Ratio')
+ax_veff[1].legend(loc='upper right')
+
+fig2.tight_layout()
+fig2.savefig('all_veffs.png')

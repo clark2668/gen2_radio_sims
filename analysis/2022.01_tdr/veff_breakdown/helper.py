@@ -441,3 +441,42 @@ def get_review_array():
             average_total_aeff, average_deep_aeff, \
             average_shallow_aeff, average_dual_aeff
 
+def stepped_path(edges, bins):
+    
+    """
+    Create a stepped path suitable for histogramming
+    :param edges: bin edges
+    :param bins: bin contents
+    """
+    if len(edges) != len(bins) + 1:
+        raise ValueError("edges must be 1 element longer than bins")
+
+    x = np.zeros((2 * len(edges)))
+    y = np.zeros((2 * len(edges)))
+
+    x[0::2], x[1::2] = edges, edges
+    y[1:-1:2], y[2::2] = bins, bins
+    return x,y
+
+
+def get_gen2opticaleheaeffs_flavor(flavor):
+    f = np.load("data/Gen2_EHE_effective_area_{}.npz".format(flavor))
+    cos_theta = f['cos_theta_bins']
+    energies = f['energy_bins']
+
+    areas = f['area_in_sqm']
+    areas = np.asarray(areas)
+    areas_vs_energy_zenith = np.sum(areas, axis=1)
+    areas_vs_energy = np.sum(areas_vs_energy_zenith, axis=0) / len(cos_theta) * np.pi
+    
+    return energies, areas_vs_energy
+
+def get_gen2opticalehe():
+    
+    energies, e_aeff = get_gen2opticaleheaeffs_flavor('e')
+    energies, mu_aeff = get_gen2opticaleheaeffs_flavor('mu')
+    energies, tau_aeff = get_gen2opticaleheaeffs_flavor('tau')
+
+    aeff = (e_aeff + mu_aeff + tau_aeff)/3.
+    return energies, aeff
+

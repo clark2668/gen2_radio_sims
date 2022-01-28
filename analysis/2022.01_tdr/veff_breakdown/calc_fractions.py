@@ -75,6 +75,8 @@ for flavor in flavors:
         combined_deeporhybrid_only_veff_bins = np.zeros(20)
         combined_shallow_only_veff_bins = np.zeros(20)
         combined_dual_veff_bins = np.zeros(20)
+        n_thrown = 0
+        trig_weight = 0
         
         print("Flavor {}, logE {}".format(flavor, logE))
 
@@ -100,11 +102,15 @@ for flavor in flavors:
             combined_deeporhybrid_only_veff += result['deeporhybrid_only_weight']/result['n_events'] * result['volume']
             combined_shallow_only_veff += result['shallow_only_weight']/result['n_events'] * result['volume']
             combined_dual_veff += result['dual_weight']/result['n_events'] * result['volume']
+            n_thrown += result['n_events']
+            trig_weight += result['tot_weight']
 
         total_veff[f"{logE:.1f}"]['total_veff'] = gwe(combined_total_veff/num_zen_bins)
         total_veff[f"{logE:.1f}"]['deeporhybrid_only_veff'] = gwe(combined_deeporhybrid_only_veff/num_zen_bins)
         total_veff[f"{logE:.1f}"]['shallow_only_veff'] = gwe(combined_shallow_only_veff/num_zen_bins)
         total_veff[f"{logE:.1f}"]['dual_veff'] = gwe(combined_dual_veff/num_zen_bins)
+        total_veff[f"{logE:.1f}"]['n_thrown'] = n_thrown
+        total_veff[f"{logE:.1f}"]['trig_weight'] = trig_weight
 
         # binned by veff
         total_veff[f"{logE:.1f}"]['czmins'] = zen_bins[:-1]

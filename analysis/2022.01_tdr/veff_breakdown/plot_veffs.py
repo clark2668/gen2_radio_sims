@@ -36,7 +36,7 @@ deep_trigger = 'PA_4channel_100Hz'
 shallow_trigger = 'LPDA_2of4_100Hz'
 mode = the_mode
 
-do_review = True
+do_review = False
 
 flavors = [
     "e",
@@ -54,7 +54,9 @@ for flavor in flavors:
                     'total_aeff': [],
                     'deeporhybrid_aeff': [],
                     'shallow_aeff': [],
-                    'dual_aeff': []
+                    'dual_aeff': [],
+                    'n_thrown': [],
+                    'trig_weight': []
                     }
     
     pkl_file_name = os.path.join('results/overlap_' + detector + "_deeptrig_" + deep_trigger + "_shallowtrig_" + shallow_trigger + "_mode_"+ mode+'_' + flavor + ".pkl")
@@ -93,6 +95,8 @@ for flavor in flavors:
         result[flavor]['deeporhybrid_aeff'].append(aeff_deeporhybrid)
         result[flavor]['shallow_aeff'].append(aeff_shallow)
         result[flavor]['dual_aeff'].append(aeff_dual)
+        result[flavor]['n_thrown'].append(value['n_thrown'])
+        result[flavor]['trig_weight'].append(value['trig_weight'])
 
 energies = result['e']['E']
 average_total_veff = np.zeros(9)
@@ -103,6 +107,8 @@ average_total_aeff = np.zeros(9)
 average_deeporhybrid_aeff = np.zeros(9)
 average_shallow_aeff = np.zeros(9)
 average_dual_aeff = np.zeros(9)
+total_n_thrown = np.zeros(9)
+total_trig_weight = np.zeros(9)
 for iflavor, flavor in enumerate(flavors):
     for iE, energy in enumerate(energies):
         average_total_veff[iE]+=result[flavor]['total_veff'][iE]/3
@@ -113,6 +119,8 @@ for iflavor, flavor in enumerate(flavors):
         average_deeporhybrid_aeff[iE]+=result[flavor]['deeporhybrid_aeff'][iE]/3
         average_shallow_aeff[iE]+=result[flavor]['shallow_aeff'][iE]/3
         average_dual_aeff[iE]+=result[flavor]['dual_aeff'][iE]/3
+        total_n_thrown[iE]+=result[flavor]['n_thrown'][iE]
+        total_trig_weight[iE]+=result[flavor]['trig_weight'][iE]
 
 if do_review:
     average_total_veff, average_deeporhybrid_veff, average_shallow_veff, average_dual_veff, average_total_aeff, average_deeporhybrid_aeff, average_shallow_aeff, average_dual_aeff = helper.get_review_array()
@@ -143,6 +151,15 @@ for iE, energy in enumerate(energies):
         fraction_deeporhybrid[iE], fraction_shallow[iE], fraction_dual[iE])
 with open(f'results/veff_{detector}_deeptrig_{deep_trigger}_shallowtrig_{shallow_trigger}_mode_{mode}.csv', 'w') as fout:
     fout.write(output_csv)
+
+output_csv_2 = 'energy, num thrown, total trig weight \n'
+for iE, energy in enumerate(energies):
+    output_csv_2 += '{:.1f}, {}, {} \n'.format(
+        float(energy), total_n_thrown[iE], total_trig_weight[iE])
+with open(f'results/stats_{detector}_deeptrig_{deep_trigger}_shallowtrig_{shallow_trigger}.csv', 'w') as fout2:
+    fout2.write(output_csv_2)
+
+
 
 fig, axs = plt.subplots(1, 2, figsize=(12,6))
 colors = ['C0', 'C1', 'C2']

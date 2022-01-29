@@ -133,8 +133,8 @@ fraction_shallow = average_shallow_veff/average_total_veff
 fraction_dual = average_dual_veff/average_total_veff
 
 if mode == 'deepshallow':
-    sub1 = 'Deep Trigger'
-    sub2 = 'Shallow Trigger'
+    sub1 = 'Deep'
+    sub2 = 'Shallow'
 elif mode == 'hybridshallow':
     sub1 = 'Hybrid Station'
     sub2 = 'Surface Stations'
@@ -164,14 +164,16 @@ with open(f'results/stats_{detector}_deeptrig_{deep_trigger}_shallowtrig_{shallo
 fig, axs = plt.subplots(1, 2, figsize=(12,6))
 colors = ['C0', 'C1', 'C2']
 markers = ['o', 's', '^']
-styles = ['C0o-', 'C1s--', 'C2^-.', 'C3v:']
+styles = ['C0o-', 'C1s--', 'C2^-.', 'C3v:', 'C4>-', 'C5<--']
 xx = result[flavor]['E']
 fig.suptitle(f"{detector}")
 
 axs[0].plot(xx, average_deeporhybrid_aeff+average_shallow_aeff+average_dual_aeff, styles[3], label='Sum')
-axs[0].plot(xx, average_deeporhybrid_aeff, styles[0], label=f'{sub1} component')
-axs[0].plot(xx, average_shallow_aeff, styles[1], label=f'{sub2} component')
+axs[0].plot(xx, average_deeporhybrid_aeff, styles[0], label=f'{sub1}-only component')
+axs[0].plot(xx, average_shallow_aeff, styles[1], label=f'{sub2}-only component')
 axs[0].plot(xx, average_dual_aeff, styles[2], label=f'{sub1} + {sub2} coincidence')
+axs[0].plot(xx, average_deeporhybrid_aeff + average_dual_aeff, styles[4], label=f'{sub1}-inclusive component')
+axs[0].plot(xx, average_shallow_aeff + average_dual_aeff, styles[5], label=f'{sub2}-inclusive component')
 axs[0].set_yscale('log')
 axs[0].set_xlabel("log10(energy [eV])")
 axs[0].set_ylabel(r"[km$^2$ * str]")
@@ -180,10 +182,12 @@ axs[0].set_ylim([1E-5,1E2])
 axs[0].legend(loc='lower right')
 
 
-axs[1].plot(xx, fraction_deeporhybrid, styles[0], label=f'{sub1} component')
-axs[1].plot(xx, fraction_shallow, styles[1], label=f'{sub2} component')
+axs[1].plot(xx, fraction_deeporhybrid, styles[0], label=f'{sub1}-only component')
+axs[1].plot(xx, fraction_shallow, styles[1], label=f'{sub2}-only component')
 axs[1].plot(xx, fraction_dual, styles[2], label=f'{sub1} + {sub2} coincidence')
 axs[1].plot(xx, fraction_deeporhybrid+fraction_shallow+fraction_dual, styles[3], label='Sum')
+axs[1].plot(xx, fraction_deeporhybrid+fraction_dual, styles[4], label=f'{sub1}-inclusive component')
+axs[1].plot(xx, fraction_shallow+fraction_dual, styles[5], label='{sub2}-inclusive component')
 axs[1].set_ylim([0, 1.1])
 axs[1].set_xlabel("log10(energy [eV])")
 axs[1].set_ylabel("Fraction")
@@ -191,3 +195,58 @@ axs[1].set_title("Fraction of the All-Sky Effective Area")
 fig.tight_layout(pad=2)
 outfilename = f'plots/veff_fractions_{detector}_deeptrig_{deep_trigger}_shallowtrig_{shallow_trigger}_mode_{mode}.png'
 fig.savefig(outfilename)
+
+## for christian
+from radiotools import plthelpers as php
+fig, (ax, ax2) = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios': [3, 2]})
+
+fixer = 4*np.pi
+average_deeporhybrid_veff/=fixer
+average_shallow_veff/=fixer
+average_dual_veff/=fixer
+
+xx_new = []
+for x in xx:
+    xx_new.append(float(x))
+xx = xx_new
+
+xx = np.power(10., np.asarray(xx))
+ax.plot(xx, average_deeporhybrid_veff+average_shallow_veff+average_dual_veff, php.get_color_linestyle(0), label='Sum')
+ax.plot(xx, average_deeporhybrid_veff, php.get_color_linestyle(1), label=f'{sub1}-only')
+ax.plot(xx, average_shallow_veff, php.get_color_linestyle(2), label=f'{sub2}-only')
+ax.plot(xx, average_dual_veff, php.get_color_linestyle(3), label=f'{sub1} + {sub2} coincidence')
+ax.plot(xx, average_deeporhybrid_veff + average_dual_veff, php.get_color_linestyle(4), label=f'{sub1}-inclusive')
+ax.plot(xx, average_shallow_veff + average_dual_veff, php.get_color_linestyle(5), label=f'{sub2}-inclusive')
+
+ax2.plot(xx, fraction_deeporhybrid, php.get_color_linestyle(1), label=f'{sub1}-only component')
+ax2.plot(xx, fraction_shallow, php.get_color_linestyle(2), label=f'{sub2}-only component')
+ax2.plot(xx, fraction_dual, php.get_color_linestyle(3), label=f'{sub1} + {sub2} coincidence')
+ax2.plot(xx, fraction_deeporhybrid+fraction_dual, php.get_color_linestyle(4), label=f'{sub1}-inclusive component')
+ax2.plot(xx, fraction_shallow+fraction_dual, php.get_color_linestyle(5), label=f'{sub2}-inclusive component')
+
+# ax2.plot(xx, fraction_deeporhybrid+fraction_shallow+fraction_dual, styles[3], label='Sum')
+
+# for i, iT in enumerate(i_tnames):
+#     ax.plot(EE / units.eV, veff_energy[i] / units.km ** 3, php.get_color_linestyle(i), label=plot_tnames[i])
+# for i in range(1, len(plot_tnames)):
+#     ax2.plot(EE / units.eV, veff_energy[i] / veff_energy[0], php.get_color_linestyle(i), label=plot_tnames[i])
+
+# ax2.plot(EE / units.eV, (veff_energy[i] - (veff_energy[1] + veff_energy[2] - 1) / veff_energy[0], php.get_color_linestyle(i), label=plot_tnames[i])
+
+# ax2.plot(EE / units.eV, (veff_energy[1] + veff_energy[2]) / veff_energy[0] -1, php.get_color_linestyle(len(plot_tnames)), label="deep + shallow")
+ax.semilogx(True)
+ax.set_title(detector)
+ax.semilogy(True)
+ax.set_ylim(1E-1, 1E3)
+ax2.set_xlabel(f"energy [eV]")
+ax2.set_ylabel(f"contrib. to\ntotal Veff")
+ax2.set_ylim(0, 1)
+# ax2.legend()
+ax.set_ylabel(f"effective volume [km^3]")
+ax.set_xlim(1e16, 1e20)
+ax.legend(fontsize='small')
+fig.tight_layout()
+fig.savefig(f"plots/christian_veff_energy_{detector}.png")
+# plt.show()
+# a =1/0
+plt.close("all")

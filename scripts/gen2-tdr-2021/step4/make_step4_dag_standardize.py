@@ -24,9 +24,9 @@ det_files_dict = {
 }
 det_files_labels = [
     "gen2r_baseline", 
-    # "gen2r_hybrid" , 
+    "gen2r_hybrid" , 
     "gen2r_shallow", 
-    # "gen2r_shallowheavy"
+    "gen2r_shallowheavy"
     ]
 config_file = "config_ARZ2020_noise"
 sim_file = "D01detector_sim"

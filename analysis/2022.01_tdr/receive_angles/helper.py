@@ -1,3 +1,4 @@
+from shutil import which
 import numpy as np
 import matplotlib
 from matplotlib import pyplot as plt
@@ -8,8 +9,9 @@ import sys
 import pickle
 from multiprocessing import Pool
 
-def dig_around(filename, deep_trigger, shallow_trigger, hybrid_list, shallow_list):
+def dig_around(filename, the_trigger, hybrid_list, shallow_list):
 
+    # lpda channels = [0, 1, 2, 3]
     # hybrid_station_deep_channels = [4, 5, 6, 7]
     print("Filename {}".format(filename))
 
@@ -43,7 +45,7 @@ def dig_around(filename, deep_trigger, shallow_trigger, hybrid_list, shallow_lis
 
             # need to break this down by shower
             if 'multiple_triggers' in s:
-                trigger_mask = s['multiple_triggers'][:, tname_to_index[deep_trigger]]
+                trigger_mask = s['multiple_triggers'][:, tname_to_index[the_trigger]]
                 shower_ids = s['shower_id']
                 # print(np.asarray(shower_ids))
                 rec_vec = s['receive_vectors']
@@ -55,10 +57,23 @@ def dig_around(filename, deep_trigger, shallow_trigger, hybrid_list, shallow_lis
                 # the following slice grabs the last 8 antennas (4:)
                 # and the 2 solutions * 3 elements of the array
                 # without the 4:, this would have shape n_channels * n_solutions * 3
-                trig_rec_vec = rec_vec[trigger_mask, 4:] 
-                trig_amps = amps[trigger_mask, 4:]
-                trig_ff = focus_factors[trigger_mask, 4:]
+
+                # updated Feb 6 2022 to also account for LPDA trigger
+                which_ant_index_to_check = None
+                if 'PA' in the_trigger:
+                    trig_rec_vec = rec_vec[trigger_mask, 4:] 
+                    trig_amps = amps[trigger_mask, 4:]
+                    trig_ff = focus_factors[trigger_mask, 4:]
+                    which_ant_index_to_check = 4 # check the middle of the PA
+                elif 'LPDA' in the_trigger:
+                    trig_rec_vec = rec_vec[trigger_mask, :3] 
+                    trig_amps = amps[trigger_mask, :3]
+                    trig_ff = focus_factors[trigger_mask, :3]
+                    which_ant_index_to_check = 0 # check the very first LPDA
+
                 
+                # get the receive angle and focusing factor of the 
+                # maximum amplitude shower and ray in the event
                 for shower_amps, shower_vecs, ff in zip(trig_amps, trig_rec_vec, trig_ff):
                     temp_amps = np.asarray(shower_amps)
                     temp_rec_angs = np.asarray(shower_vecs)
@@ -76,16 +91,17 @@ def dig_around(filename, deep_trigger, shallow_trigger, hybrid_list, shallow_lis
                     max_amp_ffs.append(the_ff)
                     # print("The vec {}".format(the_vec))
                 
-
+                # get all receive angles (all showers, all rays)
                 for shower in trig_rec_vec: 
                     # loop over showers
-                    choosy_antenna = shower[4] # choose the middle of the array
+                    choosy_antenna = shower[which_ant_index_to_check] # choose the middle of the array
                     for vec in choosy_antenna:
                         the_theta = np.arccos(vec[2])
                         all_thetas.append(the_theta)
 
+                # get all focusing factors (all showers, call rays)
                 for ff in trig_ff:
-                    choosy_antenna = ff[4]
+                    choosy_antenna = ff[which_ant_index_to_check]
                     all_ffs.append(choosy_antenna[0]) # dir sol
                     all_ffs.append(choosy_antenna[1]) # refr/refl sol
                     # print("the ff {}".format(the_ff))

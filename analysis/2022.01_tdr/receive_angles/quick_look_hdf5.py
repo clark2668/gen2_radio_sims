@@ -28,8 +28,10 @@ all_ffs = []
 max_amp_thetas = []
 max_amp_ffs = []
 deep_trigger = 'PA_4channel_100Hz'
+shallow_trigger = 'LPDA_2of4_100Hz'
+the_trigger = shallow_trigger
 for f in filenames:
-    temp_all_thetas, temp_max_amp_thetas, temp_all_ffs, temp_max_amp_ffs = helper.dig_around(f, deep_trigger , 'LPDA_2of4_100Hz',
+    temp_all_thetas, temp_max_amp_thetas, temp_all_ffs, temp_max_amp_ffs = helper.dig_around(f, the_trigger,
         hybrid_list, shallow_list
     )
     if temp_all_thetas is not None:
@@ -49,13 +51,18 @@ all_thetas = np.rad2deg(all_thetas)
 max_amp_thetas = np.rad2deg(max_amp_thetas)
 
 
+if 'PA' in the_trigger:
+    for_plot = 'Ch 8'
+elif 'LPDA' in the_trigger:
+    for_plot = 'Ch 0'
+
 fig = plt.figure()
 ax = fig.add_subplot(111)
 bins = np.linspace(0, 180, 180)
 ax.hist(all_thetas, bins=bins, 
     histtype='step', alpha=0.75, 
     density=True,
-    label='Channel 8, All Showers, All Rays')
+    label='{}, All Showers, All Rays'.format(the_trigger))
 ax.hist(max_amp_thetas, bins=bins, 
     histtype='step', alpha=0.75, 
     density=True,
@@ -64,7 +71,7 @@ ax.set_title('NuE, 1E18')
 ax.set_xlabel('Receive Angle (deg)')
 ax.set_ylabel('PDF')
 ax.legend()
-fig.savefig('for_dave_recang_{}.png'.format(deep_trigger))
+fig.savefig('recang_{}.png'.format(the_trigger))
 
 del fig, ax
 
@@ -87,7 +94,7 @@ cbar.set_label('Counts')
 ax.set_title('NuE, 1E18')
 ax.set_xlabel('Receive Angle (deg)')
 ax.set_ylabel('Focusing Factor')
-ax.set_title('Ch8, All Showers, All Ray')
+ax.set_title('{}, All Showers, All Ray'.format(for_plot))
 
 
 counts, xedges, yedges, im = ax2.hist2d(
@@ -106,4 +113,4 @@ ax2.set_ylabel('Focusing Factor')
 ax2.set_title('Max Amp Shower/Channel/Ray')
 
 plt.tight_layout()
-fig.savefig('for_dave_ffs_{}.png'.format(deep_trigger))
+fig.savefig('ffs_{}.png'.format(the_trigger))

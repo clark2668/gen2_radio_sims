@@ -8,6 +8,14 @@ import os
 import sys
 import pickle
 from multiprocessing import Pool
+import resource
+import tarfile
+
+import NuRadioReco.modules.io.eventReader
+from NuRadioReco.framework.parameters import electricFieldParameters as efp
+from NuRadioReco.framework.parameters import particleParameters as pp
+from NuRadioReco.framework.parameters import channelParameters as cp
+
 
 def dig_around(filename, the_trigger, hybrid_list, shallow_list):
 
@@ -114,3 +122,113 @@ def dig_around(filename, the_trigger, hybrid_list, shallow_list):
 
     return all_thetas, max_amp_thetas, all_ffs, max_amp_ffs
 
+def do_stuff(event_reader, the_file_name, the_trigger):
+    all_thetas = []
+    all_weights = []
+
+    max_amp_thetas = []
+    max_amp_weights = []
+
+    valid_list = []
+    if 'PA' in the_trigger:
+        valid_list = [4, 5, 6, 7, 8, 9, 10, 11]
+    elif 'LPDA' in the_trigger:
+        valid_list = [0, 1, 2, 3]
+
+    event_reader.begin([the_file_name])
+    for iE, event in enumerate(event_reader.run()):
+        primary = event.get_primary()
+        weight = primary.get_parameter(pp.weight)
+
+        for iStation, station in enumerate(event.get_stations()):
+            triggers = station.get_triggers()
+            if the_trigger not in triggers:
+                continue
+            if station.has_triggered(the_trigger):
+                sim_station = station.get_sim_station()
+                
+                # all efields
+                efields = sim_station.get_electric_fields()
+                for efield in efields:
+                    if len(efield.get_channel_ids())>1:
+                        print("More channel ids than expected. Get out...")
+                    ch_id = efield.get_channel_ids()[0]
+                    if ch_id in valid_list:
+                        theta = efield.get_parameter(efp.zenith)
+                        all_thetas.append(theta)
+                        all_weights.append(weight)
+
+                
+                # now to get the highest amp
+                max_amp_global = -1E-30
+                max_id = None
+
+                options = []
+                shower_ids = sim_station.get_shower_ids()
+                for shower_id in shower_ids:
+                    channels = sim_station.get_channels_by_shower_id(shower_id)
+                    for channel in channels:
+                        ch_id = channel.get_id()
+                        options.append(ch_id)
+                        if ch_id in valid_list:
+                            max_amp = channel.get_parameter(cp.maximum_amplitude)
+                            if abs(max_amp) > abs(max_amp_global):
+                                max_amp_global = max_amp
+                                max_id = channel.get_unique_identifier()
+                
+                if max_id is None:
+                    # print("Max ID is {}, but Options were {}".format(max_id, options))
+                    # print("Trig Info: {}".format(station.get_triggers()[the_trigger]))
+                    # print('----')
+                    # this case is confusing AF and shouldn't really be possible...
+                    # but just skip it for now, it seems reasonably rare...
+                    continue
+
+                # and retrieve it's properties
+                top_ch_id = max_id[0]
+                top_shower_id = max_id[1]
+                top_rt_id = max_id[2]
+
+                efields = sim_station.get_electric_fields()
+                for efield in efields:
+                    ch_id = efield.get_channel_ids()[0]
+                    if ch_id != top_ch_id:
+                        continue
+                    shower_id = efield.get_shower_id()
+                    if shower_id != top_shower_id:
+                        continue
+                    rt_id = efield.get_ray_tracing_solution_id()
+                    if rt_id != top_rt_id:
+                        continue
+                    max_amp_thetas.append(efield.get_parameter(efp.zenith))
+                    max_amp_weights.append(weight)
+                
+    return all_thetas, all_weights, max_amp_thetas, max_amp_weights
+
+def parallel_process(filename, the_trigger):
+
+    # print("Working on file {}".format(filename))
+
+    all_thetas = []
+    all_weights = []
+    max_amp_thetas = []
+    max_amp_weights = []
+    event_reader = NuRadioReco.modules.io.eventReader.eventReader()
+
+    if '.tar.gz' in filename:
+        tar = tarfile.open(filename, "r:gz")
+        for member in tar.getmembers():
+            if member.isfile():
+                f_extracted = tar.extract(member)
+                all_thetas, all_weights, max_amp_thetas, max_amp_weights = do_stuff(event_reader, member.name, the_trigger)
+                os.remove(member.name)
+    else:
+        all_thetas, all_weights, max_amp_thetas, max_amp_weights = do_stuff(event_reader, filename, the_trigger)
+    
+    outputs = {}
+    outputs['all_thetas'] = all_thetas
+    outputs['all_weights'] = all_weights
+    outputs['max_amp_thetas'] = max_amp_thetas
+    outputs['max_amp_weights'] = max_amp_weights
+
+    return outputs
